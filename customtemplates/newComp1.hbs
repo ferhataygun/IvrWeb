@@ -1,0 +1,63 @@
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content" style="padding-top:0">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{icon}} font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">{{Type}} Duzenle</span>
+                    <input type="hidden" id="cType" value="{{cType}}">
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form class="form-horizontal compForm" role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{Type}} Adi</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Adi" value="{{Name}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{Type}} URI</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} URI" value="{{ControlUri}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Projeler</label>
+                            <div class="col-md-9">
+                              <select multiple="" class="form-control" readonly="" disabled="">
+                                {{#each this.projects}}
+                                <option>{{this}}</option>
+                                {{/each}}
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">EndPointler</label>
+                            <div class="col-md-9">
+                              <select multiple="" class="form-control" readonly="" disabled="">
+                                {{#each this.endPoints}}
+                                <option>{{this}}</option>
+                                {{/each}}
+                             </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-7 col-md-5 text-right">
+                                <a id='resetComp1' class="btn red-soft" data-ctype={{cType}} style="display:inline-block">İptal</a>
+                                <button type="submit" class="btn  blue-madison" data-ctype={{cType}}>KAYDET</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+      </div>
+      </div>
+    </div>
+</div>
+<!-- END CONTENT BODY -->

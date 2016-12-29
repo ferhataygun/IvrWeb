@@ -1,0 +1,69 @@
+[
+  {
+    "name": "Ivr Project Adi Datasi",
+    "status": true,
+    "servers": ["Server1","Server2"],
+    "treeData": [
+      {
+        "text": "Ivr Project Adi Datasi",
+        "icon": "fa fa-volume-up",
+        "children": [
+            {
+              "text": "Tree View Menü 1",
+              "icon": "fa fa-folder",
+              "children": [
+                {
+                  "text": "Play Form",
+                  "formType": "2",
+                  "formData": {},
+                  "icon": "fa fa-file-text",
+                  "state": {"disabled": true}
+                },
+                {
+                  "text": "Record Form",
+                  "formType": "3",
+                  "formData": {},
+                  "icon": "fa fa-file-text",
+                  "state": {"disabled": true}
+                },
+                {
+                  "text": "Tree View Menü 1.1",
+                  "icon": "fa fa-folder",
+                  "children": [
+                    {
+                      "text": "DLL Formu",
+                      "formType": "4",
+                      "formData": {},
+                      "icon": "fa fa-file-text",
+                      "state": {"disabled": true}
+                    },
+                    {
+                      "text": "Web Service",
+                      "formType": "5",
+                      "formData": {},
+                      "icon": "fa fa-file-text",
+                      "state": {"disabled": true}
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Database Formu",
+              "formType": "6",
+              "formData": {},
+              "icon": "fa fa-file-text",
+              "state": {"disabled": true}
+            },
+            {
+              "text": "Kontrol Formu",
+              "formType": "7",
+              "formData": {},
+              "icon": "fa fa-file-text",
+              "state": {"disabled": true}
+            }
+          ]
+  }
+]
+}
+]

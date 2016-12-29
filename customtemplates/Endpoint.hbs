@@ -1,0 +1,132 @@
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content" style="padding-top:0">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{icon}} font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">{{Type}} Duzenle</span>
+                    <input type="hidden" id="cType" value="{{cType}}">
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form class="form-horizontal compForm" role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Adi" value="{{Name}}" name="Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-md-3 control-label">Has TCP?</label>
+                            <div class="col-md-9">
+                              <label class="mt-checkbox">
+                                  {{#if HasTcp}}
+                                    <input type="checkbox" class="form-control hasTcpCheckbox" checked>
+                                  {{else}}
+                                    <input type="checkbox" class="form-control hasTcpCheckbox">
+                                  {{/if}}
+                                  <span></span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">TCP Ip</label>
+                            <div class="col-md-9">
+                              {{#if HasTcp}}
+                                <input type="text" class="form-control mask-ip" placeholder="Tcp Ip" value="{{TcpIp}}" name="TcpIp">
+                                {{else}}
+                                <input type="text" class="form-control mask-ip" placeholder="Tcp Ip" value="{{TcpIp}}" name="TcpIp" disabled>
+                              {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Tcp Port</label>
+                            <div class="col-md-9">
+                              {{#if HasTcp}}
+                                  <input type="text" class="form-control mask-number" placeholder="Tcp Port" value="{{TcpPort}}" name="TcpPort">
+                              {{else}}
+                                  <input type="text" class="form-control mask-number" placeholder="Tcp Port" value="{{TcpPort}}" name="TcpPort" disabled>
+                              {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-md-3 control-label">Has UDP?</label>
+                            <div class="col-md-9">
+                              <label class="mt-checkbox">
+                                  {{#if HasUdp}}
+                                    <input type="checkbox" class="form-control hasUdpCheckbox" checked>
+                                  {{else}}
+                                    <input type="checkbox" class="form-control hasUdpCheckbox">
+                                  {{/if}}
+                                  <span></span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Udp Ip</label>
+                            <div class="col-md-9">
+                              {{#if HasUdp}}
+                                <input type="text" class="form-control mask-ip" placeholder="Udp Ip" value="{{UdpIp}}" name="UdpIp">
+                                {{else}}
+                                <input type="text" class="form-control mask-ip" placeholder="Udp Ip" value="{{UdpIp}}" name="UdpIp" disabled>
+                              {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Udp Port</label>
+                            <div class="col-md-9">
+                              {{#if HasUdp}}
+                                <input type="text" class="form-control mask-number" placeholder="Udp Port" value="{{UdpPort}}" name="UdpPort">
+                                  {{else}}
+                                  <input type="text" class="form-control mask-number" placeholder="Udp Port" value="{{UdpPort}}" name="UdpPort" disabled>
+                              {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-md-3 control-label">TLS</label>
+                            <div class="col-md-9">
+                              <label class="mt-checkbox">
+                                  {{#if Tls}}
+                                    <input type="checkbox" class="form-control tlsCheckbox" checked>
+                                  {{else}}
+                                    <input type="checkbox" class="form-control tlsCheckbox">
+                                  {{/if}}
+                                  <span></span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Capacity</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control mask-number" placeholder="Capacity" value="{{Capacity}}" name="Capacity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Accounts</label>
+                            <div class="col-md-9">
+                              <select class="ivrAccountsList2" multiple="multiple">
+                               {{#each ivrAccounts}}
+                                    <option value="{{Id}}">{{Name}}</option>
+                               {{/each}}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-7 col-md-5 text-right">
+                              <a class="resetComp1 btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">SIFIRLA</a>
+                              <button type="submit" class="btn  blue-madison" data-type={{Type}} data-id="{{Id}}">KAYDET</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+      </div>
+      </div>
+    </div>
+</div>
+<!-- END CONTENT BODY -->

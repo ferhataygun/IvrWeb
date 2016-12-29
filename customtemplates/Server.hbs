@@ -1,0 +1,71 @@
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content" style="padding-top:0">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{icon}} font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">{{Type}} Duzenle</span>
+                    <input type="hidden" id="cType" value="{{cType}}">
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form class="form-horizontal compForm" role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Adi" value="{{Name}}" name="Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Description</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Description" value="{{Description}}" name="Description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Control Uri</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Control URI" value="{{ControlUri}}" name="ControlUri">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monitor Uri</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} Monitor URI" value="{{MonitorUri}}" name="MonitorUri">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Capacity</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control mask-number" placeholder="Capacity" value="{{Capacity}}" name="Capacity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">EndPoints</label>
+                            <div class="col-md-9">
+                              <select class="ivrEndpointsList" multiple="multiple">
+                               {{#each ivrEndpoints}}
+                                    <option value="{{Id}}">{{Name}}</option>
+                               {{/each}}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-7 col-md-5 text-right">
+                              <a class="resetComp1 btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">SIFIRLA</a>
+                                <button type="submit" class="btn  blue-madison" data-type={{Type}} data-id="{{Id}}">KAYDET</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+      </div>
+      </div>
+    </div>
+</div>
+<!-- END CONTENT BODY -->

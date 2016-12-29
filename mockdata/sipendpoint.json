@@ -1,0 +1,8 @@
+[
+  {
+    "name": "SipEndPoint Adi Datasi",
+    "URI": "SipEndPoint Adresi Datasi",
+    "projects": ["Proje1","Proje2"],
+    "endPoints": ["EndPoint1","EndPoint2"]
+  }
+]

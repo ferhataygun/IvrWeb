@@ -1,0 +1,52 @@
+<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+  <div class="portlet-title">
+      <div class="caption {{fontClass}}">
+          <span class="caption-subject bold uppercase"> Record Formu</span>
+      </div>
+      <div class="tools">
+          <a href="" class="collapse" data-original-title="" title=""> </a>
+          <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+      </div>
+  </div>
+<div class="portlet-body">
+  <form class="form-horizontal recordForm" role="form">
+      <div class="form-body">
+          <div class="form-group">
+              <label class="col-md-3 control-label">File Name</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control" placeholder="File Name" value="{{inFormData.FileName}}" name="FileName">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Duration</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="Duration" value="{{inFormData.Duration}}" name="Duration">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">DTMF Stop ?</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.DtmfStop}}
+                      <input type="checkbox" class="form-control dtmfCheckbox" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control dtmfCheckbox">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">DTMF Stop Key:</label>
+              <div class="col-md-9">
+                {{#if inFormData.DtmfStop}}
+                <input type="text" class="form-control dtmfVar" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey">
+                {{else}}
+                <input type="text" class="form-control dtmfVar" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey" disabled>
+                {{/if}}
+              </div>
+          </div>
+      </div>
+ </form>
+</div>
+</div>

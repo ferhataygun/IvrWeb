@@ -1,0 +1,92 @@
+<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+  <div class="portlet-title">
+      <div class="caption {{fontClass}}">
+          <span class="caption-subject bold uppercase"> Kontrol Formu</span>
+      </div>
+      <div class="tools">
+          <a href="" class="collapse" data-original-title="" title=""> </a>
+          <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+      </div>
+  </div>
+<div class="portlet-body">
+  <form class="form-horizontal kontrolForm" role="form">
+      <div class="form-body">
+  <div class="form-group">
+    <div class="col-md-12">
+      <div class="table-toolbar">
+           <div class="row">
+               <div class="col-md-6">
+                   <div class="btn-group">
+                       <button id="{{inFormData.btnID}}" class="btn green newControl"> Yeni Kontrol
+                           <i class="fa fa-plus"></i>
+                       </button>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <table class="table table-bordered table-hover">
+                                                   <thead>
+                                                       <tr>
+                                                           <th> Reference Value </th>
+                                                           <th> Type </th>
+                                                           <th> Ignore Case </th>
+                                                           <th> Compare With </th>
+                                                           <th> Transfer No</th>
+                                                           <th> RoutingMenu</th>
+                                                           <th> Description</th>
+                                                           <th> Delete </th>
+                                                       </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                     {{#each  inFormData.RoutingRules}}
+                                                       <tr>
+                                                         <td> <input type="text" class="form-control ReferenceValue" value="{{ReferenceValue}}"> </td>
+                                                         <td>
+                                                           <select class="js-table-select ruleSelect">
+                                                             <option value="0">Equals</option>
+                                                             <option value="1">NotEquals</option>
+                                                             <option value="2">StartsWith</option>
+                                                             <option value="3">EndsWith</option>
+                                                             <option value="4">GraterThan</option>
+                                                             <option value="5">GraterThanOrEquals</option>
+                                                             <option value="6">LessThan</option>
+                                                             <option value="7">LessThanOrEquals</option>
+                                                             <option value="8">None</option>
+                                                           </select>
+                                                         </td>
+                                                           <td>
+                                                             <label class="mt-checkbox">
+                                                                 {{#if IgnoreCase}}
+                                                                   <input type="checkbox" class="form-control isIgnoreCase" checked>
+                                                                 {{else}}
+                                                                   <input type="checkbox" class="form-control isIgnoreCase">
+                                                                 {{/if}}
+                                                                 <span></span>
+                                                             </label>
+                                                           </td>
+                                                           <td> <input type="text" class="form-control CompareWith" value="{{CompareWith}}"> </td>
+                                                           <td> <input type="text" class="form-control TransferNo" value="{{TransferNo}}"> </td>
+                                                           <td>
+                                                               <select class="treeVievMenuList">
+                                                                <option value="0">No Routing Menu</option>
+                                                                {{#each tree}}
+                                                                     <option value="{{id}}">{{text}}</option>
+                                                                {{/each}}
+                                                               </select>
+                                                           </td>
+                                                           <td> <input type="text" class="form-control Description" value="{{Description}}"> </td>
+                                                           <td>
+                                                               <a href="#" class="deleteParameter"> Delete </span>
+                                                           </td>
+                                                       </tr>
+                                                       {{/each}}
+
+                                                   </tbody>
+                                               </table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>

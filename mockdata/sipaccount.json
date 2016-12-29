@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Sunucunun Adi Datasi",
+    "URI": "Sunucunun Adresi Datasi",
+    "projects": ["Proje1","Proje2"],
+    "endPoints": ["EndPoint1","EndPoint2"]
+  }
+]

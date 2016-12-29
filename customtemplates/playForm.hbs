@@ -1,0 +1,148 @@
+<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+  <div class="portlet-title">
+      <div class="caption {{fontClass}}">
+          <span class="caption-subject bold uppercase"> Play Formu</span>
+      </div>
+      <div class="tools">
+          <a href="" class="collapse" data-original-title="" title=""> </a>
+          <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+      </div>
+  </div>
+<div class="portlet-body">
+  <form class="form-horizontal playForm" role="form">
+      <div class="form-body">
+          <div class="form-group">
+              <label class="col-md-3 control-label">Play String</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control" placeholder="PlayString" value="{{inFormData.PlayString}}" name="PlayString">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Play Type</label>
+            <div class="col-md-9">
+              <select class="playTypeList">
+                <option value="0">File</option>
+                <option value="1">Numeric</option>
+                <option value="2">Character</option>
+                <option value="3">DateTime</option>
+                <option value="4">Day</option>
+                <option value="5">Month</option>
+                <option value="6">Currency</option>
+                <option value="7">PhoneNumber</option>
+                <option value="8">SplittedNumber</option>
+                <option value="9">Tts</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Dtmf Stop?</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.DtmfStop}}
+                      <input type="checkbox" class="form-control isDtmfStop" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control isDtmfStop">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Dtmf Timeout</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="DtmfTimeout" value="{{inFormData.DtmfTimeout}}" name="DtmfTimeout">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Max Dtmf</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="MaxDtmf" value="{{inFormData.MaxDtmf}}" name="MaxDtmf">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Min Dtmf</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="MinDtmf" value="{{inFormData.MinDtmf}}" name="MinDtmf">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Dtmf Mask</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control" placeholder="DtmfMask" value="{{inFormData.DtmfMask}}" name="DtmfMask">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Input Timeout</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="InputTimeout" value="{{inFormData.InputTimeout}}" name="InputTimeout">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Input Variable</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control" placeholder="InputVariable" value="{{inFormData.InputVariable}}" name="InputVariable">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Repeat After Invalid</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="RepeatAfterInvalid" value="{{inFormData.RepeatAfterInvalid}}" name="RepeatAfterInvalid">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Get Invalid Input?</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.GetInvalidInput}}
+                      <input type="checkbox" class="form-control GetInvalidInput" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control GetInvalidInput">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Terminate Invalid Input</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.TerminateInvalidInput}}
+                      <input type="checkbox" class="form-control TerminateInvalidInput" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control TerminateInvalidInput">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Dont Play Others If Dtmf Recevied</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.DontPlayOthersIfDtmfRecevied}}
+                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Asynchronous</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.Asynchronous}}
+                      <input type="checkbox" class="form-control Asynchronous" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control Asynchronous">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+
+      </div>
+ </form>
+</div>
+</div>

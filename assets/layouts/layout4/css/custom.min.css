@@ -1,0 +1,48 @@
+@media (min-width: 992px){
+  .page-sidebar {
+      width: 280px;
+      float: left;
+      position: relative;
+      margin-right: -100%;
+  }
+  .page-content-wrapper .page-content{
+    margin-left: 280px;
+  }
+}
+
+.page-header.navbar{
+  height: 108px;
+  min-height: 108px;
+}
+.page-header-fixed .page-container{
+  margin-top:108px;
+}
+.page-header.navbar .page-logo{
+  width: 290px;
+}
+.page-header.navbar .menu-toggler.sidebar-toggler{
+  margin-top: 48px;
+}
+.page-header.navbar .top-menu .navbar-nav>li.dropdown-user{
+  padding-top: 20px;
+}
+.page-sidebar .page-sidebar-menu, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu{
+  margin-top: 0;
+}
+
+.comp1-close{
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: #b53636;
+  font-size: 19px;
+  cursor: pointer;
+}
+.page-header.navbar .page-logo .logo-default{
+  width: 185px;
+}
+#treeHolder{
+  padding-left: 10px;
+      padding-right: 10px;
+      overflow-y: scroll;  
+}

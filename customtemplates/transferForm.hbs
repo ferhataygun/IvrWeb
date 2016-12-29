@@ -1,0 +1,82 @@
+<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+  <div class="portlet-title">
+      <div class="caption {{fontClass}}">
+          <span class="caption-subject bold uppercase"> Transfer Formu</span>
+      </div>
+      <div class="tools">
+          <a href="" class="collapse" data-original-title="" title=""> </a>
+          <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+      </div>
+  </div>
+<div class="portlet-body">
+  <form class="form-horizontal transferForm" role="form">
+      <div class="form-body">
+          <div class="form-group">
+              <label class="col-md-3 control-label">Transfer No</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control" placeholder="TransferNo" value="{{inFormData.TransferNo}}" name="TransferNo">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Timeout</label>
+              <div class="col-md-9">
+                  <input type="text" class="form-control mask-number" placeholder="Timeout" value="{{inFormData.Timeout}}" name="Timeout">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Hold Music ?</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.HoldMusic}}
+                      <input type="checkbox" class="form-control holdMusicCheckbox" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control holdMusicCheckbox">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">HoldMusicFile</label>
+              <div class="col-md-9">
+                {{#if inFormData.HoldMusic}}
+                  <input type="text" class="form-control holdMusicVar" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile">
+                {{else}}
+                  <input type="text" class="form-control holdMusicVar" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile" disabled>
+                {{/if}}
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Bridge Call ?</label>
+              <div class="col-md-9">
+                <label class="mt-checkbox">
+                    {{#if inFormData.BridgeCall}}
+                      <input type="checkbox" class="form-control BridgeCallCheckbox" checked>
+                    {{else}}
+                      <input type="checkbox" class="form-control BridgeCallCheckbox">
+                    {{/if}}
+                    <span></span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Unavailable Menu</label>
+              <div class="col-md-9">
+                <select class="treeVievMenuList">
+                 <option value="0">No Unavailable Menu</option>
+                 {{#each inFormData.treeview}}
+                      <option value="{{id}}">{{text}}</option>
+                 {{/each}}
+                </select>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Unavailable Transfer No</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="UnavailableTransferNo" value="{{inFormData.UnavailableTransferNo}}" name="UnavailableTransferNo">
+            </div>
+          </div>
+      </div>
+ </form>
+</div>
+</div>

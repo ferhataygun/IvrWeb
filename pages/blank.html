@@ -271,7 +271,7 @@
                       Token: window.appConfig.token
                     },
                     success: function(res){
-                      window.location.href = window.location.pathname.split("blank.html")[0];
+                        window.location.href = window.location.href = "../pages/index.html";
                       eraseCookie("token");
                       eraseCookie("username");
                       eraseCookie("isLogin");
@@ -282,7 +282,7 @@
                   });
                 });
               }else{
-                window.location.href = window.location.pathname.split("blank.html")[0];
+                  window.location.href = window.location.href = "../pages/index.html";
               }
             });
         </script>

@@ -141,6 +141,19 @@
                 </label>
               </div>
           </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Dtmf Log Disabled</label>
+              <div class="col-md-9">
+                  <label class="mt-checkbox">
+                      {{#if inFormData.DtmfLogDisabled}}
+                      <input type="checkbox" class="form-control DtmfLogDisabled" checked>
+                      {{else}}
+                      <input type="checkbox" class="form-control DtmfLogDisabled">
+                      {{/if}}
+                      <span></span>
+                  </label>
+              </div>
+          </div>
 
       </div>
  </form>

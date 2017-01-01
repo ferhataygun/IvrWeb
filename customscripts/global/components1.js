@@ -7,6 +7,7 @@ $(document).ready(function(){
       $('.menu-comp1').parent().removeClass('active');
       $this.parent().addClass('active');
       $("#treeHolder").remove();
+      $("#lastTreeMenuId").val('');
       var targetCtype = $this.attr("data-type");
       var resultObj   = {};
       switch (targetCtype) {

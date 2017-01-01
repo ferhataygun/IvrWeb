@@ -6,16 +6,12 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="{{icon}} font-dark"></i>
-                    <span class="caption-subject font-dark sbold uppercase">İvr Proje Menüsü Duzenle</span>
+                    <span class="caption-subject font-dark sbold uppercase">Ivr Menu</span>
                     <input type="hidden" id="cType" value="{{cType}}">
 
                 </div>
-                <div class="caption" style="
-    float: right;
-">
-<a href="javascript:;"  class="projeKaydet btn default green "> Menüyü kaydet </a>
-
-
+                <div class="caption" style="float: right;">
+                    <a href="javascript:;" class="collapseForms btn default green "> Expand All </a>
                 </div>
             </div>
             <div class="portlet-body form">
@@ -24,26 +20,35 @@
                   <form class="form-horizontal comp2Form" role="form">
                       <div class="form-body">
                           <div class="form-group">
-                              <label class="col-md-3 control-label">Menü Adı:</label>
+                              <label class="col-md-3 control-label">Name:</label>
                               <div class="col-md-9">
                                   <input type="text" class="form-control" placeholder="Menu Adi" value="{{Name}}" name="Name">
                                   <input type="hidden" value="{{Id}}" id="MenuId">
                               </div>
                           </div>
+                          <div class="form-group">
+                              <label class="col-md-3 control-label">Logs:</label>
+                              <div class="col-md-9">
+
+                              </div>
+                          </div>
                       </div>
                   </form>
                 </div>
-                <div class="col-md-3">
-                    <a href="javascript:;" class="btn default btn-block blue openForm" data-form-type="degiskenAtamaForm" data-font-class="font-blue"> Değişken Atama Formu </a>
+                <div class="col-md-2">
+                    <a href="javascript:;" class="btn default btn-block blue openForm" data-form-type="assignmentForm" data-font-class="font-blue"> Assignment Form </a>
                     <a href="javascript:;" class="btn default btn-block green openForm" data-form-type="playForm" data-font-class="font-green"> Play Form </a>
                     <a href="javascript:;" class="btn default btn-block red-pink openForm" data-form-type="recordForm" data-font-class="font-red-pink"> Record Form </a>
-                    <a href="javascript:;" class="btn default btn-block yellow-crusta openForm" data-form-type="dllForm" data-font-class="font-yellow-crusta"> DLL fORM </a>
                 </div>
-                <div class="col-md-3">
-                  <a href="javascript:;" class="btn default btn-block purple-plum openForm" data-form-type="webServiceForm" data-font-class="font-purple-plum"> Web Service </a>
-                    <a href="javascript:;" class="btn default btn-block dark openForm" data-form-type="databaseForm" data-font-class="font-dark"> Database Formu </a>
-                    <a href="javascript:;" class="btn default btn-block blue-dark openForm" data-form-type="kontrolForm" data-font-class="font-blue-dark"> Kontrol Formu </a>
-                    <a href="javascript:;" class="btn default btn-block yellow-mint openForm" data-form-type="transferForm" data-font-class="font-yellow-mint"> Transfer Formu </a>
+                <div class="col-md-2">
+                    <a href="javascript:;" class="btn default btn-block yellow-crusta openForm" data-form-type="dllForm" data-font-class="font-yellow-crusta"> DLL Form </a>
+                    <a href="javascript:;" class="btn default btn-block purple-plum openForm" data-form-type="webServiceForm" data-font-class="font-purple-plum"> Web Service Form </a>
+                    <a href="javascript:;" class="btn default btn-block white openForm" data-form-type="databaseForm" data-font-class="font-dark"> Database Form </a>
+                </div>
+                <div class="col-md-2">
+                    <a href="javascript:;" class="btn default btn-block dark openForm" data-form-type="scriptForm" data-font-class="font-dark"> Script Form</a>
+                    <a href="javascript:;" class="btn default btn-block blue-dark openForm" data-form-type="routingForm" data-font-class="font-blue-dark"> Routing Form </a>
+                    <a href="javascript:;" class="btn default btn-block yellow-mint openForm" data-form-type="transferForm" data-font-class="font-yellow-mint"> Transfer Form </a>
                 </div>
               </div>
 

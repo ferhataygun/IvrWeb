@@ -24,57 +24,69 @@
               </div>
           </div>
           <div class="form-group">
-            <div class="col-md-12">
-              <div class="table-toolbar">
-                   <div class="row">
-                       <div class="col-md-6">
-                           <div class="btn-group">
-                             <button id="{{inFormData.btnID}}" class="btn green newParameter"> Yeni Parametre
-                                   <i class="fa fa-plus"></i>
-                               </button>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               <table class="table table-bordered table-hover">
-                                                           <thead>
-                                                               <tr>
-                                                                   <th> Parameter Direction</th>
-                                                                   <th> Variable Type </th>
-                                                                   <th> Parameter </th>
-                                                                   <th> Delete </th>
-                                                               </tr>
-                                                           </thead>
-                                                           <tbody>
-                                                             {{#each inFormData.Parameters}}
+              <div class="col-md-12">
+                  <div class="table-toolbar">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="btn-group">
+                                  <button id="{{inFormData.btnID}}" class="btn green newParameter">
+                                      New Parameter
+                                      <i class="fa fa-plus"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <table class="table table-bordered table-hover" id="{{inFormData.tableID}}">
+                      <thead>
+                          <tr>
+                              <th> Parameter Direction</th>
+                              <th> Variable Type </th>
+                              <th> Parameter </th>
+                              <th> Edit </th>
+                              <th> Delete </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {{#each inFormData.Parameters}}
 
-                                                               <tr>
-                                                                   <td>
-                                                                     <select class="js-table-select directionSelect">
-                                                                       <option value="0">In</option>
-                                                                       <option value="1">Out</option>
-                                                                     </select>
-                                                                   </td>
-                                                                   <td>
-                                                                     <select class="js-table-select typeSelect">
-                                                                       <option value="0">Int</option>
-                                                                       <option value="1">Double</option>
-                                                                       <option value="2">String</option>
-                                                                       <option value="3">DateTime</option>
-                                                                       <option value="4">Bool</option>
-                                                                       <option value="5">Complex</option>
-                                                                     </select>
-                                                                   </td>
-                                                                   <td> <input type="text" class="form-control formParameter" value="{{Variable}}"> </td>
-                                                                   <td>
-                                                                       <a href="#" class="deleteParameter"> Delete </span>
-                                                                   </td>
-                                                               </tr>
-                                                               {{/each}}
+                          <tr>
+                              <td>
+                                  <select class="js-table-select directionSelect">
+                                      <option value="0">In</option>
+                                      <option value="1">Out</option>
+                                  </select>
+                                  <input type="hidden" class="form-control" value="{{ParameterDirection}}">
+                              </td>
+                              <td>
+                                  <select class="js-table-select typeSelect">
+                                      <option value="0">Int</option>
+                                      <option value="1">Double</option>
+                                      <option value="2">String</option>
+                                      <option value="3">DateTime</option>
+                                      <option value="4">Bool</option>
+                                      <option value="5">Complex</option>
+                                  </select>
+                                  <input type="hidden" class="form-control" value="{{VariableType}}">
+                              </td>
+                              <td>
+                                  <input type="text" class="form-control" value="{{Variable}}">
+                                  <input type="hidden" class="form-control" value="{{Variable}}">
+                              </td>
+                              <td>
+                                  <a class="editRow" href="#"> Edit </a>
+                              </td>
+                              <td>
+                                  <a class="deleteRow" href="#"> Delete </a>
+                              </td>
+                          </tr>
+                          {{/each}}
 
-                                                           </tbody>
-                                                       </table>
-            </div>
+                      </tbody>
+                  </table>
+                  <input type="hidden" name="newRowAdded" value="" />
+                  <input type="hidden" name="rowEdited" value="" />
+              </div>
           </div>
       </div>
  </form>

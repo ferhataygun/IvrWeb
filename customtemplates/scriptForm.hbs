@@ -1,0 +1,110 @@
+﻿<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+    <div class="portlet-title">
+        <div class="caption {{fontClass}}">
+            <span class="caption-subject bold uppercase"> Script Form </span>
+        </div>
+        <div class="tools">
+            <a href="" class="collapse" data-original-title="" title=""> </a>
+            <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <form class="form-horizontal scriptForm" role="form">
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Script Type</label>
+                    <div class="col-md-9">
+                        <select class="scriptTypeList">
+                            <option value="0">JavaScript</option>
+                            <option value="1">VbScript</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Function</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" placeholder="Function" value="{{inFormData.Function}}" name="Function" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Return Variable</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" placeholder="Return Variable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Script</label>
+                    <div class="col-md-9">
+                        <textarea type="text" rows="15" class="form-control" placeholder="Write Your Script Here" name="Script">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="table-toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-group">
+                                        <button id="{{inFormData.btnID}}" class="btn green newParameter">
+                                            New Parameter
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-hover" id="{{inFormData.tableID}}">
+                            <thead>
+                                <tr>
+                                    <th> Parameter Direction</th>
+                                    <th> Variable Type </th>
+                                    <th> Parameter </th>
+                                    <th> Edit </th>
+                                    <th> Delete </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each inFormData.Parameters}}
+
+                                <tr>
+                                    <td>
+                                        <select class="js-table-select directionSelect">
+                                            <option value="0">In</option>
+                                            <option value="1">Out</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" value="{{ParameterDirection}}">
+                                    </td>
+                                    <td>
+                                        <select class="js-table-select typeSelect">
+                                            <option value="0">Int</option>
+                                            <option value="1">Double</option>
+                                            <option value="2">String</option>
+                                            <option value="3">DateTime</option>
+                                            <option value="4">Bool</option>
+                                            <option value="5">Complex</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" value="{{VariableType}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{Variable}}">
+                                        <input type="hidden" class="form-control" value="{{Variable}}">
+                                    </td>
+                                    <td>
+                                        <a class="editRow" href="#"> Edit </a>
+                                    </td>
+                                    <td>
+                                        <a class="deleteRow" href="#"> Delete </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="newRowAdded" value="" />
+                        <input type="hidden" name="rowEdited" value="" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

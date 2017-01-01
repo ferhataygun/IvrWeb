@@ -1,156 +1,196 @@
-jQuery(document).ready(function(){
-   $("body").on("click", ".projeKaydet",function(e){
-     e.preventDefault();
-     try{
-       if(true) {
-            // click happened outside of menu, hide any visible menu items
+jQuery(document).ready(function () {
+    var handleSaveMenu = function () {
+       
+        try {
             console.log("Menuyu Kaydet");
-            var menuNodeId = $("#MenuId").val();
-            console.log(menuNodeId);
-            var menuData = {
-              Name : $("input[name='Name']").val(),
-              SubMenus: {$type:"System.Collections.Generic.List`1[[IvrConfigurationClasses.IvrSubMenuBase, IvrConfigurationClasses]], mscorlib",$values:[]},
-              Id: 0,
-              Description: "",
-              Order: 0,
-              IsParentMenu: false,
-              ChildMenus: []
-            };
-            var inst = $('#treeHolder').jstree(true),
-            node = inst.get_node($('#treeHolder').jstree('get_selected')[0]),
-            parent = inst.get_node(node.parent);
-            menuData.Order = $.inArray(node.id, parent.children);
-            var allForms = $(".formPortlet");
-            $.each(allForms, function(index, item){
-              var $item       = $(item);
-              var formType    = $item.attr("data-form-type");
-              if(formType.indexOf("IvrSubMenuAssignment") !== -1){
-                var inFormData  = getInFormData($item,formType);
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuAssignmentOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index][inFormData[0]] = inFormData[1];
-              }else if(formType.indexOf("IvrSubMenuRecord") !== -1){
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuRecordOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].FileName = $(item).find("input[name='FileName']").val();
-                menuData.SubMenus.$values[index].DtmfStop = $(item).find(".dtmfCheckbox").is(":checked");
-                menuData.SubMenus.$values[index].DtmfStopKey = $(item).find("input[name='DtmfStopKey']").val();
-                menuData.SubMenus.$values[index].Duration =  $(item).find("input[name='Duration']").val();
-              }else if(formType.indexOf("IvrSubMenuWebService") !== -1){
-                // Add Parameters
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuWebServiceOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].ServiceUri = $(item).find("input[name='ServiceUri']").val();
-                menuData.SubMenus.$values[index].ServiceName = $(item).find("input[name='ServiceName']").val();
-                menuData.SubMenus.$values[index].MethodName = $(item).find("input[name='MethodName']").val();
-                menuData.SubMenus.$values[index].ReturnVariable =  $(item).find("input[name='ReturnVariable']").val();
-                menuData.SubMenus.$values[index].Parameters =  [];
-                var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
-                jQuery.each(allRows, function(rowIndex, rowItem){
-                  menuData.SubMenus.$values[index].Parameters.push({
-                    "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
-                    "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
-                    "Variable": $(rowItem).find("td").eq(2).find("input").val()
-                  });
-                });
-              }else if(formType.indexOf("IvrSubMenuDll") !== -1){
-                // Add Parameters
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuDllOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].DllfileName = $(item).find("input[name='DllfileName']").val();
-                menuData.SubMenus.$values[index].TypeName = $(item).find("input[name='TypeName']").val();
-                menuData.SubMenus.$values[index].MethodName = $(item).find("input[name='MethodName']").val();
-                menuData.SubMenus.$values[index].ReturnVariable =  $(item).find("input[name='ReturnVariable']").val();
-                menuData.SubMenus.$values[index].Parameters =  [];
-                var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
-                jQuery.each(allRows, function(rowIndex, rowItem){
-                  menuData.SubMenus.$values[index].Parameters.push({
-                    "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
-                    "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
-                    "Variable": $(rowItem).find("td").eq(2).find("input").val()
-                  });
-                });
+            var lastTreeMenuId = $("#lastTreeMenuId").val();
+            if (lastTreeMenuId != '') {
+                // click happened outside of menu, hide any visible menu items
+                var menuNodeId = $("#MenuId").val();
+                console.log(menuNodeId);
+                var menuData = {
+                    Name: $("input[name='Name']").val(),
+                    SubMenus: { $type: "System.Collections.Generic.List`1[[IvrConfigurationClasses.IvrSubMenuBase, IvrConfigurationClasses]], mscorlib", $values: [] },
+                    Id: 0,
+                    Description: "",
+                    Order: 0,
+                    IsParentMenu: false,
+                    ChildMenus: []
+                };
+                var inst = $('#treeHolder').jstree(true);
+                var node = inst.get_node(lastTreeMenuId);
+                var parent = inst.get_node(node.parent);
+                menuData.Order = $.inArray(node.id, parent.children);
+                var allForms = $(".formPortlet");
+                $.each(allForms, function (index, item) {
+                    var $item = $(item);
+                    var formType = $item.attr("data-form-type");
+                    if (formType.indexOf("IvrSubMenuAssignment") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuAssignmentOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].Assignments = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].Assignments.push({
+                                "VariableDefinition": $(rowItem).find("td").eq(0).find("input").val(),
+                                "VaribleValue": $(rowItem).find("td").eq(1).find("input").val()
+                            });
+                        });
+                    } else if (formType.indexOf("IvrSubMenuRecord") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuRecordOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].FileName = $(item).find("input[name='FileName']").val();
+                        menuData.SubMenus.$values[index].DtmfStop = $(item).find(".dtmfCheckbox").is(":checked");
+                        menuData.SubMenus.$values[index].DtmfStopKey = $(item).find("input[name='DtmfStopKey']").val();
+                        menuData.SubMenus.$values[index].Duration = $(item).find("input[name='Duration']").val();
+                    } else if (formType.indexOf("IvrSubMenuWebService") !== -1) {
+                        // Add Parameters
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuWebServiceOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].ServiceUri = $(item).find("input[name='ServiceUri']").val();
+                        menuData.SubMenus.$values[index].ServiceName = $(item).find("input[name='ServiceName']").val();
+                        menuData.SubMenus.$values[index].MethodName = $(item).find("input[name='MethodName']").val();
+                        menuData.SubMenus.$values[index].ReturnVariable = $(item).find("input[name='ReturnVariable']").val();
+                        menuData.SubMenus.$values[index].Parameters = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].Parameters.push({
+                                "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
+                                "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
+                                "Variable": $(rowItem).find("td").eq(2).find("input").val()
+                            });
+                        });
+                    } else if (formType.indexOf("IvrSubMenuDll") !== -1) {
+                        // Add Parameters
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuDllOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].DllfileName = $(item).find("input[name='DllfileName']").val();
+                        menuData.SubMenus.$values[index].TypeName = $(item).find("input[name='TypeName']").val();
+                        menuData.SubMenus.$values[index].MethodName = $(item).find("input[name='MethodName']").val();
+                        menuData.SubMenus.$values[index].ReturnVariable = $(item).find("input[name='ReturnVariable']").val();
+                        menuData.SubMenus.$values[index].Parameters = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].Parameters.push({
+                                "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
+                                "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
+                                "Variable": $(rowItem).find("td").eq(2).find("input").val()
+                            });
+                        });
 
-              }else if(formType.indexOf("IvrSubMenuStoredProc") !== -1){
-                // Add Parameters
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].ConnectionString = $(item).find("input[name='ConnectionString']").val();
-                menuData.SubMenus.$values[index].SpName = $(item).find("input[name='SpName']").val();
-                menuData.SubMenus.$values[index].Parameters =  [];
-                var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
-                jQuery.each(allRows, function(rowIndex, rowItem){
-                  menuData.SubMenus.$values[index].Parameters.push({
-                    "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
-                    "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
-                    "Variable": $(rowItem).find("td").eq(2).find("input").val()
-                  });
+                    } else if (formType.indexOf("IvrSubMenuStoredProc") !== -1) {
+                        // Add Parameters
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].ConnectionString = $(item).find("input[name='ConnectionString']").val();
+                        menuData.SubMenus.$values[index].SpName = $(item).find("input[name='SpName']").val();
+                        menuData.SubMenus.$values[index].Parameters = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].Parameters.push({
+                                "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
+                                "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
+                                "Variable": $(rowItem).find("td").eq(2).find("input").val()
+                            });
+                        });
+                    } else if (formType.indexOf("IvrSubMenuScript") !== -1) {
+                        // Add Parameters
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuScriptOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].Script = $(item).find("textarea[name='Script']").val();
+                        menuData.SubMenus.$values[index].Function = $(item).find("input[name='Function']").val();
+                        menuData.SubMenus.$values[index].ReturnVariable = $(item).find("input[name='ReturnVariable']").val();
+                        menuData.SubMenus.$values[index].ScriptType = $(item).find(".scriptTypeList").select2("data")[0].id;
+                        menuData.SubMenus.$values[index].Parameters = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].Parameters.push({
+                                "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
+                                "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
+                                "Variable": $(rowItem).find("td").eq(2).find("input").val()
+                            });
+                        });
+                    } else if (formType.indexOf("IvrSubMenuTransfer") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuTransferOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].TransferNo = $(item).find("input[name='TransferNo']").val();
+                        menuData.SubMenus.$values[index].Timeout = $(item).find("input[name='Timeout']").val();
+                        menuData.SubMenus.$values[index].HoldMusic = $(item).find(".holdMusicCheckbox").is(":checked");
+                        menuData.SubMenus.$values[index].BridgeCall = $(item).find(".BridgeCallCheckbox").is(":checked");
+                        menuData.SubMenus.$values[index].HoldMusicFile = $(item).find("input[name='HoldMusicFile']").val();
+                        menuData.SubMenus.$values[index].UnavailableTransferNo = $(item).find("input[name='UnavailableTransferNo']").val();
+                        menuData.SubMenus.$values[index].UnavailableMenu = $(item).find(".treeVievMenuList").select2("data")[0].id;
+                    } else if (formType.indexOf("IvrSubMenuPlay") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuPlayOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].PlayString = $(item).find("input[name='PlayString']").val();
+                        menuData.SubMenus.$values[index].MaxDtmf = $(item).find("input[name='MaxDtmf']").val();
+                        menuData.SubMenus.$values[index].MinDtmf = $(item).find("input[name='MinDtmf']").val();
+                        menuData.SubMenus.$values[index].InputTimeout = $(item).find("input[name='InputTimeout']").val();
+                        menuData.SubMenus.$values[index].DtmfTimeout = $(item).find("input[name='DtmfTimeout']").val();
+                        menuData.SubMenus.$values[index].DtmfMask = $(item).find("input[name='DtmfMask']").val();
+                        menuData.SubMenus.$values[index].RepeatAfterInvalid = $(item).find("input[name='RepeatAfterInvalid']").val();
+                        menuData.SubMenus.$values[index].InputVariable = $(item).find("input[name='InputVariable']").val();
+                        menuData.SubMenus.$values[index].Asynchronous = $(item).find(".Asynchronous").is(":checked");
+                        menuData.SubMenus.$values[index].DontPlayOthersIfDtmfRecevied = $(item).find(".DontPlayOthersIfDtmfRecevied").is(":checked");
+                        menuData.SubMenus.$values[index].DtmfStop = $(item).find(".isDtmfStop").is(":checked");
+                        menuData.SubMenus.$values[index].TerminateInvalidInput = $(item).find(".TerminateInvalidInput").is(":checked");
+                        menuData.SubMenus.$values[index].DtmfLogDisabled = $(item).find(".DtmfLogDisabled").is(":checked");
+                        menuData.SubMenus.$values[index].GetInvalidInput = $(item).find(".GetInvalidInput").is(":checked");
+                        menuData.SubMenus.$values[index].PlayType = $(item).find(".playTypeList").select2("data")[0].id;
+                    } else if (formType.indexOf("IvrSubMenuRouting") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuRoutingOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: 'Descripton', Name: 'asdasd' });
+                        menuData.SubMenus.$values[index].RoutingRules = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].RoutingRules.push({
+                                "ReferenceValue": $(rowItem).find("td").eq(0).find("input").val(),
+                                "IvrSubMenuRoutingRuleType": $(rowItem).find(".ruleSelect").select2("data")[0].id,
+                                "IgnoreCase": $(rowItem).find(".isIgnoreCase").is(":checked"),
+                                "CompareWith": $(rowItem).find("td").eq(3).find("input").val(),
+                                "TransferNo": $(rowItem).find("td").eq(4).find("input").val(),
+                                "RoutingMenu": $(rowItem).find(".treeVievMenuList").select2("data")[0].id,
+                                "Description": $(rowItem).find("td").eq(6).find("input").val()
+                            });
+                        });
+                    }
                 });
-              }else if(formType.indexOf("IvrSubMenuTransfer") !== -1){
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuTransferOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].TransferNo = $(item).find("input[name='TransferNo']").val();
-                menuData.SubMenus.$values[index].Timeout = $(item).find("input[name='Timeout']").val();
-                menuData.SubMenus.$values[index].HoldMusic = $(item).find(".holdMusicCheckbox").is(":checked");
-                menuData.SubMenus.$values[index].BridgeCall = $(item).find(".BridgeCallCheckbox").is(":checked");
-                menuData.SubMenus.$values[index].HoldMusicFile = $(item).find("input[name='HoldMusicFile']").val();
-                menuData.SubMenus.$values[index].UnavailableTransferNo = $(item).find("input[name='UnavailableTransferNo']").val();
-                menuData.SubMenus.$values[index].UnavailableMenu   = $(item).find(".treeVievMenuList").select2("data")[0].id;
-              }else if(formType.indexOf("IvrSubMenuPlay") !== -1){
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuPlayOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].PlayString = $(item).find("input[name='PlayString']").val();
-                menuData.SubMenus.$values[index].MaxDtmf = $(item).find("input[name='MaxDtmf']").val();
-                menuData.SubMenus.$values[index].MinDtmf = $(item).find("input[name='MinDtmf']").val();
-                menuData.SubMenus.$values[index].InputTimeout = $(item).find("input[name='InputTimeout']").val();
-                menuData.SubMenus.$values[index].DtmfTimeout = $(item).find("input[name='DtmfTimeout']").val();
-                menuData.SubMenus.$values[index].DtmfMask = $(item).find("input[name='DtmfMask']").val();
-                menuData.SubMenus.$values[index].RepeatAfterInvalid = $(item).find("input[name='RepeatAfterInvalid']").val();
-                menuData.SubMenus.$values[index].InputVariable = $(item).find("input[name='InputVariable']").val();
-                menuData.SubMenus.$values[index].Asynchronous = $(item).find(".Asynchronous").is(":checked");
-                menuData.SubMenus.$values[index].DontPlayOthersIfDtmfRecevied = $(item).find(".DontPlayOthersIfDtmfRecevied").is(":checked");
-                menuData.SubMenus.$values[index].DtmfStop = $(item).find(".isDtmfStop").is(":checked");
-                menuData.SubMenus.$values[index].TerminateInvalidInput = $(item).find(".TerminateInvalidInput").is(":checked");
-                menuData.SubMenus.$values[index].GetInvalidInput = $(item).find(".GetInvalidInput").is(":checked");
-                menuData.SubMenus.$values[index].PlayType   = $(item).find(".playTypeList").select2("data")[0].id;
-              }else if(formType.indexOf("IvrSubMenuRouting") !== -1){
-                menuData.SubMenus.$values.push({$type: "IvrConfigurationClasses.IvrSubMenuRoutingOffline, IvrConfigurationClasses", Type:"",Order:index,Id:0,Description:'Descripton',Name:'asdasd'});
-                menuData.SubMenus.$values[index].RoutingRules = [];
-                var allRows = $(item).find("table").find("tbody").find("tr");
-                jQuery.each(allRows, function(rowIndex, rowItem){
-                  var $item = $(rowItem);
-                  menuData.SubMenus.$values[index].RoutingRules.push({
-                    CompareWith: $item.find(".CompareWith").val(),
-                    Description: $item.find(".Description").val(),
-                    IgnoreCase: $item.find(".isIgnoreCase").is(":checked"),
-                    IvrSubMenuRoutingRuleType: $item.find(".ruleSelect").select2("data")[0].id,
-                    ReferenceValue: $item.find(".ReferenceValue").val(),
-                    RoutingMenu: $item.find(".treeVievMenuList").select2("data")[0].id,
-                    TransferNo: $item.find(".TransferNo").val(),
-                  })
+                var oldTitle = $(document).find("title").text();
+                $(document).find("title").text("..KAYDEDİLİYOR..");
+                $.ajax({
+                    'url': window.appConfig.ip + "ivr/saveivrmenu/" + menuNodeId,
+                    'type': 'PUT',
+                    'data': { JsonContent: JSON.stringify(menuData) },
+                    success: function (data) {
+                        if (data < 0) {
+                            alert("Hata");
+                            $(document).find("title").text(oldTitle);
+                        } else {
+                            $(document).find("title").text(oldTitle);
+                            var newName = menuData.Name;
+                            $("#treeHolder").jstree('rename_node', node.id, newName);
+                        }
+                    },
+                    error: function () {
+                        alert("Hata");
+                        $(document).find("title").text(oldTitle);
+                    }
                 });
-              }
-            });
-              var oldTitle = $(document).find("title").text();
-              $(document).find("title").text("..KAYDEDİLİYOR..");
-              $.ajax({
-                'url' : window.appConfig.ip + "ivr/saveivrmenu/"+ menuNodeId,
-                'type' : 'PUT',
-                'data' : {JsonContent: JSON.stringify(menuData)},
-                success: function(data){
-                  if(data < 0){
-                    alert("Hata");
-                    $(document).find("title").text(oldTitle);
-                  }else{
-                    $(document).find("title").text(oldTitle);
-                    var newName = menuData.Name;
-                    $("#treeHolder").jstree('rename_node', node.id , newName );
-                  }
-                },
-                error: function(){
-                  alert("Hata");
-                  $(document).find("title").text(oldTitle);
-                }
-              });
+            }
+        } catch (err) { }
+    };
+
+    $("body").on("click", ".collapseForms", function(e) {
+        $("#sortable_portlets").children(".portlet").each(function() {
+            $(this).find(".tools").children("a:first").trigger("click");
+        });
+        if ($(this).text() == "Collapse All") {
+            $(this).text("Expand All");
+        } else {
+            $(this).text("Collapse All");
         }
-     }catch(err){}
-   });
+    });
 
   var handleOnClick = function(){
-    $("body").on("click",".openForm",function(){
+      $("body").on("click", ".openForm", function () {
+          //collapse all
+          $("#sortable_portlets").children(".portlet").each(function () {
+              if ($(this).find(".tools").children("a:first").hasClass("collapse")) {
+                  $(this).find(".tools").children("a:first").trigger("click");
+              }
+          });
       var formType  = $(this).attr("data-form-type");
       var fontClass = $(this).attr("data-font-class");
       var folderClass = fontClass + " fa fa-file-text";
@@ -160,7 +200,7 @@ jQuery(document).ready(function(){
           var randomId2 = "";
           if(formType === "recordForm"){
             formType = "IvrConfigurationClasses.IvrSubMenuRecordOffline";
-          }else if(formType === "degiskenAtamaForm"){
+          } else if (formType === "assignmentForm") {
             formType = "IvrConfigurationClasses.IvrSubMenuAssignmentOffline";
           }else if(formType === "webServiceForm"){
             formType = "IvrConfigurationClasses.IvrSubMenuWebServiceOffline";
@@ -168,21 +208,27 @@ jQuery(document).ready(function(){
             formType = "IvrConfigurationClasses.IvrSubMenuDllOffline";
           }else if(formType === "databaseForm"){
             formType = "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline";
-          }else if(formType === "transferForm"){
+          }else if (formType === "scriptForm") {
+              formType = "IvrConfigurationClasses.IvrSubMenuScriptOffline";
+          }else if (formType === "transferForm") {
             formType = "IvrConfigurationClasses.IvrSubMenuTransferOffline";
           }else if(formType === "playForm"){
             formType = "IvrConfigurationClasses.IvrSubMenuPlayOffline";
           }else if(formType === "kontrolForm"){
             formType = "IvrConfigurationClasses.IvrSubMenuRoutingOffline";
           }
-          if(formType === "IvrConfigurationClasses.IvrSubMenuAssignmentOffline" || formType === "IvrConfigurationClasses.IvrSubMenuWebServiceOffline" || formType === "IvrConfigurationClasses.IvrSubMenuDllOffline" || formType === "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline"){
+          if (formType === "IvrConfigurationClasses.IvrSubMenuAssignmentOffline" ||
+              formType === "IvrConfigurationClasses.IvrSubMenuWebServiceOffline" ||
+              formType === "IvrConfigurationClasses.IvrSubMenuDllOffline" ||
+              formType === "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline" ||
+              formType === "IvrConfigurationClasses.IvrSubMenuScriptOffline") {
             randomId  =  Math.random().toString(36).substr(2, 5);
             randomId2 =  Math.random().toString(36).substr(2, 5);
             $("#sortable_portlets").append(template({inFormData:{Type:formType, tableID:randomId,btnID:randomId2},fontClass:fontClass}));
           }else{
             if(formType === "IvrConfigurationClasses.IvrSubMenuTransferOffline"){
               var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
-              var treeMenus = []
+                var treeMenus = [];
               jQuery.each(treeMenusData,function(index,item){
               	if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text"){
               		treeMenus.push({id:item.data.menuid, text:item.text});
@@ -194,7 +240,7 @@ jQuery(document).ready(function(){
               }
             }else if(formType === "IvrConfigurationClasses.IvrSubMenuRoutingOffline"){
               var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
-              var treeMenus = []
+                var treeMenus = [];
               jQuery.each(treeMenusData,function(index,item){
               	if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text"){
               		treeMenus.push({id:item.data.menuid, text:item.text});
@@ -209,13 +255,6 @@ jQuery(document).ready(function(){
             }
           }
           $("#sortable_portlets").sortable('refresh');
-          if(formType === "IvrConfigurationClasses.IvrSubMenuAssignmentOffline" || formType === "IvrConfigurationClasses.IvrSubMenuWebServiceOffline" || formType === "IvrConfigurationClasses.IvrSubMenuDllOffline" || formType === "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline"){
-            if(formType === "IvrConfigurationClasses.IvrSubMenuAssignmentOffline"){
-              window.TableDatatablesEditable("#"+randomId,"#"+randomId2);
-            }else{
-              window.TableDatatablesEditable2("#"+randomId,"#"+randomId2);
-            }
-          }
 
           //masks
           $(".mask-number").inputmask({
@@ -224,8 +263,11 @@ jQuery(document).ready(function(){
              "greedy": false
           });
           $(".js-table-select").select2({width:"100%"});
-          if($(".playTypeList").length){
-            $(".playTypeList").select2({width:"100%"})
+          if($(".playTypeList").length) {
+              $(".playTypeList").select2({ width: "100%" });
+          }
+          if ($(".scriptTypeList").length) {
+              $(".scriptTypeList").select2({ width: "100%" });
           }
       }, 'html');
     });
@@ -262,7 +304,7 @@ jQuery(document).ready(function(){
   var getMenuType = function(str){
     var formType = "";
     if(str.indexOf("IvrSubMenuAssignment") !== -1){
-      formType = "degiskenAtamaForm";
+        formType = "assignmentForm";
     }else if(str.indexOf("IvrSubMenuRecord") !== -1){
       formType = "recordForm";
     }else if(str.indexOf("IvrSubMenuWebService") !== -1){
@@ -271,12 +313,14 @@ jQuery(document).ready(function(){
       formType = "dllForm";
     }else if(str.indexOf("IvrSubMenuStoredProc") !== -1){
       formType = "databaseForm";
-    }else if(str.indexOf("IvrSubMenuTransfer") !== -1){
+    } else if (str.indexOf("IvrSubMenuScript") !== -1) {
+      formType = "scriptForm";
+    }else if (str.indexOf("IvrSubMenuTransfer") !== -1) {
       formType = "transferForm";
     }else if(str.indexOf("IvrSubMenuPlay") !== -1){
       formType = "playForm";
     }else if(str.indexOf("IvrSubMenuRouting") !== -1){
-      formType = "kontrolForm";
+      formType = "routingForm";
     }
     return formType;
   };
@@ -441,8 +485,11 @@ jQuery(document).ready(function(){
 
     /* On select */
     $('#treeHolder').on("select_node.jstree", function (e, treeData) {
+        handleSaveMenu();
+        $("#lastTreeMenuId").val(treeData.node.id);
       if($('#treeHolder').jstree(true).get_json(treeData.node.id).icon === "fa fa-volume-up"){
-        $("#app-main").html("");
+          $("#app-main").html("");
+          $("#lastTreeMenuId").val('');
         return false;
       }
       var menuId = $('#treeHolder').jstree(true).get_json(treeData.node.id).data.menuid;
@@ -451,13 +498,12 @@ jQuery(document).ready(function(){
         'type' : 'GET',
         'datatype' : "application/json",
         success: function(menuData){
-          var menuData = menuData;
-          $.get('../customtemplates/newComp3.hbs', function (menuTemplate) {
+          $.get('../customtemplates/newComp3.hbs', function (template) {
             window.MenuDataChanged = false;
             $("body").find("input").on("change", function(){
               window.MenuDataChanged = true;
             });
-              var menuTemplate = Handlebars.compile(menuTemplate);
+            var menuTemplate = Handlebars.compile(template);
               var randomId = "";
               var randomId2 = "";
               $("#app-main").html(menuTemplate(menuData));
@@ -477,13 +523,9 @@ jQuery(document).ready(function(){
                        menuData.fontClass = fontClass;
                        randomId  =  Math.random().toString(36).substr(2, 5);
                        randomId2 =  Math.random().toString(36).substr(2, 5);
-                       if(formType == "degiskenAtamaForm"){
-                         menuData.SubMenus[index].tableID = randomId;
-                         menuData.SubMenus[index].btnID = randomId2
-                       }
                        if(formType === "transferForm"){
                          var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
-                         var treeMenus = []
+                           var treeMenus = [];
                          jQuery.each(treeMenusData,function(index,item){
                           if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text"){
                             treeMenus.push({id:item.data.menuid, text:item.text});
@@ -491,28 +533,24 @@ jQuery(document).ready(function(){
                          });
                          menuData.SubMenus[index].treeview = treeMenus;
                        }
-                       if(formType === "kontrolForm"){
+                       if(formType === "routingForm"){
                          var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
-                         var treeMenus = []
+                           var treeMenus = [];
                          jQuery.each(treeMenusData,function(index,item){
                           if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text"){
                             treeMenus.push({id:item.data.menuid, text:item.text});
                            }
                          });
-                         $.each(menuData.SubMenus[index].RoutingRules, function(index, item){
-                           item.tree = treeMenus
+                         $.each(menuData.SubMenus[index].RoutingRules, function(index, item) {
+                             item.tree = treeMenus;
                          });
                        }
                        $("#sortable_portlets").append(formTemplate({menuData:menuData, inFormData:menuData.SubMenus[index]}));
-                       if(formType === "dllForm"  || formType == "webServiceForm" || formType == "databaseForm"){
+                       if (formType === "dllForm" || formType == "webServiceForm" || formType == "databaseForm" || formType == "scriptForm") {
                          $.each(menuData.SubMenus[index].Parameters, function(paramIndex, paramItem){
                            $(".formPortlet").eq(index).find("tbody tr").eq(paramIndex).find(".directionSelect").select2({width:'100%'}).val(paramItem.ParameterDirection).trigger("change");
                            $(".formPortlet").eq(index).find("tbody tr").eq(paramIndex).find(".typeSelect").select2({width:'100%'}).val(paramItem.VariableType).trigger("change");
                          });
-                       }
-                       $("#sortable_portlets").sortable('refresh');
-                       if(formType == "degiskenAtamaForm" ){
-                           window.TableDatatablesEditable("#"+randomId,"#"+randomId2);
                        }
                        if(formType === "transferForm"){
                          $(".formPortlet").eq(index).find(".treeVievMenuList").select2({width:'100%'}).val(menuData.SubMenus[index].UnavailableMenu).trigger("change");
@@ -520,7 +558,11 @@ jQuery(document).ready(function(){
                        if(formType === "playForm"){
                          $(".formPortlet").eq(index).find(".playTypeList").select2({width:'100%'}).val(menuData.SubMenus[index].PlayType).trigger("change");
                        }
-                       if(formType === "kontrolForm"){
+                       if (formType === "scriptForm") {
+                           $(".formPortlet").eq(index).find(".scriptTypeList").select2({ width: '100%' }).val(menuData.SubMenus[index].ScriptType).trigger("change");
+                           $(".formPortlet").eq(index).find("textarea[name=Script]").val(menuData.SubMenus[index].Script);
+                       }
+                       if(formType === "routingForm"){
                          $(".formPortlet").eq(index).find(".js-table-select").select2({width:'100%'});
                          var allRows = $(".formPortlet").eq(index).find("table").find("tbody").find("tr");
                          jQuery.each(allRows,function(rowIndex, rowItem){
@@ -528,6 +570,7 @@ jQuery(document).ready(function(){
                            $(rowItem).find(".ruleSelect").select2({width:'100%'}).val(menuData.SubMenus[index].RoutingRules[rowIndex].IvrSubMenuRoutingRuleType).trigger("change");
                          });
                        }
+                       $("#sortable_portlets").sortable('refresh');
 
                        // Suraya
                        try{
@@ -543,6 +586,11 @@ jQuery(document).ready(function(){
                        console.log("HATA");
                      }
                 });
+              });
+
+              //collapse all
+              $("#sortable_portlets").children(".portlet").each(function () {
+                  $(this).find(".tools").children("a:first").trigger("click");
               });
           });
         }
@@ -566,25 +614,6 @@ jQuery(document).ready(function(){
         }
       });
     });
-
-
-    var getInFormData = function($item, formType){
-      if(formType.indexOf("IvrSubMenuAssignment") !== -1){
-        var assigments = [];
-        var tableDom = $item.find("table").DataTable();
-        var tableData = tableDom.rows().data();
-        $.each(tableData, function(index,item){
-          assigments.push({
-            VariableDefinition: item[0],
-            VaribleValue: item[1]
-          })
-        });
-        return ["Assignments",assigments];
-      }else if(formType.indexOf("IvrSubMenuRecord") !== -1){
-
-      }
-
-    }
 
     //Changes
 
@@ -611,6 +640,12 @@ jQuery(document).ready(function(){
     $("body").on("click", ".newParameter", function(e){
       e.preventDefault();
       var table = $(this).closest(".table-toolbar").next();
+      if ($(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val() == 'true') {
+          $(table).find("tbody").find(".saveRow").trigger("click");
+      }
+      if ($(this).closest(".table-toolbar").siblings("input[name=rowEdited]").val() == 'true') {
+          $(table).find("tbody").find(".saveRow").trigger("click");
+      }
       var strVar="";
           strVar += "                                                               <tr>";
           strVar += "                                                                   <td>";
@@ -618,6 +653,7 @@ jQuery(document).ready(function(){
           strVar += "                                                                       <option value=\"0\">In<\/option>";
           strVar += "                                                                       <option value=\"1\">Out<\/option>";
           strVar += "                                                                     <\/select>";
+          strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"0\">";
           strVar += "                                                                   <\/td>";
           strVar += "                                                                   <td>";
           strVar += "                                                                     <select class=\"js-table-select typeSelect\">";
@@ -628,76 +664,200 @@ jQuery(document).ready(function(){
           strVar += "                                                                       <option value=\"4\">Bool<\/option>";
           strVar += "                                                                       <option value=\"5\">Complex<\/option>";
           strVar += "                                                                     <\/select>";
+          strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"0\">";
           strVar += "                                                                   <\/td>";
-          strVar += "                                                                   <td> <input type=\"text\" class=\"form-control\" name=\"\" value=\"\"> <\/td>";
+          strVar += "                                                                   <td> ";
+          strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+          strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+          strVar += "                                                                   <\/td>";
+
           strVar += "                                                                   <td>";
-          strVar += "                                                                       <a href=\"#\" class=\"deleteParameter\"> Delete <\/span>";
+          strVar += "                                                                       <a href=\"#\" class=\"saveRow\"> Save <\/span>";
+          strVar += "                                                                   <\/td>";
+          strVar += "                                                                   <td>";
+          strVar += "                                                                       <a href=\"#\" class=\"cancelRow\"> Cancel <\/span>";
           strVar += "                                                                   <\/td>";
           strVar += "                                                               <\/tr>";
       $(table).find("tbody").append(strVar);
-      $(table).find(".js-table-select").select2({width:"100%"});
+      $(table).find(".js-table-select").select2({ width: "100%" });
+      $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+    });
+
+    $("body").on("click", ".newVariable", function (e) {
+        e.preventDefault();
+        var table = $(this).closest(".table-toolbar").next();
+        if ($(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        if ($(this).closest(".table-toolbar").siblings("input[name=rowEdited]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        var strVar = "";
+        strVar += "                                                               <tr>";
+        strVar += "                                                                   <td> ";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                   <\/td>";
+
+        strVar += "                                                                   <td> ";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                   <\/td>";
+
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"saveRow\"> Save <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"cancelRow\"> Cancel <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                               <\/tr>";
+        $(table).find("tbody").append(strVar);
+        $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
     });
 
     $("body").on("click", ".newControl", function(e){
       e.preventDefault();
       var table = $(this).closest(".table-toolbar").next();
+      if ($(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val() == 'true') {
+          $(table).find("tbody").find(".saveRow").trigger("click");
+      }
+      if ($(this).closest(".table-toolbar").siblings("input[name=rowEdited]").val() == 'true') {
+          $(table).find("tbody").find(".saveRow").trigger("click");
+      }
       var strVar="";
-strVar += "                                                       <tr>";
-strVar += "                                                           <td> <input type=\"text\" class=\"form-control ReferenceValue\" value=\"\"> <\/td>";
-strVar += "                                                           <td>";
-strVar += "                                                             <select class=\"js-table-select ruleSelect\">";
-strVar += "                                                               <option value=\"0\">Equals<\/option>";
-strVar += "                                                               <option value=\"1\">NotEquals<\/option>";
-strVar += "                                                               <option value=\"2\">StartsWith<\/option>";
-strVar += "                                                               <option value=\"3\">EndsWith<\/option>";
-strVar += "                                                               <option value=\"4\">GraterThan<\/option>";
-strVar += "                                                               <option value=\"5\">GraterThanOrEquals<\/option>";
-strVar += "                                                               <option value=\"6\">LessThan<\/option>";
-strVar += "                                                               <option value=\"7\">LessThanOrEquals<\/option>";
-strVar += "                                                               <option value=\"8\">None<\/option>";
-strVar += "                                                             <\/select>";
-strVar += "                                                           <\/td>";
-strVar += "                                                           <td>";
-strVar += "                                                             <label class=\"mt-checkbox\">";
-strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isIgnoreCase\">";
-strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isIgnoreCase\">";
-strVar += "                                                                 <span><\/span>";
-strVar += "                                                             <\/label>";
-strVar += "                                                           <\/td>";
-strVar += "                                                           <td> <input type=\"text\" class=\"form-control CompareWith\" value=\"\"> <\/td>";
-strVar += "                                                           <td> <input type=\"text\" class=\"form-control TransferNo\" value=\"\"> <\/td>";
-strVar += "                                                           <td>";
-strVar += "                                                               <select class=\"treeVievMenuList\">";
-strVar +=                                                                   "<option value='0'>No Routing Menu</option>";
+        strVar += "                                                       <tr>";
+        strVar += "                                                            <td> ";
+        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                            <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                             <select class=\"js-table-select ruleSelect\">";
+        strVar += "                                                               <option value=\"0\">Equals<\/option>";
+        strVar += "                                                               <option value=\"1\">NotEquals<\/option>";
+        strVar += "                                                               <option value=\"2\">StartsWith<\/option>";
+        strVar += "                                                               <option value=\"3\">EndsWith<\/option>";
+        strVar += "                                                               <option value=\"4\">GraterThan<\/option>";
+        strVar += "                                                               <option value=\"5\">GraterThanOrEquals<\/option>";
+        strVar += "                                                               <option value=\"6\">LessThan<\/option>";
+        strVar += "                                                               <option value=\"7\">LessThanOrEquals<\/option>";
+        strVar += "                                                               <option value=\"8\">None<\/option>";
+        strVar += "                                                             <\/select>";
+        strVar += "                                                             <input type=\"hidden\" class=\"form-control \" value=\"0\">";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                             <label class=\"mt-checkbox\">";
+        strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isIgnoreCase\">";
+        strVar += "                                                                   <input type=\"hidden\" class=\"form-control \" value=\"false\">";
+        strVar += "                                                                 <span><\/span>";
+        strVar += "                                                             <\/label>";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                            <td> ";
+        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                            <\/td>";
+        strVar += "                                                            <td> ";
+        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                            <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                               <select class=\"treeVievMenuList\">";
+        strVar +=                                                                   "<option value='0'>No Routing Menu</option>";
 
-strVar += "                                                               <\/select>";
-strVar += "                                                           <\/td>";
-strVar += "                                                           <td> <input type=\"text\" class=\"form-control Description\" value=\"\"> <\/td>";
-strVar += "                                                           <td>";
-strVar += "                                                               <a href=\"#\" class=\"deleteControl\"> Delete <\/span>";
-strVar += "                                                           <\/td>";
-strVar += "                                                       <\/tr>";
-$(table).find("tbody").append(strVar);
-var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
-var treeMenus = [];
-jQuery.each(treeMenusData,function(index,item){
-  if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text"){
-    $(table).find("tr").last().find(".treeVievMenuList").append("<option value='"+item.data.menuid+"'>"+item.text+"</option>")
-  }
-});
-$(table).find("tr").last().find(".js-table-select").select2({width:"100%"});
-$(table).find("tr").last().find(".treeVievMenuList").select2({width:'100%'});
+        strVar += "                                                               <\/select>";
+        strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"0\">";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                            <td> ";
+        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                            <\/td>";
+
+        strVar += "                                                            <td>";
+        strVar += "                                                                <a href=\"#\" class=\"saveRow\"> Save <\/span>";
+        strVar += "                                                            <\/td>";
+        strVar += "                                                            <td>";
+        strVar += "                                                                <a href=\"#\" class=\"cancelRow\"> Cancel <\/span>";
+        strVar += "                                                            <\/td>";
+        strVar += "                                                       <\/tr>";
+        $(table).find("tbody").append(strVar);
+        var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
+        var treeMenus = [];
+        jQuery.each(treeMenusData,function(index,item){
+          if(item.icon !== "fa fa-volume-up" && item.icon !== "fa fa-file-text") {
+              $(table).find("tr").last().find(".treeVievMenuList").append("<option value='" + item.data.menuid + "'>" + item.text + "</option>");
+          }
+        });
+        $(table).find("tr").last().find(".js-table-select").select2({width:"100%"});
+        $(table).find("tr").last().find(".treeVievMenuList").select2({ width: '100%' });
+        $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
 
     });
-    $("body").on("click", ".deleteControl", function(e){
+
+    $("body").on("click", ".deleteRow", function(e){
       e.preventDefault();
       var tr = $(this).closest("tr");
       $(tr).fadeOut("fast").remove();
     });
-    $("body").on("click", ".deleteParameter", function(e){
-      e.preventDefault();
-      var tr = $(this).closest("tr");
-      $(tr).fadeOut("fast").remove();
+    $("body").on("click", ".editRow", function (e) {
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        $(tr).find('input').prop('disabled', false);
+        $(tr).find('select').prop('disabled', false);
+        $(this).removeClass("editRow").addClass("saveRow");
+        $(this).text("Save");
+        $(tr).find(".deleteRow").removeClass("deleteRow").addClass("cancelRow");
+        $(tr).find(".cancelRow").text("Cancel");
+        $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
+        $(this).closest(".table").siblings("input[name=rowEdited]").val('true');
+    });
+    $("body").on("click", ".saveRow", function (e) {
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        $(tr).find('input').prop('disabled', true);
+        $(tr).find('select').prop('disabled', true);
+        $(this).removeClass("saveRow").addClass("editRow");
+        $(this).text("Edit");
+        $(tr).find(".cancelRow").removeClass("cancelRow").addClass("deleteRow");
+        $(tr).find(".deleteRow").text("Delete");
+        $(tr).find("input[type=text]").each(function () {
+            $(this).siblings("input[type=hidden]").val($(this).val());
+        });
+        $(tr).find("select").each(function () {
+            $(this).siblings("input[type=hidden]").val($(this).val());
+        });
+        $(tr).find("input[type=checkbox]").each(function () {
+            $(this).siblings("input[type=hidden]").val($(this).prop('checked'));
+        });
+        $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
+        $(this).closest(".table").siblings("input[name=rowEdited]").val('');
+    });
+    $("body").on("click", ".cancelRow", function (e) {
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        if ($(this).closest(".table").siblings("input[name=newRowAdded]").val() == 'true') {
+            $(tr).fadeOut("fast").remove();
+        } else {
+            $(tr).find("input[type=hidden]").each(function () {
+                $(this).siblings("input[type=text]").val($(this).val());
+            });
+            $(tr).find("input[type=hidden]").each(function () {
+                $(this).siblings("select").select2({ width: '100%' }).val($(this).val()).trigger("change");;
+            });
+            $(tr).find("input[type=hidden]").each(function () {
+                if ($(this).val() == 'true') {
+                    $(this).siblings("input[type=checkbox]").prop('checked', true);
+                } else {
+                    $(this).siblings("input[type=checkbox]").prop('checked', false);
+                }
+            });
+            $(tr).find('input').prop('disabled', true);
+            $(tr).find('select').prop('disabled', true);
+            $(this).removeClass("cancelRow").addClass("deleteRow");
+            $(this).text("Delete");
+            $(tr).find(".saveRow").removeClass("saveRow").addClass("editRow");
+            $(tr).find(".editRow").text("Edit");
+        }
+        $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
+        $(this).closest(".table").siblings("input[name=rowEdited]").val('');
     });
 
 });

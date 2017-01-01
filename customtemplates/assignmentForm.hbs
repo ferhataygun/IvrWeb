@@ -1,0 +1,65 @@
+<div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
+  <div class="portlet-title">
+      <div class="caption {{fontClass}}">
+          <span class="caption-subject bold uppercase"> Assignment Form </span>
+      </div>
+      <div class="tools">
+          <a href="" class="collapse" data-original-title="" title=""> </a>
+          <a href="" class="remove" data-original-title="" title="" data-target-node="{{nodeId}}"> </a>
+      </div>
+  </div>
+    <div class="portlet-body">
+        <form class="form-horizontal kontrolForm" role="form">
+            <div class="form-body">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="table-toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-group">
+                                        <button id="{{inFormData.btnID}}" class="btn green newVariable">
+                                            New Variable
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover table-bordered" id="{{inFormData.tableID}}">
+                            <thead>
+                                <tr>
+                                    <th> Variable Definition </th>
+                                    <th> Varible Value </th>
+                                    <th> Edit </th>
+                                    <th> Delete </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each inFormData.Assignments}}
+                                <tr>
+                                    <td> 
+                                        <input type="text" class="form-control " value="{{VariableDefinition}}" readonly>
+                                        <input type="hidden" class="form-control " value="{{VariableDefinition}}">
+                                    </td>
+                                    <td > 
+                                        <input type="text" class="form-control " value="{{VaribleValue}}" readonly>
+                                        <input type="hidden" class="form-control " value="{{VaribleValue}}">
+                                    </td>
+                                    <td>
+                                        <a class="editRow" href="#"> Edit </a>
+                                    </td>
+                                    <td>
+                                        <a class="deleteRow" href="#"> Delete </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="newRowAdded" value="" />
+                        <input type="hidden" name="rowEdited" value="" />
+                    </div>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>

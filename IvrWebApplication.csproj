@@ -453,10 +453,10 @@
     <Content Include="assets\pages\media\pages\Thumbs.db" />
     <Content Include="customtemplates\Account.hbs" />
     <Content Include="customtemplates\databaseForm.hbs" />
-    <Content Include="customtemplates\degiskenAtamaForm.hbs" />
+    <Content Include="customtemplates\assignmentForm.hbs" />
     <Content Include="customtemplates\dllForm.hbs" />
     <Content Include="customtemplates\Endpoint.hbs" />
-    <Content Include="customtemplates\kontrolForm.hbs" />
+    <Content Include="customtemplates\routingForm.hbs" />
     <Content Include="customtemplates\newComp3.hbs" />
     <Content Include="customtemplates\playForm.hbs" />
     <Content Include="customtemplates\Project.hbs" />
@@ -473,6 +473,7 @@
     <Content Include="mockdata\sipaccount.json" />
     <Content Include="mockdata\sipendpoint.json" />
     <Content Include="README.md" />
+    <Content Include="customtemplates\scriptForm.hbs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5825,7 +5826,6 @@
     <Content Include="assets\pages\scripts\widgets.min.js" />
     <Content Include="customscripts\global\components1.js" />
     <Content Include="customscripts\global\config.js" />
-    <Content Include="customscripts\global\editableTable.js" />
     <Content Include="customscripts\global\formOperations.js" />
     <Content Include="customscripts\global\sidebar.js" />
     <Content Include="pages\blank.html" />

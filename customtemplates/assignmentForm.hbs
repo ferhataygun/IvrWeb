@@ -1,7 +1,7 @@
 <div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
   <div class="portlet-title">
       <div class="caption {{fontClass}}">
-          <span class="caption-subject bold uppercase"> Assignment Form </span>
+          <span class="caption-subject bold uppercase"> Assignment Form - ( {{inFormData.Assignments.length}} )</span>
       </div>
       <div class="tools">
           <a href="" class="collapse" data-original-title="" title=""> </a>
@@ -9,7 +9,7 @@
       </div>
   </div>
     <div class="portlet-body">
-        <form class="form-horizontal kontrolForm" role="form">
+        <form class="form-horizontal assignmentForm" role="form">
             <div class="form-body">
                 <div class="form-group">
                     <div class="col-md-12">
@@ -38,11 +38,11 @@
                                 {{#each inFormData.Assignments}}
                                 <tr>
                                     <td> 
-                                        <input type="text" class="form-control " value="{{VariableDefinition}}" readonly>
+                                        <input type="text" class="form-control " value="{{VariableDefinition}}" disabled>
                                         <input type="hidden" class="form-control " value="{{VariableDefinition}}">
                                     </td>
                                     <td > 
-                                        <input type="text" class="form-control " value="{{VaribleValue}}" readonly>
+                                        <input type="text" class="form-control " value="{{VaribleValue}}" disabled>
                                         <input type="hidden" class="form-control " value="{{VaribleValue}}">
                                     </td>
                                     <td>

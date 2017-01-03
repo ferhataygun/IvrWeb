@@ -1,7 +1,7 @@
 <div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
   <div class="portlet-title">
       <div class="caption {{fontClass}}">
-          <span class="caption-subject bold uppercase"> Database Formu</span>
+          <span class="caption-subject bold uppercase"> Database Form - {{inFormData.SpName}}</span>
       </div>
       <div class="tools">
           <a href="" class="collapse" data-original-title="" title=""> </a>
@@ -52,14 +52,14 @@
 
                           <tr>
                               <td>
-                                  <select class="js-table-select directionSelect">
+                                  <select class="js-table-select directionSelect" disabled>
                                       <option value="0">In</option>
                                       <option value="1">Out</option>
                                   </select>
                                   <input type="hidden" class="form-control" value="{{ParameterDirection}}">
                               </td>
                               <td>
-                                  <select class="js-table-select typeSelect">
+                                  <select class="js-table-select typeSelect" disabled>
                                       <option value="0">Int</option>
                                       <option value="1">Double</option>
                                       <option value="2">String</option>
@@ -70,7 +70,7 @@
                                   <input type="hidden" class="form-control" value="{{VariableType}}">
                               </td>
                               <td>
-                                  <input type="text" class="form-control" value="{{Variable}}">
+                                  <input type="text" class="form-control" value="{{Variable}}" disabled>
                                   <input type="hidden" class="form-control" value="{{Variable}}">
                               </td>
                               <td>

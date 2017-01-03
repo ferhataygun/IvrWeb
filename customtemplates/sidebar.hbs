@@ -1,16 +1,16 @@
 <ul class="sub-menu">
   {{#each this}}
-    <li class="nav-item cont{{Type}}" style="position:relative;">
+    <li class="nav-item sidebarComponentLi cont{{Type}}" style="position:relative; margin-left: 20px">
        {{#if_eq Type "Projects"}}
-       <a href="#" class="nav-link menu-comp2" data-id="{{Id}}" data-Type="{{Type}}">
+       <a href="#" class="nav-link menu-comp2 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}">
            <span class="title">{{Name}}</span>
        </a>
        {{else}}
-       <a href="#" class="nav-link menu-comp1" data-id="{{Id}}" data-Type="{{Type}}">
+       <a href="#" class="nav-link menu-comp1 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}">
            <span class="title">{{Name}}</span>
        </a>
        {{/if_eq}}
-        <i class="fa fa-times comp1-close"></i>
+        <!--<i class="fa fa-times comp1-close"></i>-->
     </li>
   {{/each}}
 </ul>

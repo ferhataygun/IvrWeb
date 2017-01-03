@@ -21,7 +21,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <meta charset="utf-8" />
-        <title>Metronic Admin Theme #4 | User Login 1</title>
+        <title>Assistt IVR Login</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #4 for " name="description" />
@@ -69,17 +69,17 @@ License: You must have a valid license purchased only from themeforest(the above
               <!-- END LOGO -->
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
-                    <span> Kullancı Adı ve Şifre Girin. </span>
+                    <span> Please enter user name and password. </span>
                 </div>
                 <div class="form-group">
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                    <label class="control-label visible-ie8 visible-ie9">Kullanıcı Adı</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Kullanıcı Adı" name="username" /> </div>
+                    <label class="control-label visible-ie8 visible-ie9">User Name</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="User Name" name="username" /> </div>
                 <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Şifre</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Şifre" name="password" /> </div>
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-block green uppercase">Giriş</button>
+                    <button type="submit" class="btn btn-block green uppercase">Login</button>
                 </div>
             </form>
             <!-- END LOGIN FORM -->
@@ -115,14 +115,15 @@ License: You must have a valid license purchased only from themeforest(the above
         <script type="text/javascript">
           $(document).ready(function(){
             $(".login-form").on("submit", function(e){
-              e.preventDefault();
+                e.preventDefault();
+                var password = $("input[name='password']").val();
               if ($('.login-form').validate().form()) {
                 $.ajax({
                   'url' : window.appConfig.ip + "login/login",
                   'type' : 'POST',
                   'data' : {
                     UserName: $("input[name='username']").val(),
-                    Password: $("input[name='password']").val()
+                    Password: password
                   },
                   success: function(res){
                     var username = res.UserName;
@@ -131,7 +132,9 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     createCookie("token", token);
                     createCookie("username", username);
+                    createCookie("password", password);
                     createCookie("isLogin", isLogin);
+                    
                     if (isLogin) {
                         window.location.href = "../pages/blank.html";
 

@@ -29,7 +29,8 @@ jQuery(document).ready(function(){
   window.appConfig = {
     ip: 'http://localhost:8080/api/',
     isLogin: readCookie("isLogin"),
-    username:readCookie("username"),
+    username: readCookie("username"),
+    password: readCookie("password"),
     token:readCookie("token"),
   }
 

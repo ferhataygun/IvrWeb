@@ -474,6 +474,8 @@
     <Content Include="mockdata\sipendpoint.json" />
     <Content Include="README.md" />
     <Content Include="customtemplates\scriptForm.hbs" />
+    <Content Include="customtemplates\ctiForm.hbs" />
+    <Content Include="customtemplates\DesignPopUp.hbs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

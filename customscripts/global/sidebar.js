@@ -38,10 +38,9 @@ $(document).ready(function(){
       $.ajax({
           url : window.appConfig.ip + targetType + "/add" + targetType,
           type: "POST",
-          data: {"Name":"Yeni"},
+          data: { "Name": "New " + targetType },
           success: function(data, textStatus, jqXHR){
-            var toAddEl = "<li class='nav-item cont"+targetType+"' style='position:relative'><a href='#' class='nav-link menu-comp1' data-id='"+data+"' data-type='"+targetType+"'><span class='title'>Yeni</span></a>";
-            toAddEl += "<i class='fa fa-times comp1-close'></i></li>";
+              var toAddEl = "<li class='nav-item sidebarComponentLi cont" + targetType + "' style='position:relative; margin-left: 20px'><a href='#' class='nav-link menu-comp1 sidebarComponent' data-id='" + data + "' data-type='" + targetType + "'><span class='title'>New " + targetType + "</span></a>";
             if(targetClass.find(".sub-menu").length){
               targetClass.find(".sub-menu").append(toAddEl);
             }else{
@@ -53,38 +52,5 @@ $(document).ready(function(){
           },
           error: function (jqXHR, textStatus, errorThrown){}
       });
-  });
-
-  $("body").on("click", ".comp1-close", function () {
-    var $this = $(this);
-    var compId = $this.prev().attr("data-id");
-    var targetType = $(this).prev().attr("data-Type");
-    bootbox.confirm({
-      size: "small",
-      message: "Silmek istediginize emin misiniz?",
-      callback: function(result){
-        if(result){
-          $.ajax({
-              url : window.appConfig.ip + targetType + "/delete" + targetType + "/" +compId,
-              type: "DELETE",
-              success: function(data, textStatus, jqXHR){
-                if(data < -1){
-                  alert("Silinemedi");
-                }else{
-                  toastr.success("Silindi", 'Basarili!');
-                  $this.parent().remove();
-                  $("#app-main").html("");
-                  $("#treeHolder").html("");
-                }
-              },
-              error: function (jqXHR, textStatus, errorThrown){
-                alert("Silinemedi");
-              }
-          });
-        }else{
-
-        }
-      }
-    })
   });
 });

@@ -6,9 +6,10 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="{{icon}} font-dark"></i>
-                    <span class="caption-subject font-dark sbold uppercase">{{Type}} Duzenle</span>
+                    <span class="caption-subject font-dark sbold uppercase">  {{Name}}</span>
                     <input type="hidden" id="cType" value="{{cType}}">
                 </div>
+                <span class="font-dark sbold uppercase componentDetails">{{Type}} Details</span>
             </div>
             <div class="portlet-body form">
                 <form class="form-horizontal compForm" role="form">
@@ -20,9 +21,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Description</label>
+                            <label class="col-md-3 control-label">Comment</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" placeholder="{{Type}} Description" value="{{Description}}" name="Description">
+                                <input type="text" class="form-control" placeholder="{{Type}} Comment" value="{{Description}}" name="Description">
                             </div>
                         </div>
                         <div class="form-group">
@@ -46,11 +47,11 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Capacity</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control mask-number" placeholder="Capacity" value="{{Capacity}}" name="Capacity">
+                                <input type="number" class="form-control" placeholder="Capacity" min="0" max="10000" value="{{Capacity}}" name="Capacity">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">EndPoints</label>
+                            <label class="col-md-3 control-label">EndPoint(s)</label>
                             <div class="col-md-9">
                               <select class="ivrEndpointsList" multiple="multiple">
                                {{#each ivrEndpoints}}
@@ -63,8 +64,9 @@
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-7 col-md-5 text-right">
-                              <a class="resetComp1 btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">SIFIRLA</a>
-                                <button type="submit" class="btn  blue-madison" data-type={{Type}} data-id="{{Id}}">KAYDET</button>
+                                <a class="removeComp1 btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">Remove</a>
+                              <a class="resetComp1 btn green-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">Cancel</a>
+                                <button type="submit" class="btn  blue-madison" data-type={{Type}} data-id="{{Id}}">Save</button>
                             </div>
                         </div>
                     </div>

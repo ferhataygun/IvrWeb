@@ -1,7 +1,7 @@
 <div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
   <div class="portlet-title">
       <div class="caption {{fontClass}}">
-          <span class="caption-subject bold uppercase"> Play Formu</span>
+          <span class="caption-subject bold uppercase"> Play Form - {{inFormData.PlayString}}</span>
       </div>
       <div class="tools">
           <a href="" class="collapse" data-original-title="" title=""> </a>
@@ -50,19 +50,19 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Dtmf Timeout</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control mask-number" placeholder="DtmfTimeout" value="{{inFormData.DtmfTimeout}}" name="DtmfTimeout">
+                  <input type="number" class="form-control" placeholder="DtmfTimeout" min="0" max="1000" value="{{inFormData.DtmfTimeout}}" name="DtmfTimeout">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Max Dtmf</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control mask-number" placeholder="MaxDtmf" value="{{inFormData.MaxDtmf}}" name="MaxDtmf">
+                  <input type="number" class="form-control" placeholder="MaxDtmf" min="0" max="100" value="{{inFormData.MaxDtmf}}" name="MaxDtmf">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Min Dtmf</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control mask-number" placeholder="MinDtmf" value="{{inFormData.MinDtmf}}" name="MinDtmf">
+                  <input type="number" class="form-control" placeholder="MinDtmf" min="0" max="100" value="{{inFormData.MinDtmf}}" name="MinDtmf">
               </div>
           </div>
           <div class="form-group">
@@ -74,7 +74,7 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Input Timeout</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control mask-number" placeholder="InputTimeout" value="{{inFormData.InputTimeout}}" name="InputTimeout">
+                  <input type="number" class="form-control" placeholder="InputTimeout" min="0" max="1000" value="{{inFormData.InputTimeout}}" name="InputTimeout">
               </div>
           </div>
           <div class="form-group">
@@ -86,7 +86,7 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Repeat After Invalid</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control mask-number" placeholder="RepeatAfterInvalid" value="{{inFormData.RepeatAfterInvalid}}" name="RepeatAfterInvalid">
+                  <input type="number" class="form-control" placeholder="RepeatAfterInvalid" min="0" max="100" value="{{inFormData.RepeatAfterInvalid}}" name="RepeatAfterInvalid">
               </div>
           </div>
           <div class="form-group">

@@ -30,3 +30,4 @@ D:\Projects\pjproject-2.5.5\IvrWebApplication\bin\Microsoft.ApplicationInsights.
 D:\Projects\pjproject-2.5.5\IvrWebApplication\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\Projects\pjproject-2.5.5\IvrWebApplication\obj\Debug\IvrWebApplication.dll
 D:\Projects\pjproject-2.5.5\IvrWebApplication\obj\Debug\IvrWebApplication.pdb
+D:\Projects\pjproject-2.5.5\IvrWebApplication\obj\Debug\IvrWebApplication.csprojResolveAssemblyReference.cache

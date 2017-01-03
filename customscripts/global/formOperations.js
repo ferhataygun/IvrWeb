@@ -12,15 +12,31 @@ jQuery(document).ready(function () {
                     Name: $("input[name='Name']").val(),
                     SubMenus: { $type: "System.Collections.Generic.List`1[[IvrConfigurationClasses.IvrSubMenuBase, IvrConfigurationClasses]], mscorlib", $values: [] },
                     Id: 0,
-                    Description: "",
+                    Description: $("input[name='Description']").val(),
                     Order: 0,
                     IsParentMenu: false,
-                    ChildMenus: []
+                    ChildMenus: [],
+                    Logs: []
                 };
                 var inst = $('#treeHolder').jstree(true);
                 var node = inst.get_node(lastTreeMenuId);
+                if (!node) {
+                    return;
+                }
                 var parent = inst.get_node(node.parent);
                 menuData.Order = $.inArray(node.id, parent.children);
+
+                var allRowsLogs = $(".comp2Form").find("table").find("tbody tr");
+                jQuery.each(allRowsLogs, function (rowIndex, rowItem) {
+                    menuData.Logs.push({
+                        "Variable": $(rowItem).find("td").eq(0).find("input").val(),
+                        "Encrypted": $(rowItem).find(".isEncrypted").is(":checked"),
+                        "BeforeLog": $(rowItem).find(".isBeforeLog").is(":checked"),
+                        "ChangeLog": $(rowItem).find(".isChangeLog").is(":checked"),
+                        "AfterLog": $(rowItem).find(".isAfterLog").is(":checked")
+                    });
+                });
+
                 var allForms = $(".formPortlet");
                 $.each(allForms, function (index, item) {
                     var $item = $(item);
@@ -145,6 +161,18 @@ jQuery(document).ready(function () {
                                 "Description": $(rowItem).find("td").eq(6).find("input").val()
                             });
                         });
+                    } else if (formType.indexOf("IvrSubMenuCti") !== -1) {
+                        menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuCtiOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
+                        menuData.SubMenus.$values[index].CtiEntities = [];
+                        var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
+                        jQuery.each(allRows, function (rowIndex, rowItem) {
+                            menuData.SubMenus.$values[index].CtiEntities.push({
+                                "CtiData": $(rowItem).find("td").eq(0).find("input").val(),
+                                "CtiValue": $(rowItem).find("td").eq(1).find("input").val(),
+                                "CtiFunction": $(rowItem).find(".ctiFunction").select2("data")[0].id,
+                                "CtiSipOperation": $(rowItem).find(".ctiSipOperation").select2("data")[0].id,
+                            });
+                        });
                     }
                 });
                 var oldTitle = $(document).find("title").text();
@@ -155,7 +183,7 @@ jQuery(document).ready(function () {
                     'data': { JsonContent: JSON.stringify(menuData) },
                     success: function (data) {
                         if (data < 0) {
-                            alert("Hata");
+                            toastr.error("Error " + data);;
                             $(document).find("title").text(oldTitle);
                         } else {
                             $(document).find("title").text(oldTitle);
@@ -164,23 +192,75 @@ jQuery(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert("Hata");
+                        toastr.error("Communication Error");
                         $(document).find("title").text(oldTitle);
                     }
                 });
             }
-        } catch (err) { }
+        } catch (err) { toastr.error("Script Error " + err); }
     };
 
-    $("body").on("click", ".collapseForms", function(e) {
-        $("#sortable_portlets").children(".portlet").each(function() {
-            $(this).find(".tools").children("a:first").trigger("click");
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: '../customtemplates/DesignPopUp.hbs',
+        success: function (formTemplate) {
+            $("html").append(formTemplate);
+        },
+        error: function (err) {
+            toastr.error("Communication Error: could not get design pop up");
+        }
+    });
+
+    $("body").on("click", ".collapseForms", function (e) {
+        var text = $(this).text();
+        $("#sortable_portlets").children(".portlet").each(function () {
+            var $a = $(this).find(".tools").children("a:first");
+            debugger;
+            if (text == "Collapse All") {
+                if ($a.hasClass("collapse")) {
+                    $a.trigger("click");
+                }
+            } else {
+                if ($a.hasClass("expand")) {
+                    $a.trigger("click");
+                }
+            }
         });
-        if ($(this).text() == "Collapse All") {
+
+        if (text == "Collapse All") {
             $(this).text("Expand All");
         } else {
             $(this).text("Collapse All");
         }
+       
+    });
+
+    $("body").on("click", ".cancelForms", function (e) {
+        var lastTreeMenuId = $("#lastTreeMenuId").val();
+        var inst = $('#treeHolder').jstree(true);
+        var node = inst.get_node(lastTreeMenuId);
+        if (!node) {
+            return;
+        }
+        $("#lastTreeMenuId").val('');
+        $("#" + node.a_attr.id).trigger("click");
+    });
+
+    $("body").on("click", ".saveForms", function (e) {
+        debugger;
+        handleSaveMenu();
+        var lastTreeMenuId = $("#lastTreeMenuId").val();
+        var inst = $('#treeHolder').jstree(true);
+        var node = inst.get_node(lastTreeMenuId);
+        if (!node) {
+            return;
+        }
+        var id = node.a_attr.id;
+        setTimeout(function () {
+            $("#" + id).trigger("click");
+        }, 500);
+        toastr.success(" kaydedildi.", 'Basarili!');
     });
 
   var handleOnClick = function(){
@@ -199,34 +279,37 @@ jQuery(document).ready(function () {
           var randomId  = "";
           var randomId2 = "";
           if(formType === "recordForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuRecordOffline";
+            formType = "IvrSubMenuRecordOffline";
           } else if (formType === "assignmentForm") {
-            formType = "IvrConfigurationClasses.IvrSubMenuAssignmentOffline";
+            formType = "IvrSubMenuAssignmentOffline";
           }else if(formType === "webServiceForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuWebServiceOffline";
+            formType = "IvrSubMenuWebServiceOffline";
           }else if(formType === "dllForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuDllOffline";
+            formType = "IvrSubMenuDllOffline";
           }else if(formType === "databaseForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline";
+            formType = "IvrSubMenuStoredProcedureOffline";
           }else if (formType === "scriptForm") {
-              formType = "IvrConfigurationClasses.IvrSubMenuScriptOffline";
+              formType = "IvrSubMenuScriptOffline";
           }else if (formType === "transferForm") {
-            formType = "IvrConfigurationClasses.IvrSubMenuTransferOffline";
+            formType = "IvrSubMenuTransferOffline";
           }else if(formType === "playForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuPlayOffline";
-          }else if(formType === "kontrolForm"){
-            formType = "IvrConfigurationClasses.IvrSubMenuRoutingOffline";
+            formType = "IvrSubMenuPlayOffline";
+          } else if (formType === "routingForm") {
+            formType = "IvrSubMenuRoutingOffline";
+          }else if (formType === "ctiForm") {
+              formType = "IvrSubMenuCtiOffline";
           }
-          if (formType === "IvrConfigurationClasses.IvrSubMenuAssignmentOffline" ||
-              formType === "IvrConfigurationClasses.IvrSubMenuWebServiceOffline" ||
-              formType === "IvrConfigurationClasses.IvrSubMenuDllOffline" ||
-              formType === "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline" ||
-              formType === "IvrConfigurationClasses.IvrSubMenuScriptOffline") {
+          if (formType === "IvrSubMenuAssignmentOffline" ||
+              formType === "IvrSubMenuWebServiceOffline" ||
+              formType === "IvrSubMenuDllOffline" ||
+              formType === "IvrSubMenuStoredProcedureOffline" ||
+              formType === "IvrSubMenuScriptOffline" ||
+              formType === "IvrSubMenuCtiOffline") {
             randomId  =  Math.random().toString(36).substr(2, 5);
             randomId2 =  Math.random().toString(36).substr(2, 5);
             $("#sortable_portlets").append(template({inFormData:{Type:formType, tableID:randomId,btnID:randomId2},fontClass:fontClass}));
           }else{
-            if(formType === "IvrConfigurationClasses.IvrSubMenuTransferOffline"){
+            if(formType === "IvrSubMenuTransferOffline"){
               var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
                 var treeMenus = [];
               jQuery.each(treeMenusData,function(index,item){
@@ -238,7 +321,7 @@ jQuery(document).ready(function () {
               if($(".treeVievMenuList").length){
                 $(".treeVievMenuList").select2({width:'100%'});
               }
-            }else if(formType === "IvrConfigurationClasses.IvrSubMenuRoutingOffline"){
+            }else if(formType === "IvrSubMenuRoutingOffline"){
               var treeMenusData = $('#treeHolder').jstree(true).get_json('#', {flat:true});
                 var treeMenus = [];
               jQuery.each(treeMenusData,function(index,item){
@@ -322,9 +405,39 @@ jQuery(document).ready(function () {
     }else if(str.indexOf("IvrSubMenuRouting") !== -1){
       formType = "routingForm";
     }
+    else if (str.indexOf("IvrSubMenuCti") !== -1) {
+        formType = "ctiForm";
+    }
     return formType;
   };
 
+  var getFontClass = function (str) {
+      var formClass = "";
+      if (str.indexOf("IvrSubMenuAssignment") !== -1) {
+          formClass = "font-blue";
+      } else if (str.indexOf("IvrSubMenuRecord") !== -1) {
+          formClass = "font-red-pink";
+      } else if (str.indexOf("IvrSubMenuWebService") !== -1) {
+          formClass = "font-purple-plum";
+      } else if (str.indexOf("IvrSubMenuDll") !== -1) {
+          formClass = "font-yellow-crusta";
+      } else if (str.indexOf("IvrSubMenuStoredProc") !== -1) {
+          formClass = "font-brown";
+      } else if (str.indexOf("IvrSubMenuScript") !== -1) {
+          formClass = "grey-mint";
+      } else if (str.indexOf("IvrSubMenuTransfer") !== -1) {
+          formClass = "font-yellow-mint";
+      } else if (str.indexOf("IvrSubMenuPlay") !== -1) {
+          formClass = "font-green";
+      } else if (str.indexOf("IvrSubMenuRouting") !== -1) {
+          formClass = "font-blue-dark";
+      }
+      else if (str.indexOf("IvrSubMenuCti") !== -1) {
+          formClass = "font-dark";
+      }
+      return formClass;
+  };
+  
 
   /* Global Functions - make treeview */
   window.makeTreeView = function(myTreeData){
@@ -398,7 +511,7 @@ jQuery(document).ready(function () {
           "items": function(){
             return {
                "Create": {
-                   "label": "Ekle",
+                   "label": "Add",
                    "action": function (data) {
                        var ref = $.jstree.reference(data.reference),
                            sel = ref.get_selected();
@@ -407,7 +520,7 @@ jQuery(document).ready(function () {
                        if(!$('#treeHolder').jstree(true).get_json(sel).data.menuid){
                          var menuData = {
                            Id: jQuery(".contProject.active").find("a").attr("data-id"),
-                           Name: "Yeni Menu",
+                           Name: "New Menu",
                            Description: "",
                            Order: 1,
                            IsParentMenu: true,
@@ -417,7 +530,7 @@ jQuery(document).ready(function () {
                        }else{
                          var menuData = {
                            Id: $('#treeHolder').jstree(true).get_json(sel).data.menuid,
-                           Name: "Yeni Menu",
+                           Name: "New Menu",
                            Description: "",
                            Order: 1,
                            IsParentMenu: false,
@@ -434,17 +547,37 @@ jQuery(document).ready(function () {
                          'type' : 'POST',
                          'data' : menuData,
                          success: function(newmenudata){
-                           console.log(newmenudata);
+                             console.log(newmenudata);
+                             console.log(menuData.Name);
                            if(newmenudata < 0){
-                             alert("Hata");
-                           }else{
-                             sel = ref.create_node(sel, {"type":"folder", "data":{menuid:newmenudata, Name:menuData.Name}});
-                             $("#treeHolder").jstree("open_all");
+                               toastr.error("Error " + newmenudata);
+                           } else {
+                               debugger;
+                               handleSaveMenu();
+                               $("#lastTreeMenuId").val('');
+                               var inst = $('#treeHolder').jstree(true);
+
+                               sel = ref.create_node(sel, { "type": "folder", "data": { menuid: newmenudata, Name: menuData.Name} });
+                               
+                               $("#treeHolder").jstree("open_all");
+
+                               var node2 = inst.get_node(sel);
+                               if (!node2) {
+                                   return;
+                               }
+                               var id2 = node2.a_attr.id;
+
+                               $("#" + id2).trigger("click");
+                               setTimeout(function () {
+                                   $("#" + id2).trigger("click");
+                               }, 500);
+                              
+                            
                            }
 
                          },
                          error: function(){
-                           alert("Meni olusturulamadi");
+                             toastr.error("Communication Error");
                          }
                        });
 
@@ -459,11 +592,15 @@ jQuery(document).ready(function () {
                                               $.ajax({
                          'url' : window.appConfig.ip + "ivr/deleteivrmenu/" + $('#treeHolder').jstree(true).get_json(sel[0]).data.menuid,
                          'type' : 'DELETE',
-                         success: function(){
-                           ref.delete_node(sel);
+                         success: function (e) {
+                             if (e < 0) {
+                                 toastr.error("Error " + e);
+                             } else {
+                                 ref.delete_node(sel);
+                             }
                          },
                          error: function(){
-                           alert("Meni silinmemedi");
+                             toastr.error("Communication Error");
                          }
                        });
 
@@ -485,6 +622,22 @@ jQuery(document).ready(function () {
 
     /* On select */
     $('#treeHolder').on("select_node.jstree", function (e, treeData) {
+        debugger;
+        try {
+            if (treeData.event.button == 2) {
+                //$("#pupUpTreeContextSelectedId").val(treeData.node.data.menuid);
+                //$("#pupUpTreeContextSelectedNodeId").val(treeData.node.id);
+                //$("#pupUpTreeContext").show();
+                return false;
+            }
+            //if (treeData.event.button != 0) {
+            //    return false;
+            //}
+
+        } catch(err) {
+            
+        }
+        
         handleSaveMenu();
         $("#lastTreeMenuId").val(treeData.node.id);
       if($('#treeHolder').jstree(true).get_json(treeData.node.id).icon === "fa fa-volume-up"){
@@ -507,12 +660,14 @@ jQuery(document).ready(function () {
               var randomId = "";
               var randomId2 = "";
               $("#app-main").html(menuTemplate(menuData));
+              $(".menuCaption").text(window.IvrProjectName + ' ' + $(".menuCaption").text());
               handleOffClick();
               handleOnClick();
               makeSortableItems();
               var inMenuForms = menuData.SubMenus;
               $.each(inMenuForms, function(index, item){
-                var formType     = getMenuType(item.Type);
+                  var formType = getMenuType(item.Type);
+                  var fontClass = getFontClass(item.Type);
                 $.ajax({
                      async: false,
                      type: 'GET',
@@ -545,7 +700,7 @@ jQuery(document).ready(function () {
                              item.tree = treeMenus;
                          });
                        }
-                       $("#sortable_portlets").append(formTemplate({menuData:menuData, inFormData:menuData.SubMenus[index]}));
+                       $("#sortable_portlets").append(formTemplate({ menuData: menuData, inFormData: menuData.SubMenus[index], fontClass: fontClass }));
                        if (formType === "dllForm" || formType == "webServiceForm" || formType == "databaseForm" || formType == "scriptForm") {
                          $.each(menuData.SubMenus[index].Parameters, function(paramIndex, paramItem){
                            $(".formPortlet").eq(index).find("tbody tr").eq(paramIndex).find(".directionSelect").select2({width:'100%'}).val(paramItem.ParameterDirection).trigger("change");
@@ -570,6 +725,14 @@ jQuery(document).ready(function () {
                            $(rowItem).find(".ruleSelect").select2({width:'100%'}).val(menuData.SubMenus[index].RoutingRules[rowIndex].IvrSubMenuRoutingRuleType).trigger("change");
                          });
                        }
+                       if (formType === "ctiForm") {
+                           $(".formPortlet").eq(index).find(".js-table-select").select2({ width: '100%' });
+                           var allRows = $(".formPortlet").eq(index).find("table").find("tbody").find("tr");
+                           jQuery.each(allRows, function (rowIndex, rowItem) {
+                               $(rowItem).find(".ctiFunction").select2({ width: '100%' }).val(menuData.SubMenus[index].CtiEntities[rowIndex].CtiFunction).trigger("change");
+                               $(rowItem).find(".ctiSipOperation").select2({ width: '100%' }).val(menuData.SubMenus[index].CtiEntities[rowIndex].CtiSipOperation).trigger("change");
+                           });
+                       }
                        $("#sortable_portlets").sortable('refresh');
 
                        // Suraya
@@ -583,7 +746,7 @@ jQuery(document).ready(function () {
 
                      },
                      error: function(){
-                       console.log("HATA");
+                         toastr.error("Communication Error");
                      }
                 });
               });
@@ -615,7 +778,7 @@ jQuery(document).ready(function () {
       });
     });
 
-    //Changes
+    //Changes 
 
     $("body").on("change", ".holdMusicCheckbox",function(){
       var $checkBox = $(this);
@@ -635,6 +798,56 @@ jQuery(document).ready(function () {
       }else{
         $("input.dtmfVar").prop("disabled",true);
       }
+    });
+
+    $("body").on("click", ".newCtiData", function (e) {
+        e.preventDefault();
+        var table = $(this).closest(".table-toolbar").next();
+        if ($(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        if ($(this).closest(".table-toolbar").siblings("input[name=rowEdited]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        var strVar = "";
+        strVar += "                                                               <tr>";
+        strVar += "                                                                   <td> ";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                   <\/td>";
+
+        strVar += "                                                                   <td> ";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                     <select class=\"js-table-select ctiFunction\">";
+        strVar += "                                                                       <option value=\"0\">Get<\/option>";
+        strVar += "                                                                       <option value=\"1\">Set<\/option>";
+        strVar += "                                                                     <\/select>";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"0\">";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                     <select class=\"js-table-select ctiSipOperation\">";
+        strVar += "                                                                       <option value=\"0\">None<\/option>";
+        strVar += "                                                                       <option value=\"1\">Add Info<\/option>";
+        strVar += "                                                                       <option value=\"2\">Send Info<\/option>";
+        strVar += "                                                                       <option value=\"3\">Send Bye<\/option>";
+        strVar += "                                                                       <option value=\"4\">Send Transfer<\/option>";
+        strVar += "                                                                     <\/select>";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"0\">";
+        strVar += "                                                                   <\/td>";
+
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"saveRow\"> Save <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"cancelRow\"> Cancel <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                               <\/tr>";
+        $(table).find("tbody").append(strVar);
+        $(table).find(".js-table-select").select2({ width: "100%" });
+        $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
     });
 
     $("body").on("click", ".newParameter", function(e){
@@ -681,6 +894,61 @@ jQuery(document).ready(function () {
       $(table).find("tbody").append(strVar);
       $(table).find(".js-table-select").select2({ width: "100%" });
       $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+    });
+
+    $("body").on("click", ".newLog", function (e) {
+        e.preventDefault();
+        var table = $(this).closest(".table-toolbar").next();
+        if ($(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        if ($(this).closest(".table-toolbar").siblings("input[name=rowEdited]").val() == 'true') {
+            $(table).find("tbody").find(".saveRow").trigger("click");
+        }
+        var strVar = "";
+        strVar += "                                                               <tr>";
+        strVar += "                                                                   <td> ";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                   <\/td>";
+
+        strVar += "                                                           <td>";
+        strVar += "                                                             <label class=\"mt-checkbox\">";
+        strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isEncrypted\">";
+        strVar += "                                                                   <input type=\"hidden\" class=\"form-control \" value=\"false\">";
+        strVar += "                                                                 <span><\/span>";
+        strVar += "                                                             <\/label>";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                             <label class=\"mt-checkbox\">";
+        strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isBeforeLog\">";
+        strVar += "                                                                   <input type=\"hidden\" class=\"form-control \" value=\"false\">";
+        strVar += "                                                                 <span><\/span>";
+        strVar += "                                                             <\/label>";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                             <label class=\"mt-checkbox\">";
+        strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isChangeLog\">";
+        strVar += "                                                                   <input type=\"hidden\" class=\"form-control \" value=\"false\">";
+        strVar += "                                                                 <span><\/span>";
+        strVar += "                                                             <\/label>";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                           <td>";
+        strVar += "                                                             <label class=\"mt-checkbox\">";
+        strVar += "                                                                   <input type=\"checkbox\" class=\"form-control isAfterLog\">";
+        strVar += "                                                                   <input type=\"hidden\" class=\"form-control \" value=\"false\">";
+        strVar += "                                                                 <span><\/span>";
+        strVar += "                                                             <\/label>";
+        strVar += "                                                           <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"saveRow\"> Save <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                                   <td>";
+        strVar += "                                                                       <a href=\"#\" class=\"cancelRow\"> Cancel <\/span>";
+        strVar += "                                                                   <\/td>";
+        strVar += "                                                               <\/tr>";
+        $(table).find("tbody").append(strVar);
+        $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
     });
 
     $("body").on("click", ".newVariable", function (e) {

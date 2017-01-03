@@ -1,7 +1,7 @@
 <div class="portlet portlet-sortable light bordered formPortlet {{nodeId}}" data-form-type="{{inFormData.Type}}">
   <div class="portlet-title">
       <div class="caption {{fontClass}}">
-          <span class="caption-subject bold uppercase"> Routing Form</span>
+          <span class="caption-subject bold uppercase"> Routing Form - ( {{inFormData.RoutingRules.length}} )</span>
       </div>
       <div class="tools">
           <a href="" class="collapse" data-original-title="" title=""> </a>
@@ -9,7 +9,7 @@
       </div>
   </div>
 <div class="portlet-body">
-<form class="form-horizontal kontrolForm" role="form">
+<form class="form-horizontal routingForm" role="form">
   <div class="form-body">
   <div class="form-group">
     <div class="col-md-12">
@@ -42,7 +42,7 @@
                 {{#each  inFormData.RoutingRules}}
                 <tr>
                     <td> 
-                        <input type="text" class="form-control" value="{{ReferenceValue}}"> 
+                        <input type="text" class="form-control" value="{{ReferenceValue}}" disabled> 
                         <input type="hidden" class="form-control" value="{{ReferenceValue}}">
                     </td>
                     <td>
@@ -62,24 +62,24 @@
                     <td>
                         <label class="mt-checkbox">
                             {{#if IgnoreCase}}
-                            <input type="checkbox" class="form-control isIgnoreCase" checked>
+                            <input type="checkbox" class="form-control isIgnoreCase" checked disabled>
                             {{else}}
-                            <input type="checkbox" class="form-control isIgnoreCase">
+                            <input type="checkbox" class="form-control isIgnoreCase" disabled>
                             {{/if}}
                             <input type="hidden" class="form-control" value="{{IgnoreCase}}">
                             <span></span>
                         </label>
                     </td>
                     <td> 
-                        <input type="text" class="form-control" value="{{CompareWith}}"> 
+                        <input type="text" class="form-control" value="{{CompareWith}}" disabled> 
                         <input type="hidden" class="form-control" value="{{CompareWith}}"> 
                     </td>
                     <td> 
-                        <input type="text" class="form-control" value="{{TransferNo}}"> 
+                        <input type="text" class="form-control" value="{{TransferNo}}" disabled> 
                         <input type="hidden" class="form-control" value="{{TransferNo}}"> 
                     </td>
                     <td>
-                        <select class="treeVievMenuList">
+                        <select class="treeVievMenuList" disabled>
                         <option value="0">No Routing Menu</option>
                         {{#each tree}}
                                 <option value="{{id}}">{{text}}</option>
@@ -88,7 +88,7 @@
                         <input type="hidden" class="form-control" value="{{RoutingMenu}}">
                     </td>
                     <td> 
-                        <input type="text" class="form-control" value="{{Description}}"> 
+                        <input type="text" class="form-control" value="{{Description}}" disabled> 
                         <input type="hidden" class="form-control" value="{{Description}}"> 
                     </td>
                     <td>

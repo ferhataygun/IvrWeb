@@ -1,6 +1,5 @@
 ﻿$(document).ready(function(){
-    $("body").on("click", ".menu-comp1", function () {
-        $("#popUpTree").hide();
+  $("body").on("click", ".menu-comp1", function () {
     var $this = $(this);
     setTimeout(function(){
       var compId = $this.attr('data-id');
@@ -10,6 +9,9 @@
       $("#treeHolder").remove();
       $("#lastTreeMenuId").val('');
       var targetCtype = $this.attr("data-type");
+        if (targetCtype != "Project") {
+            $("#popUpTree").hide();
+        }
       var resultObj   = {};
       switch (targetCtype) {
         case 'Server':
@@ -126,6 +128,7 @@
                       });
                       window.makeTreeView(comp1Data.TreeData);
                       window.IvrProjectName = comp1Data.Name;
+                      window.IvrProjectId = compId;
                   }
                   /* Endpoint Integration */
                   if (targetCtype === "Endpoint") {
@@ -236,13 +239,12 @@
                   if ($(".routingMenuList").length) {
                       $(".routingMenuList").select2({ width: '100%' }).val(comp1Data.IvrMultiMenu).trigger("change");
                   }
-
-
               }
           });
       }, 'html');
     }, 100);
   });
+
   $("body").on("submit", ".compForm", function(e){
     e.preventDefault();
     var that = $(this).find("button[type='submit']");
@@ -325,7 +327,7 @@
    
     bootbox.prompt({
         size: "small",
-        title: "If you want realy to save " + targetType + ", enter your password?",
+        title: "If you want to save " + targetType + ", enter your password?",
         callback: function (result) {
             if (result === null) {
 
@@ -341,7 +343,16 @@
                                 toastr.success($("#cType").val() + " is saved.", 'Successful!');
                                 $("a[data-type='" + targetType + "'][data-id='" + compId + "']").find("span").text(toSendData.Name);
                             } else {
-                                toastr.error("Error " + data);
+                                if (data == -111) {
+                                    toastr.error("Session Timeout");
+                                    window.location.href = window.location.href = "../pages/index.html";
+                                    eraseCookie("token");
+                                    eraseCookie("username");
+                                    eraseCookie("isLogin");
+                                    eraseCookie("password");
+                                } else {
+                                    toastr.error("Error " + data);
+                                }
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -356,6 +367,59 @@
     });
   });
 
+  $("body").on("click",".comp1-add", function () {
+      debugger;
+      var targetType = $(this).attr("data-Type");
+      var targetComp = $(this).attr("data-target");
+      var targetClass = $(".menu-item-" + targetComp);
+
+      bootbox.prompt({
+          size: "small",
+          title: "If you want to add " + targetType + ", enter your password?",
+          callback: function (result) {
+              if (result === null) {
+
+              } else {
+                  if (window.appConfig.password == result) {
+                      $.ajax({
+                          url: window.appConfig.ip + targetType + "/add" + targetType,
+                          type: "POST",
+                          data: { "Name": "New " + targetType },
+                          success: function (data) {
+                              if (data > -1) {
+                                  var toAddEl = "<li class='nav-item sidebarComponentLi cont" + targetType + "' style='position:relative;'><a href='#' class='nav-link menu-comp1 sidebarComponent' data-id='" + data + "' data-type='" + targetType + "'><span class='title'>New " + targetType + "</span></a>";
+                                  if (targetClass.find(".sub-menu").length) {
+                                      targetClass.find(".sub-menu").append(toAddEl);
+                                  } else {
+                                      targetClass.append("<ul class='sub-menu'>" + toAddEl + "</ul>");
+                                  }
+                                  if (!targetClass.hasClass('open')) {
+                                      targetClass.find('.nav-link').not(".menu-comp1").trigger("click");
+                                  }
+                                  toastr.success("New " + targetType + " Added", 'Succeeded!');
+                              }
+                              else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
+                              } else {
+                                  toastr.error("Error " + data);
+                              }
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) { }
+                      });
+                  } else {
+                      toastr.error("Password is wrong");
+                  }
+              }
+          }
+      });
+
+    
+  });
 
   $("body").on("click",".resetComp1", function(){
     var $this    = $(this);
@@ -371,7 +435,7 @@
 
       bootbox.prompt({
           size: "small",
-          title: "If you want realy to delete " + compType  + ", enter your password?",
+          title: "If you want to delete " + compType  + ", enter your password?",
           callback: function(result) {
               if (result === null) {
 
@@ -380,14 +444,22 @@
                       $.ajax({
                           url: window.appConfig.ip + compType + "/delete" + compType + "/" + compId,
                           type: "DELETE",
-                          success: function(data, textStatus, jqXHR) {
-                              if (data < -1) {
-                                  toastr.error("Error " + data);
-                              } else {
+                          success: function(data) {
+                              if (data > -1) {
                                   toastr.success("Deleted", 'Succeeded!');
                                   $("ul.sub-menu > li.cont" + compType + " > a[data-id=" + compId + "]").parent().remove();
                                   $("#app-main").html("");
                                   $("#treeHolder").html("");
+                              } 
+                              else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
+                              } else {
+                                  toastr.error("Error " + data);
                               }
                           },
                           error: function(jqXHR, textStatus, errorThrown) {
@@ -403,25 +475,191 @@
 
   });
 
-
   $("body").on("click", ".publishProject", function () {
       var $this = $(this);
       var compId = $this.attr('data-id');
       bootbox.prompt({
           size: "small",
-          title: "If you want realy to publish project, enter your password?",
+          title: "If you want to publish project, enter your password?",
           callback: function (result) {
               if (result === null) {
 
               } else {
                   if (window.appConfig.password == result) {
-                      
+
+                      bootbox.prompt({
+                          size: "small",
+                          title: "enter publish comment please",
+                          callback: function (comment) {
+                              if (comment === null) {
+                                  comment = "";
+                              }
+                              $.ajax({
+                                  url: window.appConfig.ip + "Version/Publish",
+                                  type: "POST",
+                                  data: {
+                                      ProjectId: compId,
+                                      Comment: comment
+                                  },
+                                  success: function (data, textStatus, jqXHR) {
+                                      if (data > -1) {
+                                          toastr.success('Project is published!');
+                                          $("a[data-id=" + compId + "]a[data-type=Project].menu-comp1").trigger("click");
+                                      } else if (data == -111) {
+                                          toastr.error("Session Timeout");
+                                          window.location.href = window.location.href = "../pages/index.html";
+                                          eraseCookie("token");
+                                          eraseCookie("username");
+                                          eraseCookie("isLogin");
+                                          eraseCookie("password");
+                                      } else {
+                                          toastr.error("Error " + data);
+                                      }
+                                  },
+                                  error: function (jqXHR, textStatus, errorThrown) {
+                                      toastr.error("Communication Error");
+                                  }
+                              });
+                          }
+                      });
+
+                  } else {
+                      toastr.error("Password is wrong");
+                  }
+              }
+          }
+      });
+  });
+
+  $("body").on("click", ".getSpesificVersion", function () {
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+      
+      $.ajax({
+          url: window.appConfig.ip + "Version/GetProjectVersions/" + compId,
+          type: "GET",
+          success: function (backUpClass, textStatus, jqXHR) {
+              if (backUpClass) {
+                  $.get('../customtemplates/BackUpPopUp.hbs', function(template) {
+
+                      var popUpTemplate = Handlebars.compile(template);
+
+                      $("#backUpPopUp").remove();
+
+                      $("html").append(popUpTemplate(backUpClass));
+
+                      $('#backUpPopUp').draggable();
+
+                      $("#backUpPopUp").show();
+
+                      $("#backUpPopUp").find(".versionList").on("select2:select", function (e) {
+                          var id = $(this).select2("data")[0].id;
+                          $("#backUpPopUp").find("input[name=startdate]").val(id == 0 ? "" : $("#backUpPopUp").find("input[data-id=" + id + "].backUpData ").attr('data-start'));
+                          $("#backUpPopUp").find("input[name=stopdate]").val(id == 0 ? "" : $("#backUpPopUp").find("input[data-id=" + id + "].backUpData ").attr('data-stop'));
+                          $("#backUpPopUp").find("textarea[name=comment]").val(id == 0 ? "" : $("#backUpPopUp").find("input[data-id=" + id + "].backUpData ").attr('data-comment'));
+                          $("#backUpPopUp").find("input[name=publishedBy]").val(id == 0 ? "" : $("#backUpPopUp").find("input[data-id=" + id + "].backUpData ").attr('data-published'));
+                      });
+
+                      $("#backUpPopUp").find(".versionList").select2({ width: '100%' }).val(0).trigger("change");
+
+                      $(".getSpesificOk").on("click", function () {
+                          debugger;
+                          var id = $("#backUpPopUp").find(".versionList").select2("data")[0].id;
+                          if (id == 0) {
+                              toastr.error("select version first");
+                              return;
+                          }
+                          $.ajax({
+                              url: window.appConfig.ip + "Project/GetOldVersion/" + id,
+                              type: "GET",
+                              success: function (comp1Data, textStatus, jqXHR) {
+                                  debugger;
+                                  if (comp1Data) {
+                                      $.get('../customtemplates/project.hbs', function (comp1Template) {
+                                          $("#app-main").html("");
+                                          $("#treeHolder").html("");
+                                          var template = Handlebars.compile(comp1Template);
+                                          window.makeTreeView(comp1Data.TreeData);
+                                          window.IvrProjectName = comp1Data.Name;
+                                          var resultObj = {};
+                                          resultObj = {
+                                              Type: "Project",
+                                              icon: "fa fa-volume-up"
+                                          }
+                                          var finalObj = $.extend(resultObj, comp1Data);
+                                         
+                                          $("#app-main").html(template(finalObj));
+
+                                      }, 'html');
+                                  } else {
+                                      toastr.error("Error");
+                                  }
+                              },
+                              error: function (jqXHR, textStatus, errorThrown) {
+                                  toastr.error("Communication Error");
+                              }
+                          });
+                          $("#backUpPopUp").hide();
+                      });
+
+                      $(".getSpesificCancel").on("click", function () {
+                          $("#backUpPopUp").hide();
+                      });
+
+                      $("#backUpPopUp").show();
+
+                  });
+              } else {
+                  toastr.error("Error");
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+              toastr.error("Communication Error");
+          }
+      });
+
+  });
+
+  $("body").on("click", ".getLastProject", function () {
+
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+      var compType = $this.attr('data-type');
+
+      $("a[data-id=" + compId + "]a[data-type=" + compType + "].menu-comp1").trigger("click");
+  });
+
+  $("body").on("click", ".undoCheckOut", function () {
+
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+      var compType = $this.attr('data-type');
+
+      bootbox.prompt({
+          size: "small",
+          title: "If you want to undo checkout project, enter your password?",
+          callback: function (result) {
+              if (result === null) {
+
+              } else {
+                  if (window.appConfig.password == result) {
+
                       $.ajax({
-                          url: window.appConfig.ip + "Version/Publish/" + compId,
+                          url: window.appConfig.ip + "Version/UndoCheckout/" + compId,
                           type: "GET",
-                          success: function (data, textStatus, jqXHR) {
+                          success: function (data) {
                               if (data > -1) {
-                                  toastr.success('Project is published!');
+                                  toastr.success('UndoCheckout ok!');
+
+                                  $("a[data-id=" + compId + "]a[data-type=" + compType + "].menu-comp1").trigger("click");
+
+                              } else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
                               } else {
                                   toastr.error("Error " + data);
                               }
@@ -436,12 +674,115 @@
               }
           }
       });
-    });
+  });
 
-    $("body").on("click", ".testPopUp", function (e) {
-        debugger;
-        $('#popUpTree').draggable();
-        //$('#popUpTree').resizable();
-        $("#popUpTree").show();
-    });
+  $("body").on("click", ".downgradeProject", function () {
+
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+      var compType = $this.attr('data-type');
+      var major = $this.attr('data-major');
+      var minor = $this.attr('data-minor');
+
+      bootbox.prompt({
+          size: "small",
+          title: "If you want to downgrade project to " + major + "." + minor + ", enter your password?",
+          callback: function (result) {
+              if (result === null) {
+
+              } else {
+                  if (window.appConfig.password == result) {
+
+                      $.ajax({
+                          url: window.appConfig.ip + "Version/Downgrade",
+                          type: "POST",
+                          data: {
+                              ProjectId: compId,
+                              VersionMajor: major,
+                              VersionMinor: minor
+                          },
+                          success: function (data) {
+                              if (data > -1) {
+                                  toastr.success('Downgrade ok!');
+
+                                  $("a[data-id=" + compId + "]a[data-type=" + compType + "].menu-comp1").trigger("click");
+
+                              } else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
+                              } else {
+                                  toastr.error("Error " + data);
+                              }
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                              toastr.error("Communication Error");
+                          }
+                      });
+                  } else {
+                      toastr.error("Password is wrong");
+                  }
+              }
+          }
+      });
+  });
+
+  $("body").on("click", ".openDesignPopUp", function (e) {
+
+      $("#popUpTree").show();
+  });
+
+  $("body").on("click", ".updateServer", function (e) {
+      e.preventDefault();
+
+      var $this = $(this);
+      var projectId = $this.attr('data-projectId');
+      var serverId = $this.attr('data-serverId');
+
+      bootbox.prompt({
+          size: "small",
+          title: "If you want to update server enter your password?",
+          callback: function (result) {
+              if (result === null) {
+
+              } else {
+                  if (window.appConfig.password == result) {
+
+                      $.ajax({
+                          url: window.appConfig.ip + "Server/UpdateServer",
+                          type: "POST",
+                          data: {
+                              ProjectId: projectId,
+                              ServerId: serverId
+                          },
+                          success: function (data) {
+                              if (data > -1) {
+                                  toastr.success('Update ok!');
+                                  $("a[data-id=" + serverId + "]a[data-type=Server].menu-comp1").trigger("click");
+
+                              } else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
+                              } else {
+                                  toastr.error("Error " + data);
+                              }
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                              toastr.error("Communication Error");
+                          }
+                      });
+                  } else {
+                      toastr.error("Password is wrong");
+                  }
+              }
+          }
+      });
+  });
 });

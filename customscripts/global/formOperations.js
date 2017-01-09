@@ -182,13 +182,21 @@ jQuery(document).ready(function () {
                     'type': 'PUT',
                     'data': { JsonContent: JSON.stringify(menuData) },
                     success: function (data) {
-                        if (data < 0) {
-                            toastr.error("Error " + data);;
-                            $(document).find("title").text(oldTitle);
-                        } else {
+                        if (data > -1) {
                             $(document).find("title").text(oldTitle);
                             var newName = menuData.Name;
                             $("#treeHolder").jstree('rename_node', node.id, newName);
+                        }
+                       else if (data == -111) {
+                            toastr.error("Session Timeout");
+                            window.location.href = window.location.href = "../pages/index.html";
+                            eraseCookie("token");
+                            eraseCookie("username");
+                            eraseCookie("isLogin");
+                            eraseCookie("password");
+                        } else {
+                                  toastr.error("Error " + data);
+                                  $(document).find("title").text(oldTitle);
                         }
                     },
                     error: function () {
@@ -206,6 +214,21 @@ jQuery(document).ready(function () {
         url: '../customtemplates/DesignPopUp.hbs',
         success: function (formTemplate) {
             $("html").append(formTemplate);
+            $('#popUpTree').draggable();
+            $('#popUpTree').resizable();
+            $("#popUpTree").find(".closePopUp").on("click", function() {
+                $("#popUpTree").hide();
+            });
+            $("#popUpTree").find(".searchPopUp").on("click", function () {
+                var opn = $(this).attr('data-open');
+                if (opn == 1) {
+                    $("#treeHolder").jstree("close_all");
+                    $(this).attr('data-open', 0);
+                } else {
+                    $("#treeHolder").jstree("open_all");
+                    $(this).attr('data-open', 1);
+                }
+            });
         },
         error: function (err) {
             toastr.error("Communication Error: could not get design pop up");
@@ -260,8 +283,62 @@ jQuery(document).ready(function () {
         setTimeout(function () {
             $("#" + id).trigger("click");
         }, 500);
-        toastr.success(" kaydedildi.", 'Basarili!');
     });
+
+
+    var handleAutoComplete = function () {
+        var listVar = [];
+        $.ajax({
+            url: window.appConfig.ip + "Ivr/GetVariables/" + window.IvrProjectId,
+            type: "GET",
+            async: false,
+            success: function (data) {
+                listVar = data;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
+
+        var listFunction = [
+             "GetValue", "StringConcat", "SumNumber", "MulNumber", "AbsNumber", "DivNumber",
+             "ModNumber", "Split", "SubString", "Replace", "GetLength", "ToUpperCase",
+             "ToLowerCase", "Insert", "Contains", "IsEmpty", "IsNull", "GetLanguage()",
+             "SetLanguage", "GetRemoteNumber()", "GetCallId()", "GetIncomingSipHeader"
+        ];
+        $(".awesomVariable").each(function () {
+            debugger;
+            var input = $(this);
+            new Awesomplete(input[0], {
+                list: listVar,
+                minChars: 1
+            });
+        });
+       
+        $(".awesomFunction").each(function () {
+            var input = $(this);
+            new Awesomplete(input[0], {
+                list: $.merge($.merge([], listVar), listFunction),
+                data: function (text, input) {
+                    debugger;
+                    return input.slice(0, input.lastIndexOf(",")) + "," + text;
+                },
+                filter: Awesomplete.FILTER_STARTSWITH
+            });
+            new Awesomplete(input[0], {
+                list: $.merge($.merge([], listVar), listFunction),
+                data: function (text, input) {
+                    return input.slice(0, input.lastIndexOf("(")) + "(" + text;
+                },
+                filter: Awesomplete.FILTER_STARTSWITH
+            });
+            new Awesomplete(input[0], {
+                list: listFunction,
+                minChars: 1
+            });
+        });
+    };
 
   var handleOnClick = function(){
       $("body").on("click", ".openForm", function () {
@@ -352,6 +429,9 @@ jQuery(document).ready(function () {
           if ($(".scriptTypeList").length) {
               $(".scriptTypeList").select2({ width: "100%" });
           }
+
+          handleAutoComplete();
+
       }, 'html');
     });
   };
@@ -437,7 +517,6 @@ jQuery(document).ready(function () {
       }
       return formClass;
   };
-  
 
   /* Global Functions - make treeview */
   window.makeTreeView = function(myTreeData){
@@ -474,14 +553,24 @@ jQuery(document).ready(function () {
                       ParentId: parentId,
                       Order: order
                     },
-                    success: function(data, textStatus, jqXHR){
-                      if(data < 0){
+                    success: function (data) {
                         result = false;
-                      }else{
+                      if(data > -1){
                         result = true;
                       }
+                      else if (data == -111) {
+                          toastr.error("Session Timeout");
+                          window.location.href = window.location.href = "../pages/index.html";
+                          eraseCookie("token");
+                          eraseCookie("username");
+                          eraseCookie("isLogin");
+                          eraseCookie("password");
+                      } else {
+                          toastr.error("Error " + data);
+                      }
                     },
-                    error: function (jqXHR, textStatus, errorThrown){
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        toastr.error("Communication Error");
                       result = false;
                     }
                 });
@@ -546,18 +635,16 @@ jQuery(document).ready(function () {
                          'url' : window.appConfig.ip + "ivr/addivrmenu",
                          'type' : 'POST',
                          'data' : menuData,
-                         success: function(newmenudata){
-                             console.log(newmenudata);
+                         success: function (data) {
+                             console.log(data);
                              console.log(menuData.Name);
-                           if(newmenudata < 0){
-                               toastr.error("Error " + newmenudata);
-                           } else {
-                               debugger;
+                             if (data > 0) {
+
                                handleSaveMenu();
                                $("#lastTreeMenuId").val('');
                                var inst = $('#treeHolder').jstree(true);
 
-                               sel = ref.create_node(sel, { "type": "folder", "data": { menuid: newmenudata, Name: menuData.Name} });
+                               sel = ref.create_node(sel, { "type": "folder", "data": { menuid: data, Name: menuData.Name } });
                                
                                $("#treeHolder").jstree("open_all");
 
@@ -571,8 +658,16 @@ jQuery(document).ready(function () {
                                setTimeout(function () {
                                    $("#" + id2).trigger("click");
                                }, 500);
-                              
-                            
+                           }
+                           else if (data == -111) {
+                               toastr.error("Session Timeout");
+                               window.location.href = window.location.href = "../pages/index.html";
+                               eraseCookie("token");
+                               eraseCookie("username");
+                               eraseCookie("isLogin");
+                               eraseCookie("password");
+                           } else {
+                                  toastr.error("Error " + data);
                            }
 
                          },
@@ -592,12 +687,20 @@ jQuery(document).ready(function () {
                                               $.ajax({
                          'url' : window.appConfig.ip + "ivr/deleteivrmenu/" + $('#treeHolder').jstree(true).get_json(sel[0]).data.menuid,
                          'type' : 'DELETE',
-                         success: function (e) {
-                             if (e < 0) {
-                                 toastr.error("Error " + e);
-                             } else {
+                         success: function (data) {
+                             if (data > -1) {
                                  ref.delete_node(sel);
                              }
+                            else if (data == -111) {
+                                 toastr.error("Session Timeout");
+                                 window.location.href = window.location.href = "../pages/index.html";
+                                 eraseCookie("token");
+                                 eraseCookie("username");
+                                 eraseCookie("isLogin");
+                                 eraseCookie("password");
+                             } else {
+                                  toastr.error("Error " + data);
+                            }
                          },
                          error: function(){
                              toastr.error("Communication Error");
@@ -622,7 +725,7 @@ jQuery(document).ready(function () {
 
     /* On select */
     $('#treeHolder').on("select_node.jstree", function (e, treeData) {
-        debugger;
+
         try {
             if (treeData.event.button == 2) {
                 //$("#pupUpTreeContextSelectedId").val(treeData.node.data.menuid);
@@ -742,7 +845,7 @@ jQuery(document).ready(function () {
                             "repeat": 10,
                             "greedy": false
                          });
-                       }catch(err){}
+                       } catch (err) { }
 
                      },
                      error: function(){
@@ -751,10 +854,16 @@ jQuery(document).ready(function () {
                 });
               });
 
-              //collapse all
-              $("#sortable_portlets").children(".portlet").each(function () {
-                  $(this).find(".tools").children("a:first").trigger("click");
+              handleAutoComplete();
+
+              //collapse all except first
+
+              $("#sortable_portlets").children(".portlet").each(function (index) {
+                  if (index > 0) {
+                      $(this).find(".tools").children("a:first").trigger("click");
+                  }
               });
+
           });
         }
       });
@@ -812,12 +921,12 @@ jQuery(document).ready(function () {
         var strVar = "";
         strVar += "                                                               <tr>";
         strVar += "                                                                   <td> ";
-        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control awesomVariable awesomFunction\" value=\"\">";
         strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                                   <\/td>";
 
         strVar += "                                                                   <td> ";
-        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control awesomVariable awesomFunction\" value=\"\">";
         strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                                   <\/td>";
         strVar += "                                                                   <td>";
@@ -848,6 +957,7 @@ jQuery(document).ready(function () {
         $(table).find("tbody").append(strVar);
         $(table).find(".js-table-select").select2({ width: "100%" });
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+        handleAutoComplete();
     });
 
     $("body").on("click", ".newParameter", function(e){
@@ -880,7 +990,7 @@ jQuery(document).ready(function () {
           strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"0\">";
           strVar += "                                                                   <\/td>";
           strVar += "                                                                   <td> ";
-          strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+          strVar += "                                                                     <input type=\"text\" class=\"form-control awesomVariable awesomFunction\" value=\"\">";
           strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
           strVar += "                                                                   <\/td>";
 
@@ -894,6 +1004,7 @@ jQuery(document).ready(function () {
       $(table).find("tbody").append(strVar);
       $(table).find(".js-table-select").select2({ width: "100%" });
       $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+      handleAutoComplete();
     });
 
     $("body").on("click", ".newLog", function (e) {
@@ -908,7 +1019,7 @@ jQuery(document).ready(function () {
         var strVar = "";
         strVar += "                                                               <tr>";
         strVar += "                                                                   <td> ";
-        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control awesomVariable\" value=\"\">";
         strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                                   <\/td>";
 
@@ -949,6 +1060,7 @@ jQuery(document).ready(function () {
         strVar += "                                                               <\/tr>";
         $(table).find("tbody").append(strVar);
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+        handleAutoComplete();
     });
 
     $("body").on("click", ".newVariable", function (e) {
@@ -963,12 +1075,12 @@ jQuery(document).ready(function () {
         var strVar = "";
         strVar += "                                                               <tr>";
         strVar += "                                                                   <td> ";
-        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control awesomVariable\" value=\"\">";
         strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                                   <\/td>";
 
         strVar += "                                                                   <td> ";
-        strVar += "                                                                     <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                     <input type=\"text\" class=\"form-control awesomFunction\" value=\"\">";
         strVar += "                                                                     <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                                   <\/td>";
 
@@ -981,6 +1093,7 @@ jQuery(document).ready(function () {
         strVar += "                                                               <\/tr>";
         $(table).find("tbody").append(strVar);
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
+        handleAutoComplete();
     });
 
     $("body").on("click", ".newControl", function(e){
@@ -995,7 +1108,7 @@ jQuery(document).ready(function () {
       var strVar="";
         strVar += "                                                       <tr>";
         strVar += "                                                            <td> ";
-        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"text\" class=\"form-control awesomFunction\" value=\"\">";
         strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                            <\/td>";
         strVar += "                                                           <td>";
@@ -1020,11 +1133,11 @@ jQuery(document).ready(function () {
         strVar += "                                                             <\/label>";
         strVar += "                                                           <\/td>";
         strVar += "                                                            <td> ";
-        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"text\" class=\"form-control awesomFunction\" value=\"\">";
         strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                            <\/td>";
         strVar += "                                                            <td> ";
-        strVar += "                                                                <input type=\"text\" class=\"form-control \" value=\"\">";
+        strVar += "                                                                <input type=\"text\" class=\"form-control awesomFunction\" value=\"\">";
         strVar += "                                                                <input type=\"hidden\" class=\"form-control \" value=\"\">";
         strVar += "                                                            <\/td>";
         strVar += "                                                           <td>";
@@ -1057,7 +1170,7 @@ jQuery(document).ready(function () {
         $(table).find("tr").last().find(".js-table-select").select2({width:"100%"});
         $(table).find("tr").last().find(".treeVievMenuList").select2({ width: '100%' });
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-
+        handleAutoComplete();
     });
 
     $("body").on("click", ".deleteRow", function(e){

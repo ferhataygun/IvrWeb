@@ -1,15 +1,21 @@
 <ul class="sub-menu">
-  {{#each this}}
-    <li class="nav-item sidebarComponentLi cont{{Type}}" style="position:relative; margin-left: 20px">
-       {{#if_eq Type "Projects"}}
-       <a href="#" class="nav-link menu-comp2 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}">
-           <span class="title">{{Name}}</span>
-       </a>
-       {{else}}
-       <a href="#" class="nav-link menu-comp1 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}">
-           <span class="title">{{Name}}</span>
-       </a>
-       {{/if_eq}}
+    <li class="nav-item sidebarComponentLi" style="position:relative;">
+        <a href="#" class="nav-link menu-comp1 sidebarComponent btn btn-icon-only comp1-add" data-Type="{{compType}}" data-target="{{targetType}}" style="width:100%;">
+            <i class="fa fa-plus" style="float:left;"></i>
+            <span class="title" style="float:left;margin-left:5px; margin-top:-2px; font-weight:bold">Add {{compType}}</span>
+        </a>
+    </li>
+  {{#each inFormData}}
+    <li class="nav-item sidebarComponentLi cont{{Type}}" style="position:relative;">
+        {{#if_eq Type "Project"}}
+        <a href="#" class="nav-link menu-comp1 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}" data-VersionMajor="{{VersionMajor}}" data-VersionMinor="{{VersionMinor}}">
+            <span class="title">{{Name}}</span>
+        </a>
+        {{else}}
+        <a href="#" class="nav-link menu-comp1 sidebarComponent" data-id="{{Id}}" data-Type="{{Type}}">
+            <span class="title">{{Name}}</span>
+        </a>
+        {{/if_eq}}
         <!--<i class="fa fa-times comp1-close"></i>-->
     </li>
   {{/each}}

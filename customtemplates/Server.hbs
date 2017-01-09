@@ -60,6 +60,67 @@
                               </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Connection Status</label>
+                            <div class="col-md-9">
+                                {{#if Connected}}
+                                    <i class="fa fa-check" style="color:green;margin-top:10px;"></i>
+                                {{else}}
+                                    <i class="fa fa-times" style="color:red;margin-top:10px;"></i>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Projects</label>
+                            <div class="col-md-9">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th> Ivr Project </th>
+                                            <th> Server Version </th>
+                                            <th> System Version </th>
+                                            <th> Update </th>
+                                            <th> Monitor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each ProjectDetails}}
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{ProjectName}}" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{ServerVersion}}" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{SystemVersion}}" disabled>
+                                            </td>
+                                            <td>
+                                                {{#if Connected}}
+                                                    {{#if UpToDate}}
+                                                        <i class="fa fa-check" style="color:green;margin-top:10px;"></i>
+                                                    {{else}}
+                                                        <a class="updateServer" href="#" data-projectId="{{ProjectId}}" data-serverId="{{ServerId}}"> Update </a>
+                                                    {{/if}}
+                                                {{else}}
+                                                    <i class="fa fa-times" style="color:red;margin-top:10px;"></i>
+                                                {{/if}}
+                                               
+                                            </td>
+                                            <td>
+                                                {{#if Connected}}
+                                                    <a class="monitorServer" href="#"> Monitor </a>
+                                                    <input type="hidden" class="form-control" value="{{ProjectId}}">
+                                                {{else}}
+                                                    <i class="fa fa-times" style="color:red;margin-top:10px;"></i>
+                                                {{/if}}
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-actions">
                         <div class="row">

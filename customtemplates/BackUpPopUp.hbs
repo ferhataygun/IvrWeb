@@ -1,0 +1,62 @@
+﻿<div id="backUpPopUp"  style="display:none;background:white;border: black;border-width: 3px; border-style: solid; position:fixed; top:100px; left:100px;">
+    <form class="form-horizontal versionsForm" role="form">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Project Name</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" value="{{ProjectName}}" disabled>
+                    <input type="hidden" class="form-control oldProjectId" value="{{ProjectId}}" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Versions</label>
+                <div class="col-md-9">
+                    <select class="versionList">
+                        <option value="0">-</option>
+                        {{#each BackUps}}
+                        <option value="{{Id}}">{{MajorVersion}}.{{MinorVersion}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Start Date</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="startdate" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Stop Date</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="stopdate" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Published By</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="publishedBy" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Comment</label>
+                <div class="col-md-9">
+                    <textarea type="text" rows="5" class="form-control" name="comment" disabled></textarea>
+                </div>
+            </div>
+            {{#each BackUps}}
+                <input type="hidden" class="backUpData" data-id="{{Id}}" 
+                       data-start="{{PublishTime}}" data-stop="{{StopTime}}" 
+                       data-comment="{{PublishComment}}" data-published="{{PublishUserName}}"
+                       data-major="{{MajorVersion}}" data-minor="{{MinorVersion}}">
+            {{/each}}
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9 text-right">
+                    <a class="getSpesificCancel btn red-soft" style="display:inline-block">Cancel</a>
+                    <a class="getSpesificOk btn green-soft" style="display:inline-block">Ok</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

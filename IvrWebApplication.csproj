@@ -94,6 +94,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="autocomplete\awesomplete.css" />
+    <Content Include="autocomplete\awesomplete.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -476,6 +478,7 @@
     <Content Include="customtemplates\scriptForm.hbs" />
     <Content Include="customtemplates\ctiForm.hbs" />
     <Content Include="customtemplates\DesignPopUp.hbs" />
+    <Content Include="customtemplates\BackUpPopUp.hbs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

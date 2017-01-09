@@ -69,9 +69,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Last Version</label>
+                            <label class="col-md-3 control-label">Version</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" value="{{LastVersion}}" disabled>
+                                <input type="text" class="form-control" value="{{MajorVersion}}.{{MinorVersion}}" disabled>
                             </div>
                         </div>
                         <div class="form-group">
@@ -83,12 +83,25 @@
                     </div>
                     <div class="form-actions">
                         <div class="row">
-                            <div class="col-md-offset-7 col-md-5 text-right">
-                                <a href="javascript:;" class="testPopUp btn default red" style="display:inline-block"> Project Design </a>
+                            <div class="col-md-offset-0 col-md-12 text-right">
+                                {{#if OldVersion}}
+                                <a class="getLastProject btn default green" data-type={{Type}} data-id="{{Id}}"  data-major="{{MajorVersion}}"  data-minor="{{MinorVersion}}" style="display:inline-block"> Get Last </a>
+                                <a class="getSpesificVersion btn default green" data-type={{Type}} data-id="{{Id}}" style="display:inline-block"> Get Spesific Version </a>
+                                <a class="btn downgradeProject green" data-type={{Type}} data-id="{{Id}}">Downgrade</a>
+                                {{else}}
+                                <a class="getSpesificVersion btn default green" data-type={{Type}} data-id="{{Id}}" style="display:inline-block"> Get Spesific Version </a>
+                                {{#if IsCheckedOut}}
+                                <a class="undoCheckOut btn default green" data-type={{Type}} data-id="{{Id}}" style="display:inline-block"> Undo Checkout </a>
+                                {{else}}
+                                {{/if}}
                                 <a class="removeComp1 btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">Remove</a>
                                 <a class="resetComp1 btn green-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block">Cancel</a>
                                 <button type="submit" class="btn  blue-madison" data-type={{Type}} data-id="{{Id}}">Save</button>
+                                {{#if IsCheckedOut}}
                                 <a class="btn publishProject green" data-type={{Type}} data-id="{{Id}}">Publish</a>
+                                {{else}}
+                                {{/if}}
+                                {{/if}}
                             </div>
                         </div>
                     </div>

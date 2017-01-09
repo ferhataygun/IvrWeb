@@ -14,6 +14,7 @@
     <meta content="" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <link href="../assets/global/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
     <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -36,6 +37,7 @@
     <link href="../assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../autocomplete/awesomplete.css" rel="stylesheet" />
     <!-- END THEME LAYOUT STYLES -->
     <!--<link rel="shortcut icon" href="favicon.ico"/>-->
 </head>
@@ -132,28 +134,6 @@
             <ul class="page-sidebar-menu   " data-keep-expanded="true" data-auto-scroll="true" data-slide-speed="200">
                 <li class="heading">
                     <h3 class="uppercase pull-left">Settings</h3>
-                    <div class="btn-group pull-right" style="margin-top: -8px; margin-right: -6px;">
-                        <button class="btn blue-madison btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <ul class="dropdown-menu" style="margin-right: -160px" role="menu">
-                            <li>
-                                <a href="javascript:;" class="addComponent" data-target="sunucular" data-Type='Server'> Add Server </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" class="addComponent" data-target="sipendpoints" data-Type='Endpoint'> Add Sip EndPoint </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" class="addComponent" data-target="siphesaplar" data-Type='Account'> Add Sip Account </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" class="addComponent" data-target="yonlendirme" data-Type='Routing'> Add Routing </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" class="addComponent" data-target="ivrprojects" data-Type='Project'> Add IVR Project </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="nav-item menu-item-sunucular">
                     <a href="javascript:;" class="nav-link nav-toggle sidebarCaption">
@@ -185,12 +165,18 @@
                         <span class="title">IVR Projects</span>
                     </a>
                 </li>
-                <li class="heading" id="beforeTree">
+                <li class="heading">
+                    <h3 class="uppercase">IVR Project Design</h3>
+                    <a href="#" class="btn btn-icon-only openDesignPopUp" style="float: right; top: -25px;">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+                <!--<li class="heading" id="beforeTree">
                     <h3 class="uppercase">IVR Project Design</h3>
                 </li>
                 <li id="treeHolder">
 
-                </li>
+                </li>-->
                
             </ul>
             <input type="hidden" id="lastTreeMenuId" value=""/>
@@ -258,9 +244,10 @@
 <script src="../customscripts/global/formOperations.js"></script>
 <script src="../customscripts/global/sidebar.js"></script>
 <script src="../customscripts/global/components1.js"></script>
+<script src="../autocomplete/awesomplete.js"></script>
 <script>
     $(document).ready(function() {
-            if (window.appConfig.username) {
+        if (window.appConfig.username) {
             $("html").css("display", "block");
             $("span.username").text(window.appConfig.username);
             $("#logOut").on("click", function(e) {
@@ -279,10 +266,16 @@
                         eraseCookie("password");
                     },
                     error: function(err) {
-                        alert("Cikis yapilmadi");
+                        toastr.error("Communication Error");
+                        window.location.href = window.location.href = "../pages/index.html";
+                        eraseCookie("token");
+                        eraseCookie("username");
+                        eraseCookie("isLogin");
+                        eraseCookie("password");
                     }
                 });
             });
+
         } else {
             window.location.href = window.location.href = "../pages/index.html";
         }
@@ -317,14 +310,13 @@
         background: #f2f6f9 !important;
     }
     .resizablePopUp {
-        overflow: scroll;
-        resize: both;
-        max-width: 300px;
-        max-height: 460px;
-        cursor: move;
+        width: 300px; height: 350px; padding: 0.5em;border: black;border-width: 1px; border-style: solid;
     }
     .jstree-contextmenu {
         z-index: 1
+    }
+    div.awesomplete {
+        width: 100%
     }
 
 </style>

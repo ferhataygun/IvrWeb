@@ -127,23 +127,26 @@ License: You must have a valid license purchased only from themeforest(the above
                     UserName: $("input[name='username']").val(),
                     Password: password
                   },
-                  success: function(res){
-                    var username = res.UserName;
-                    var isLogin  = res.Authenticated;
-                    var token    = res.Token;
+                  success: function (res) {
+                      if (res) {
+                          var username = res.UserName;
+                          var isLogin = res.Authenticated;
+                          var token = res.Token;
 
-                    createCookie("token", token);
-                    createCookie("username", username);
-                    createCookie("password", password);
-                    createCookie("isLogin", isLogin);
-                    
-                    if (isLogin) {
-                        window.location.href = "../pages/blank.html";
+                          createCookie("token", token);
+                          createCookie("username", username);
+                          createCookie("password", password);
+                          createCookie("isLogin", isLogin);
 
-                    } else {
-                        toastr.error("wrong username or pssword");
-                    }
+                          if (isLogin) {
+                              window.location.href = "../pages/blank.html";
 
+                          } else {
+                              toastr.error("wrong username or pssword");
+                          }
+                      } else {
+                          toastr.error("Error");
+                      }
                   },
                   error: function (jqXhr, textStatus, errorThrown) {
                       console.log(jqXhr, "Hata");

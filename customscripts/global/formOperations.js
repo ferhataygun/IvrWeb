@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+    var menuChanged = false;
     var handleSaveMenu = function () {
        
         try {
@@ -95,6 +96,7 @@ jQuery(document).ready(function () {
                         menuData.SubMenus.$values.push({ $type: "IvrConfigurationClasses.IvrSubMenuStoredProcedureOffline, IvrConfigurationClasses", Type: "", Order: index, Id: 0, Description: '', Name: '' });
                         menuData.SubMenus.$values[index].ConnectionString = $(item).find("input[name='ConnectionString']").val();
                         menuData.SubMenus.$values[index].SpName = $(item).find("input[name='SpName']").val();
+                        menuData.SubMenus.$values[index].CommandTimeout = $(item).find("input[name='CommandTimeout']").val();
                         menuData.SubMenus.$values[index].Parameters = [];
                         var allRows = $(".formPortlet").eq(index).find("table").find("tbody tr");
                         jQuery.each(allRows, function (rowIndex, rowItem) {
@@ -176,7 +178,7 @@ jQuery(document).ready(function () {
                     }
                 });
                 var oldTitle = $(document).find("title").text();
-                $(document).find("title").text("..KAYDEDİLİYOR..");
+                $(document).find("title").text("..Saving..");
                 $.ajax({
                     'url': window.appConfig.ip + "ivr/saveivrmenu/" + menuNodeId,
                     'type': 'PUT',
@@ -205,6 +207,7 @@ jQuery(document).ready(function () {
                     }
                 });
             }
+            menuChanged = false;
         } catch (err) { toastr.error("Script Error " + err); }
     };
 
@@ -271,7 +274,7 @@ jQuery(document).ready(function () {
     });
 
     $("body").on("click", ".saveForms", function (e) {
-        debugger;
+
         handleSaveMenu();
         var lastTreeMenuId = $("#lastTreeMenuId").val();
         var inst = $('#treeHolder').jstree(true);
@@ -285,30 +288,34 @@ jQuery(document).ready(function () {
         }, 500);
     });
 
+    var listVar = [];
+    var listFunction = [
+           "GetValue", "StringConcat", "SumNumber", "MulNumber", "AbsNumber", "DivNumber",
+           "ModNumber", "Split", "SubString", "Replace", "GetLength", "ToUpperCase",
+           "ToLowerCase", "Insert", "Contains", "IsEmpty", "IsNull", "GetLanguage()",
+           "SetLanguage", "GetRemoteNumber()", "GetIncomingSipHeader", "GetIncomingInvite()",
+           "Rand", "GetTime()", "GetStartTime()", "GetDuration()",
+           "GetPbxCallId()", "GetSipCallId()", "GetIvrCallId()",
+           "CreateNewGuid()"
+    ];
 
-    var handleAutoComplete = function () {
-        var listVar = [];
-        $.ajax({
-            url: window.appConfig.ip + "Ivr/GetVariables/" + window.IvrProjectId,
-            type: "GET",
-            async: false,
-            success: function (data) {
-                listVar = data;
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-            }
-        });
+    var handleAutoComplete = function (refresh) {
+        
+        if (refresh) {
+            $.ajax({
+                url: window.appConfig.ip + "Ivr/GetVariables/" + window.IvrProjectId,
+                type: "GET",
+                async: false,
+                success: function (data) {
+                    listVar = data;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        }
 
-
-        var listFunction = [
-             "GetValue", "StringConcat", "SumNumber", "MulNumber", "AbsNumber", "DivNumber",
-             "ModNumber", "Split", "SubString", "Replace", "GetLength", "ToUpperCase",
-             "ToLowerCase", "Insert", "Contains", "IsEmpty", "IsNull", "GetLanguage()",
-             "SetLanguage", "GetRemoteNumber()", "GetCallId()", "GetIncomingSipHeader"
-        ];
         $(".awesomVariable").each(function () {
-            debugger;
             var input = $(this);
             new Awesomplete(input[0], {
                 list: listVar,
@@ -321,7 +328,6 @@ jQuery(document).ready(function () {
             new Awesomplete(input[0], {
                 list: $.merge($.merge([], listVar), listFunction),
                 data: function (text, input) {
-                    debugger;
                     return input.slice(0, input.lastIndexOf(",")) + "," + text;
                 },
                 filter: Awesomplete.FILTER_STARTSWITH
@@ -430,9 +436,10 @@ jQuery(document).ready(function () {
               $(".scriptTypeList").select2({ width: "100%" });
           }
 
-          handleAutoComplete();
+          handleAutoComplete(false);
 
       }, 'html');
+      menuChanged = true;
     });
   };
 
@@ -519,7 +526,8 @@ jQuery(document).ready(function () {
   };
 
   /* Global Functions - make treeview */
-  window.makeTreeView = function(myTreeData){
+  window.makeTreeView = function (myTreeData) {
+      menuChanged = true;
     $("#treeHolder").remove();
     $("#beforeTree").after("<div id='treeHolder'></>");
     $("#treeHolder").jstree({
@@ -639,8 +647,9 @@ jQuery(document).ready(function () {
                              console.log(data);
                              console.log(menuData.Name);
                              if (data > 0) {
-
-                               handleSaveMenu();
+                               if (menuChanged) {
+                                   handleSaveMenu();
+                               }
                                $("#lastTreeMenuId").val('');
                                var inst = $('#treeHolder').jstree(true);
 
@@ -740,8 +749,11 @@ jQuery(document).ready(function () {
         } catch(err) {
             
         }
-        
-        handleSaveMenu();
+        var mChanged = false;
+        if (menuChanged) {
+            handleSaveMenu();
+            mChanged = true;
+        }
         $("#lastTreeMenuId").val(treeData.node.id);
       if($('#treeHolder').jstree(true).get_json(treeData.node.id).icon === "fa fa-volume-up"){
           $("#app-main").html("");
@@ -854,7 +866,8 @@ jQuery(document).ready(function () {
                 });
               });
 
-              handleAutoComplete();
+
+              handleAutoComplete(mChanged);
 
               //collapse all except first
 
@@ -877,11 +890,12 @@ jQuery(document).ready(function () {
       var t = $('#treeHolder').jstree(true);
       bootbox.confirm({
         size: "small",
-        message: "Formu Silmek istediginize emin misiniz?",
+        message: "Are you sure that you want to delete form?",
         callback: function(result){
           if(result){
             t.delete_node([nodeId]);
             toRemovePortlet.fadeOut('fast').remove();
+            menuChanged = true;
           }else{}
         }
       });
@@ -957,7 +971,8 @@ jQuery(document).ready(function () {
         $(table).find("tbody").append(strVar);
         $(table).find(".js-table-select").select2({ width: "100%" });
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-        handleAutoComplete();
+        handleAutoComplete(false);
+        menuChanged = true;
     });
 
     $("body").on("click", ".newParameter", function(e){
@@ -1004,7 +1019,8 @@ jQuery(document).ready(function () {
       $(table).find("tbody").append(strVar);
       $(table).find(".js-table-select").select2({ width: "100%" });
       $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-      handleAutoComplete();
+      handleAutoComplete(false);
+      menuChanged = true;
     });
 
     $("body").on("click", ".newLog", function (e) {
@@ -1060,7 +1076,8 @@ jQuery(document).ready(function () {
         strVar += "                                                               <\/tr>";
         $(table).find("tbody").append(strVar);
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-        handleAutoComplete();
+        handleAutoComplete(false);
+        menuChanged = true;
     });
 
     $("body").on("click", ".newVariable", function (e) {
@@ -1093,7 +1110,8 @@ jQuery(document).ready(function () {
         strVar += "                                                               <\/tr>";
         $(table).find("tbody").append(strVar);
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-        handleAutoComplete();
+        handleAutoComplete(false);
+        menuChanged = true;
     });
 
     $("body").on("click", ".newControl", function(e){
@@ -1170,13 +1188,15 @@ jQuery(document).ready(function () {
         $(table).find("tr").last().find(".js-table-select").select2({width:"100%"});
         $(table).find("tr").last().find(".treeVievMenuList").select2({ width: '100%' });
         $(this).closest(".table-toolbar").siblings("input[name=newRowAdded]").val('true');
-        handleAutoComplete();
+        handleAutoComplete(false);
+        menuChanged = true;
     });
 
     $("body").on("click", ".deleteRow", function(e){
       e.preventDefault();
       var tr = $(this).closest("tr");
       $(tr).fadeOut("fast").remove();
+      menuChanged = true;
     });
     $("body").on("click", ".editRow", function (e) {
         e.preventDefault();
@@ -1189,6 +1209,7 @@ jQuery(document).ready(function () {
         $(tr).find(".cancelRow").text("Cancel");
         $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
         $(this).closest(".table").siblings("input[name=rowEdited]").val('true');
+        menuChanged = true;
     });
     $("body").on("click", ".saveRow", function (e) {
         e.preventDefault();
@@ -1210,6 +1231,7 @@ jQuery(document).ready(function () {
         });
         $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
         $(this).closest(".table").siblings("input[name=rowEdited]").val('');
+        menuChanged = true;
     });
     $("body").on("click", ".cancelRow", function (e) {
         e.preventDefault();
@@ -1239,6 +1261,115 @@ jQuery(document).ready(function () {
         }
         $(this).closest(".table").siblings("input[name=newRowAdded]").val('');
         $(this).closest(".table").siblings("input[name=rowEdited]").val('');
+    });
+
+    $("body").on("change", "input[type=checkbox].menuChangeControl", function (e) {
+        menuChanged = true;
+    });
+
+    $("body").on("change", "input[type=text].menuChangeControl", function (e) {
+        if ($(this).hasClass("awesomVariable")) {
+            listVar.push($(this).val());
+        }
+        menuChanged = true;
+    });
+
+    $("body").on("change", "input[type=number].menuChangeControl", function (e) {
+        menuChanged = true;
+    });
+
+    $("body").on("input", "textarea.menuChangeControl", function (e) {
+        menuChanged = true;
+    });
+
+    $("body").on("select2:select", "select.menuChangeControl", function (e) {
+        menuChanged = true;
+    });
+
+    $("body").on("click", ".debugPopUp", function (e) {
+        var data = {};
+        data.ProjectId = window.IvrProjectId;
+        data.ObjectType = $(this).attr('data-type');
+        data.Parameters = [];
+        var table = $("#debugObjectPopUp").find("table");
+        if (data.ObjectType == "Dll") {
+            data.FileName = $(this).parents(".form-body").find("input[name=DllfileName]").val();
+            data.TypeName = $(this).parents(".form-body").find("input[name=TypeName]").val();
+            data.MethodName = $(this).parents(".form-body").find("input[name=MethodName]").val();
+        }
+        else if (data.ObjectType == "Sp") {
+            data.ConnectionString = $(this).parents(".form-body").find("input[name=ConnectionString]").val();
+            data.SpName = $(this).parents(".form-body").find("input[name=SpName]").val();
+            data.CommandTimeout = $(this).parents(".form-body").find("input[name=CommandTimeout]").val();
+        }
+        else if (data.ObjectType == "Script") {
+            data.MethodName = $(this).parents(".form-body").find("input[name=Function]").val();
+            data.ScriptType = $(this).parents(".form-body").find(".scriptTypeList").select2("data")[0].id,
+            data.Script = $(this).parents(".form-body").find("input[name=Script]").val();
+        }
+        else if (data.ObjectType == "WebService") {
+            data.ServiceUri = $(this).parents(".form-body").find("input[name=ServiceUri]").val();
+            data.ServiceName = $(this).parents(".form-body").find("input[name=ServiceName]").val();
+            data.MethodName = $(this).parents(".form-body").find("input[name=MethodName]").val();
+        }
+
+        var allRows = table.find("tbody tr");
+        jQuery.each(allRows, function (rowIndex, rowItem) {
+            data.Parameters.push({
+                "ParameterDirection": $(rowItem).find(".directionSelect").select2("data")[0].id,
+                "VariableType": $(rowItem).find(".typeSelect").select2("data")[0].id,
+                "Variable": ""
+            });
+        });
+        
+        $.get('../customtemplates/DebugObjectPopUp.hbs', function(template) {
+            var popUpTemplate = Handlebars.compile(template);
+
+            $("#debugObjectPopUp").remove();
+
+            $("html").append(popUpTemplate(data));
+
+            $.each(data.Parameters, function (paramIndex, paramItem) {
+                $("#debugObjectPopUp").find("tbody tr").eq(paramIndex).find(".directionSelect").select2({ width: '100%' }).val(paramItem.ParameterDirection).trigger("change");
+                $("#debugObjectPopUp").find("tbody tr").eq(paramIndex).find(".typeSelect").select2({ width: '100%' }).val(paramItem.VariableType).trigger("change");
+            });
+
+            $("#debugObjectPopUp").show();
+            $("#debugObjectPopUp").draggable();
+
+            $(".debugObject").on("click", function () {
+                $.each(data.Parameters, function (paramIndex, paramItem) {
+                    data.Parameters[paramIndex].Variable = $("#debugObjectPopUp").find("tbody tr").eq(paramIndex).find("input").val();
+                });
+                $.ajax({
+                    url: window.appConfig.ip + "Debug/Run" + data.ObjectType,
+                    type: "POST",
+                    data: data,
+                    success: function (result) {
+                        if (result) {
+                            $("#debugObjectPopUp").find("input[name=Error]").val(result.Error);
+                            $("#debugObjectPopUp").find("input[name=MethodName]").val(result.ReturnValue);
+                            if (result.Parameters) {
+                                $.each(result.Parameters, function (paramIndex, paramItem) {
+                                    $("#debugObjectPopUp").find("tbody tr").eq(paramIndex).find("input").val(paramItem.Variable);
+                                });
+                            }
+                            toastr.success("Debug Finished");
+                        } else {
+                            toastr.error("Error ");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        toastr.error("Communication Error");
+                    }
+                });
+            });
+            
+            $(".runDllCancel").on("click", function () {
+                $("#debugObjectPopUp").hide();
+                $("#debugObjectPopUp").remove();
+            });
+        });
     });
 
 });

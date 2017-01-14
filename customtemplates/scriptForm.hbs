@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">Script Type</label>
                     <div class="col-md-9">
-                        <select class="scriptTypeList">
+                        <select class="scriptTypeList menuChangeControl">
                             <option value="0">JavaScript</option>
                             <option value="1">VbScript</option>
                         </select>
@@ -23,19 +23,19 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">Function</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Function" value="{{inFormData.Function}}" name="Function" />
+                        <input type="text" class="form-control menuChangeControl" placeholder="Function" value="{{inFormData.Function}}" name="Function" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3 control-label">Return Variable</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control awesomVariable" placeholder="Return Variable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable" />
+                        <input type="text" class="form-control menuChangeControl awesomVariable" placeholder="Return Variable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3 control-label">Script</label>
                     <div class="col-md-9">
-                        <textarea type="text" rows="15" class="form-control" placeholder="Write Your Script Here" name="Script">
+                        <textarea type="text" rows="15" class="form-control menuChangeControl" placeholder="Write Your Script Here" name="Script">
                         </textarea>
                     </div>
                 </div>
@@ -49,6 +49,14 @@
                                             New Parameter
                                             <i class="fa fa-plus"></i>
                                         </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="btn-group" style="float:right">
+                                        <a href="#" class="btn blue debugPopUp" data-type="Script">
+                                            Run Script
+                                            <i class="fa fa-play"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

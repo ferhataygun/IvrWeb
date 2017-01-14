@@ -1,0 +1,92 @@
+﻿<div id="announcementFilesPopUp" style="display:none; z-index:9999; background:white;border: black;border-width: 1px; border-style: solid; position:fixed; top:100px; left:100px;">
+    <div style="margin-top:20px;margin-left:20px;margin-right:20px;margin-bottom:20px;">
+        <form class="form-horizontal announcementForm" role="form">
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" style="font-size:14px;">Folder</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="UploadFolder">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" style="font-size:14px;">Upload</label>
+                    <div class="col-md-8">
+                        <input type="file" class="form-control uploadedFiles" multiple>
+                    </div>
+                    <label class="col-md-1 control-label upploadProgress" style="font-size:14px;"></label>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" style="font-size:14px;">Player</label>
+                    <div class="col-md-9">
+                        <audio controls class="form-control announcePlayer">
+                            <source src="" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th> Language </th>
+                                    <th> Ivr Menu </th>
+                                    <th> File </th>
+                                    <th> Exist </th>
+                                    <th> Play </th>
+                                    <th> Upload </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each this}}
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{Language}}" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{IvrMenu}}" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{File}}" disabled>
+                                    </td>
+                                    <td>
+                                        <label class="mt-checkbox">
+                                            {{#if Exist}}
+                                            <input type="checkbox" style="opacity:0" class="form-control" checked disabled>
+                                            {{else}}
+                                            <input type="checkbox" style="opacity:0" class="form-control" disabled>
+                                            {{/if}}
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        {{#if Exist}}
+                                        <i class="fa fa-play announcementPlay" data-projectId="{{ProjectId}}" data-lang="{{Language}}" data-file="{{File}}" style="color:blue;margin-left:10px;"></i>
+                                        {{else}}
+                                        <i class="fa fa-times" style="color:red;margin-left:10px;"></i>
+                                        {{/if}}
+                                    </td>
+                                    <td>
+                                        <a class="uploadFile" data-projectId="{{ProjectId}}" data-lang="{{Language}}" data-file="{{File}}" href="#"> Upload </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9 text-right">
+                        <a class="announcementCancel btn red" style="display:inline-block">
+                            Cancel
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

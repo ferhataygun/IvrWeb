@@ -14,13 +14,13 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Transfer No</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomFunction" placeholder="TransferNo" value="{{inFormData.TransferNo}}" name="TransferNo">
+                  <input type="text" class="form-control menuChangeControl awesomFunction" placeholder="TransferNo" value="{{inFormData.TransferNo}}" name="TransferNo">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Timeout</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="Timeout" min="0" max="10000" value="{{inFormData.Timeout}}" name="Timeout">
+                  <input type="number" class="form-control menuChangeControl" placeholder="Timeout" min="0" max="10000" value="{{inFormData.Timeout}}" name="Timeout">
               </div>
           </div>
           <div class="form-group">
@@ -28,9 +28,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.HoldMusic}}
-                      <input type="checkbox" class="form-control holdMusicCheckbox" checked>
+                      <input type="checkbox" class="form-control holdMusicCheckbox menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control holdMusicCheckbox">
+                      <input type="checkbox" class="form-control holdMusicCheckbox menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -40,9 +40,9 @@
               <label class="col-md-3 control-label">HoldMusicFile</label>
               <div class="col-md-9">
                 {{#if inFormData.HoldMusic}}
-                  <input type="text" class="form-control holdMusicVar" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile">
+                  <input type="text" class="form-control holdMusicVar menuChangeControl" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile">
                 {{else}}
-                  <input type="text" class="form-control holdMusicVar" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile" disabled>
+                  <input type="text" class="form-control holdMusicVar menuChangeControl" placeholder="HoldMusicFile" value="{{inFormData.HoldMusicFile}}" name="HoldMusicFile" disabled>
                 {{/if}}
               </div>
           </div>
@@ -51,9 +51,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.BridgeCall}}
-                      <input type="checkbox" class="form-control BridgeCallCheckbox" checked>
+                      <input type="checkbox" class="form-control BridgeCallCheckbox menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control BridgeCallCheckbox">
+                      <input type="checkbox" class="form-control BridgeCallCheckbox menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -62,7 +62,7 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Unavailable Menu</label>
               <div class="col-md-9">
-                <select class="treeVievMenuList">
+                <select class="treeVievMenuList menuChangeControl">
                  <option value="0">No Unavailable Menu</option>
                  {{#each inFormData.treeview}}
                       <option value="{{id}}">{{text}}</option>
@@ -73,7 +73,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Unavailable Transfer No</label>
             <div class="col-md-9">
-                <input type="text" class="form-control awesomFunction" placeholder="UnavailableTransferNo" value="{{inFormData.UnavailableTransferNo}}" name="UnavailableTransferNo">
+                <input type="text" class="form-control menuChangeControl awesomFunction" placeholder="UnavailableTransferNo" value="{{inFormData.UnavailableTransferNo}}" name="UnavailableTransferNo">
             </div>
           </div>
       </div>

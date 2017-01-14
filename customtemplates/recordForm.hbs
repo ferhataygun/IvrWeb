@@ -14,13 +14,13 @@
           <div class="form-group">
               <label class="col-md-3 control-label">File Name</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomFunction" placeholder="File Name" value="{{inFormData.FileName}}" name="FileName">
+                  <input type="text" class="form-control menuChangeControl awesomFunction" placeholder="File Name" value="{{inFormData.FileName}}" name="FileName">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Duration</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="Duration" min="0" max="10000" value="{{inFormData.Duration}}" name="Duration">
+                  <input type="number" class="form-control menuChangeControl" placeholder="Duration" min="0" max="10000" value="{{inFormData.Duration}}" name="Duration">
               </div>
           </div>
           <div class="form-group">
@@ -28,9 +28,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.DtmfStop}}
-                      <input type="checkbox" class="form-control dtmfCheckbox" checked>
+                      <input type="checkbox" class="form-control dtmfCheckbox menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control dtmfCheckbox">
+                      <input type="checkbox" class="form-control dtmfCheckbox menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -40,9 +40,9 @@
               <label class="col-md-3 control-label">DTMF Stop Key:</label>
               <div class="col-md-9">
                 {{#if inFormData.DtmfStop}}
-                <input type="text" class="form-control dtmfVar" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey">
+                <input type="text" class="form-control dtmfVar menuChangeControl" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey">
                 {{else}}
-                <input type="text" class="form-control dtmfVar" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey" disabled>
+                <input type="text" class="form-control dtmfVar menuChangeControl" placeholder="DTMF Stop Key" value="{{inFormData.DtmfStopKey}}" name="DtmfStopKey" disabled>
                 {{/if}}
               </div>
           </div>

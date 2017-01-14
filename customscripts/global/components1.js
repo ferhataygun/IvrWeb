@@ -126,6 +126,7 @@
                               window.selectedServersforProject.push(item.Id);
                           }
                       });
+                      $(".treeHeaderProjectText").text("IVR Project Design - " + comp1Data.Name);
                       window.makeTreeView(comp1Data.TreeData);
                       window.IvrProjectName = comp1Data.Name;
                       window.IvrProjectId = compId;
@@ -239,6 +240,7 @@
                   if ($(".routingMenuList").length) {
                       $(".routingMenuList").select2({ width: '100%' }).val(comp1Data.IvrMultiMenu).trigger("change");
                   }
+                  $(".serverCtiMethod").select2({ width: '100%' }).val(comp1Data.CtiMethod).trigger("change");
               }
           });
       }, 'html');
@@ -263,6 +265,8 @@
         $.each($(".ivrEndpointsList").select2("data"), function (index, item) {
             toSendData.Endpoints.push(item.id);
         });
+        toSendData.AutoPublish = $(".serverAutoPublish").is(":checked");
+        toSendData.CtiMethod = $(".serverCtiMethod").select2("data")[0].id;
     }
     if (targetType === "Routing" || targetType === "Endpoint") {
         toSendData.Accounts = [];
@@ -730,6 +734,151 @@
       });
   });
 
+  $("body").on("click", ".announcementFileDetail", function () {
+
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+
+      $.ajax({
+          url: window.appConfig.ip + "Project/GetAnnouncementFiles/" + compId,
+          type: "GET",
+          success: function (data) {
+              if (data) {
+                  $.get('../customtemplates/AnnouncementFilesPopUp.hbs', function (template) {
+
+                      var popUpTemplate = Handlebars.compile(template);
+
+                      $("#announcementFilesPopUp").remove();
+
+                      $("html").append(popUpTemplate(data));
+
+                      $("#announcementFilesPopUp").show();
+                      $("#announcementFilesPopUp").draggable();
+
+                      $(".announcementCancel").on("click", function () {
+                          $("#announcementFilesPopUp").hide();
+                          $("#announcementFilesPopUp").remove();
+                      });
+                      $(".announcementPlay").on("click", function () {
+                          $(".announcePlayer").attr("src", "../AnnouncementFiles/" + $(this).attr('data-projectId') + "/" + $(this).attr('data-file'));
+                      });
+                      $(".uploadFile").on("click", function () {
+                          $("#announcementFilesPopUp").hide();
+                      });
+                      $('.uploadedFiles').fileupload({
+                          dataType: 'json',
+                          method: "POST",
+                          //data: {
+                          //    ProjectId: compId,
+                          //    Language: ""
+                          //},
+                          url: window.appConfig.ip + "Project/UploadAnnouncementFiles/" + encodeURIComponent( compId + "-" + $("#announcementFilesPopUp").find("input[name=UploadFolder]").val()),
+                          done: function (e, data) {
+                              $.each(data.files, function (index, file) {
+                                  toastr.success("file send " + file.name);
+                              });
+                          },
+                          progress: function(e, data) {
+                              //console.log(e);
+                              //console.log(data);
+                              var percentge = parseInt(100 * (data._progress.loaded / data._progress.total)) + " %";
+                              $(".upploadProgress").text(percentge);
+                          },
+                          fail: function (e, data) {
+                              $.each(data.files, function (index, file) {
+                                  toastr.error("file send failed " + file.name);
+                              });
+                          },
+                          stop: function (e) {
+                              console.log(e);
+                              $(".announcementFileDetail").trigger("click");
+                          }
+                      });
+                      
+                  });
+
+              } else {
+                  toastr.error("Error ");
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+              toastr.error("Communication Error");
+          }
+      });
+  });
+
+  $("body").on("click", ".dllFileDetail", function () {
+
+      var $this = $(this);
+      var compId = $this.attr('data-id');
+
+      $.ajax({
+          url: window.appConfig.ip + "Project/GetDllFiles/" + compId,
+          type: "GET",
+          success: function (data) {
+              if (data) {
+                  $.get('../customtemplates/DllFilesPopUp.hbs', function (template) {
+
+                      var popUpTemplate = Handlebars.compile(template);
+
+                      $("#dllFilesPopUp").remove();
+
+                      $("html").append(popUpTemplate(data));
+
+                      $("#dllFilesPopUp").show();
+                      $("#dllFilesPopUp").draggable();
+
+                      $(".dllCancel").on("click", function () {
+                          $("#dllFilesPopUp").hide();
+                          $("#dllFilesPopUp").remove();
+                      });
+
+                      $(".uploadFile").on("click", function () {
+                          $("#dllFilesPopUp").hide();
+                      });
+
+                      $('.uploadedFiles').fileupload({
+                          dataType: 'json',
+                          method: "POST",
+                          //data: {
+                          //    ProjectId: compId,
+                          //    Language: ""
+                          //},
+                          url: window.appConfig.ip + "Project/UploadDllFiles/" + compId,
+                          done: function (e, data) {
+                              $.each(data.files, function (index, file) {
+                                  toastr.success("file send " + file.name);
+                              });
+                          },
+                          progress: function (e, data) {
+                              //console.log(e);
+                              //console.log(data);
+                              var percentge = parseInt(100 * (data._progress.loaded / data._progress.total)) + " %";
+                              $(".upploadProgress").text(percentge);
+                          },
+                          fail: function (e, data) {
+                              $.each(data.files, function (index, file) {
+                                  toastr.error("file send failed " + file.name);
+                              });
+                          },
+                          stop: function (e) {
+                              console.log(e);
+                              $(".dllFileDetail").trigger("click");
+                          }
+                      });
+
+                  });
+
+              } else {
+                  toastr.error("Error ");
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+              toastr.error("Communication Error");
+          }
+      });
+  });
+  
   $("body").on("click", ".openDesignPopUp", function (e) {
 
       $("#popUpTree").show();

@@ -39,15 +39,44 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-md-3 control-label">CTI Uri</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="{{Type}} CTI URI" value="{{CtiUri}}" name="CtiUri">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">CTI Method</label>
+                            <div class="col-md-9">
+                                <select class="serverCtiMethod menuChangeControl">
+                                    <option value="0">None</option>
+                                    <option value="1">WithPbxCallId</option>
+                                    <option value="2">WithSipCallId</option>
+                                    <option value="3">WithIvrCallId</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">CTI Timeout (minute)</label>
+                            <div class="col-md-9">
+                                <input type="number" class="form-control"  min="0" max="10000" value="{{CtiTimeout}}" name="CtiTimeout">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-3 control-label">Db Connection String</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" placeholder="{{Type}} Db Connection String" value="{{DbConnectionString}}" name="DbConnectionString">
+                                <input type="text" class="form-control" placeholder="Db Connection String" value="{{DbConnectionString}}" name="DbConnectionString">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Announcement And Dll Folder</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="Announcement And Dll Folder" value="{{AnnouncementAndDllFolder}}" name="AnnouncementAndDllFolder">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Capacity</label>
                             <div class="col-md-9">
-                                <input type="number" class="form-control" placeholder="Capacity" min="0" max="10000" value="{{Capacity}}" name="Capacity">
+                                <input type="number" class="form-control" min="0" max="10000" value="{{Capacity}}" name="Capacity">
                             </div>
                         </div>
                         <div class="form-group">
@@ -58,6 +87,19 @@
                                     <option value="{{Id}}">{{Name}}</option>
                                {{/each}}
                               </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Auto Publish</label>
+                            <div class="col-md-9">
+                                <label class="mt-checkbox">
+                                    {{#if AutoPublish}}
+                                    <input type="checkbox" class="form-control serverAutoPublish" name="AutoPublish" checked>
+                                    {{else}}
+                                    <input type="checkbox" class="form-control serverAutoPublish" name="AutoPublish">
+                                    {{/if}}
+                                    <span></span>
+                                </label>
                             </div>
                         </div>
                         <div class="form-group">

@@ -14,13 +14,13 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Play String</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomFunction" placeholder="PlayString" value="{{inFormData.PlayString}}" name="PlayString">
+                  <input type="text" class="form-control menuChangeControl awesomFunction" placeholder="PlayString" value="{{inFormData.PlayString}}" name="PlayString">
               </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Play Type</label>
             <div class="col-md-9">
-              <select class="playTypeList">
+              <select class="playTypeList menuChangeControl">
                 <option value="0">File</option>
                 <option value="1">Numeric</option>
                 <option value="2">Character</option>
@@ -39,9 +39,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.DtmfStop}}
-                      <input type="checkbox" class="form-control isDtmfStop" checked>
+                      <input type="checkbox" class="form-control isDtmfStop menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control isDtmfStop">
+                      <input type="checkbox" class="form-control isDtmfStop menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -50,43 +50,43 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Dtmf Timeout</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="DtmfTimeout" min="0" max="1000" value="{{inFormData.DtmfTimeout}}" name="DtmfTimeout">
+                  <input type="number" class="form-control menuChangeControl" placeholder="DtmfTimeout" min="0" max="1000" value="{{inFormData.DtmfTimeout}}" name="DtmfTimeout">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Max Dtmf</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="MaxDtmf" min="0" max="100" value="{{inFormData.MaxDtmf}}" name="MaxDtmf">
+                  <input type="number" class="form-control menuChangeControl" placeholder="MaxDtmf" min="0" max="100" value="{{inFormData.MaxDtmf}}" name="MaxDtmf">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Min Dtmf</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="MinDtmf" min="0" max="100" value="{{inFormData.MinDtmf}}" name="MinDtmf">
+                  <input type="number" class="form-control menuChangeControl" placeholder="MinDtmf" min="0" max="100" value="{{inFormData.MinDtmf}}" name="MinDtmf">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Dtmf Mask</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="DtmfMask" value="{{inFormData.DtmfMask}}" name="DtmfMask">
+                  <input type="text" class="form-control menuChangeControl" placeholder="DtmfMask" value="{{inFormData.DtmfMask}}" name="DtmfMask">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Input Timeout</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="InputTimeout" min="0" max="1000" value="{{inFormData.InputTimeout}}" name="InputTimeout">
+                  <input type="number" class="form-control menuChangeControl" placeholder="InputTimeout" min="0" max="1000" value="{{inFormData.InputTimeout}}" name="InputTimeout">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Input Variable</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomVariable" placeholder="InputVariable" value="{{inFormData.InputVariable}}" name="InputVariable">
+                  <input type="text" class="form-control menuChangeControl awesomVariable" placeholder="InputVariable" value="{{inFormData.InputVariable}}" name="InputVariable">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Repeat After Invalid</label>
               <div class="col-md-9">
-                  <input type="number" class="form-control" placeholder="RepeatAfterInvalid" min="0" max="100" value="{{inFormData.RepeatAfterInvalid}}" name="RepeatAfterInvalid">
+                  <input type="number" class="form-control menuChangeControl" placeholder="RepeatAfterInvalid" min="0" max="100" value="{{inFormData.RepeatAfterInvalid}}" name="RepeatAfterInvalid">
               </div>
           </div>
           <div class="form-group">
@@ -94,9 +94,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.GetInvalidInput}}
-                      <input type="checkbox" class="form-control GetInvalidInput" checked>
+                      <input type="checkbox" class="form-control GetInvalidInput menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control GetInvalidInput">
+                      <input type="checkbox" class="form-control GetInvalidInput menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -107,9 +107,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.TerminateInvalidInput}}
-                      <input type="checkbox" class="form-control TerminateInvalidInput" checked>
+                      <input type="checkbox" class="form-control TerminateInvalidInput menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control TerminateInvalidInput">
+                      <input type="checkbox" class="form-control TerminateInvalidInput menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -120,9 +120,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.DontPlayOthersIfDtmfRecevied}}
-                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied" checked>
+                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied">
+                      <input type="checkbox" class="form-control DontPlayOthersIfDtmfRecevied menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -133,9 +133,9 @@
               <div class="col-md-9">
                 <label class="mt-checkbox">
                     {{#if inFormData.Asynchronous}}
-                      <input type="checkbox" class="form-control Asynchronous" checked>
+                      <input type="checkbox" class="form-control Asynchronous menuChangeControl" checked>
                     {{else}}
-                      <input type="checkbox" class="form-control Asynchronous">
+                      <input type="checkbox" class="form-control Asynchronous menuChangeControl">
                     {{/if}}
                     <span></span>
                 </label>
@@ -146,9 +146,9 @@
               <div class="col-md-9">
                   <label class="mt-checkbox">
                       {{#if inFormData.DtmfLogDisabled}}
-                      <input type="checkbox" class="form-control DtmfLogDisabled" checked>
+                      <input type="checkbox" class="form-control DtmfLogDisabled menuChangeControl" checked>
                       {{else}}
-                      <input type="checkbox" class="form-control DtmfLogDisabled">
+                      <input type="checkbox" class="form-control DtmfLogDisabled menuChangeControl">
                       {{/if}}
                       <span></span>
                   </label>

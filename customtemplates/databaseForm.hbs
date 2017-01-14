@@ -14,13 +14,19 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Connection String</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomFunction" placeholder="ConnectionString" value="{{inFormData.ConnectionString}}" name="ConnectionString">
+                  <input type="text" class="form-control menuChangeControl awesomFunction" placeholder="ConnectionString" value="{{inFormData.ConnectionString}}" name="ConnectionString">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Sp Name</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="SpName" value="{{inFormData.SpName}}" name="SpName">
+                  <input type="text" class="form-control menuChangeControl" placeholder="SpName" value="{{inFormData.SpName}}" name="SpName">
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-3 control-label">Command Timeout</label>
+              <div class="col-md-9">
+                  <input type="number" max="1000" min="1" class="form-control" placeholder="CommandTimeout" value="{{inFormData.CommandTimeout}}" name="CommandTimeout">
               </div>
           </div>
           <div class="form-group">
@@ -33,6 +39,14 @@
                                       New Parameter
                                       <i class="fa fa-plus"></i>
                                   </button>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="btn-group" style="float:right">
+                                  <a href="#" class="btn blue debugPopUp"  data-type="Sp">
+                                      Run Sp
+                                      <i class="fa fa-play"></i>
+                                  </a>
                               </div>
                           </div>
                       </div>

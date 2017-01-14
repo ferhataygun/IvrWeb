@@ -1,0 +1,84 @@
+﻿<div id="debugObjectPopUp" style="display:none; z-index:9999; background:white;border: black;border-width: 1px; border-style: solid; position:fixed; top:100px; left:100px;">
+    <div style="margin-top:20px;margin-left:20px;margin-right:20px;margin-bottom:20px;">
+        <form class="form-horizontal debugObjectForm" role="form">
+            <div class="form-actions">
+                <div class="row" style="margin-bottom:20px">
+                    <div class="col-md-offset-3 col-md-9 text-right">
+                        <a class="debugObject btn blue" style="display:inline-block">
+                        Run
+                            <i class="fa fa-play"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Error</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="Error" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Return Variable</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="ReturnVariable" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th> Parameter Direction</th>
+                                    <th> Variable Type </th>
+                                    <th> Parameter </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each Parameters}}
+                                <tr>
+                                    <td>
+                                        <select class="js-table-select directionSelect" disabled>
+                                            <option value="0">In</option>
+                                            <option value="1">Out</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="js-table-select typeSelect" disabled>
+                                            <option value="0">Int</option>
+                                            <option value="1">Double</option>
+                                            <option value="2">String</option>
+                                            <option value="3">DateTime</option>
+                                            <option value="4">Bool</option>
+                                            <option value="5">Complex</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        {{#if_eq ParameterDirection 0}}
+                                        <input type="text" class="form-control" value="{{Variable}}">
+                                        {{else}}
+                                        <input type="text" class="form-control" value="{{Variable}}" disabled>
+                                        {{/if_eq}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9 text-right">
+                        <a class="runDllCancel btn red" style="display:inline-block">
+                        Cancel
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

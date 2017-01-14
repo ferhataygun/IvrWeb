@@ -14,25 +14,25 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Service Uri</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="ServiceUri" value="{{inFormData.ServiceUri}}" name="ServiceUri">
+                  <input type="text" class="form-control menuChangeControl" placeholder="ServiceUri" value="{{inFormData.ServiceUri}}" name="ServiceUri">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Service Name</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="ServiceName" value="{{inFormData.ServiceName}}" name="ServiceName">
+                  <input type="text" class="form-control menuChangeControl" placeholder="ServiceName" value="{{inFormData.ServiceName}}" name="ServiceName">
               </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Method Name</label>
                 <div class="col-md-9">
-                    <input type="text" class="form-control" placeholder="MethodName" value="{{inFormData.MethodName}}" name="MethodName">
+                    <input type="text" class="form-control menuChangeControl" placeholder="MethodName" value="{{inFormData.MethodName}}" name="MethodName">
                 </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Return Variable</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomVariable" placeholder="ReturnVariable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable">
+                  <input type="text" class="form-control menuChangeControl awesomVariable" placeholder="ReturnVariable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable">
               </div>
           </div>
           <div class="form-group">
@@ -45,6 +45,14 @@
                                       New Parameter
                                       <i class="fa fa-plus"></i>
                                   </button>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="btn-group" style="float:right">
+                                  <a href="#" class="btn blue debugPopUp" data-type="WebService">
+                                      Run Ws
+                                      <i class="fa fa-play"></i>
+                                  </a>
                               </div>
                           </div>
                       </div>

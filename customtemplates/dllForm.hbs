@@ -14,25 +14,25 @@
           <div class="form-group">
               <label class="col-md-3 control-label">Dll File Name</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="DllfileName" value="{{inFormData.DllfileName}}" name="DllfileName">
+                  <input type="text" class="form-control menuChangeControl" placeholder="DllfileName" value="{{inFormData.DllfileName}}" name="DllfileName">
               </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Type Name</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control" placeholder="TypeName" value="{{inFormData.TypeName}}" name="TypeName">
+                  <input type="text" class="form-control menuChangeControl" placeholder="TypeName" value="{{inFormData.TypeName}}" name="TypeName">
               </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Method Name</label>
                 <div class="col-md-9">
-                    <input type="text" class="form-control" placeholder="MethodName" value="{{inFormData.MethodName}}" name="MethodName">
+                    <input type="text" class="form-control menuChangeControl" placeholder="MethodName" value="{{inFormData.MethodName}}" name="MethodName">
                 </div>
           </div>
           <div class="form-group">
               <label class="col-md-3 control-label">Return Variable</label>
               <div class="col-md-9">
-                  <input type="text" class="form-control awesomVariable" placeholder="ReturnVariable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable">
+                  <input type="text" class="form-control menuChangeControl awesomVariable" placeholder="ReturnVariable" value="{{inFormData.ReturnVariable}}" name="ReturnVariable">
               </div>
           </div>
           <div class="form-group">
@@ -44,6 +44,14 @@
                                <button id="{{inFormData.btnID}}" class="btn green newParameter"> New Parameter
                                    <i class="fa fa-plus"></i>
                                </button>
+                           </div>
+                       </div>
+                       <div class="col-md-6">
+                           <div class="btn-group" style="float:right">
+                               <a href="#" class="btn blue debugPopUp" data-type="Dll">
+                                   Run Dll
+                                   <i class="fa fa-play"></i>
+                               </a>
                            </div>
                        </div>
                    </div>
@@ -60,7 +68,6 @@
                                                            </thead>
                                                            <tbody>
                                                              {{#each inFormData.Parameters}}
-
                                                                <tr>
                                                                    <td>
                                                                      <select class="js-table-select directionSelect" disabled>

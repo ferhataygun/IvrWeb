@@ -479,6 +479,9 @@
     <Content Include="customtemplates\ctiForm.hbs" />
     <Content Include="customtemplates\DesignPopUp.hbs" />
     <Content Include="customtemplates\BackUpPopUp.hbs" />
+    <Content Include="customtemplates\AnnouncementFilesPopUp.hbs" />
+    <Content Include="customtemplates\DllFilesPopUp.hbs" />
+    <Content Include="customtemplates\DebugObjectPopUp.hbs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5840,6 +5843,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -80,6 +80,40 @@
                                 <input type="text" class="form-control" value="{{PublishTime}}" disabled>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Dll Files</label>
+                            {{#if_eq DllMissingFiles "0"}}
+                            <div class="col-md-3">
+                                <i class="fa fa-check" style="color:green;margin-top:10px;"></i>
+                                <span style="font-weight:bold">{{DllTotalFiles}} File(s)</span>
+                            </div>
+                            {{else}}
+                            <div class="col-md-3">
+                                <i class="fa fa-times" style="color:red;margin-top:10px;"></i>
+                                <span style="font-weight:bold">{{DllMissingFiles}} File(s) missing</span>
+                            </div>
+                            {{/if_eq}}
+                            <div class="col-md-6">
+                                <a class="dllFileDetail btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block;float:right">Upload Dll</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Announcement Files</label>
+                            {{#if_eq AnnouncementMissingFiles "0"}}
+                            <div class="col-md-3">
+                                <i class="fa fa-check" style="color:green;margin-top:10px;"></i>
+                                <span style="font-weight:bold">{{AnnouncementTotalFiles}} File(s)</span>
+                            </div>
+                            {{else}}
+                            <div class="col-md-3">
+                                <i class="fa fa-times" style="color:red;margin-top:10px;"></i>
+                                <span style="font-weight:bold">{{AnnouncementMissingFiles}} File(s) missing</span>
+                            </div>
+                            {{/if_eq}}
+                            <div class="col-md-6">
+                                <a class="announcementFileDetail btn red-soft" data-type={{Type}} data-id="{{Id}}" style="display:inline-block;float:right">Upload Announcement</a>
+                            </div>                            
+                        </div>
                     </div>
                     <div class="form-actions">
                         <div class="row">

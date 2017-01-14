@@ -664,9 +664,7 @@ jQuery(document).ready(function () {
                                var id2 = node2.a_attr.id;
 
                                $("#" + id2).trigger("click");
-                               setTimeout(function () {
-                                   $("#" + id2).trigger("click");
-                               }, 500);
+                               $("#treeHolder").jstree('rename_node', node2.id, menuData.Name);
                            }
                            else if (data == -111) {
                                toastr.error("Session Timeout");
@@ -1305,7 +1303,7 @@ jQuery(document).ready(function () {
         else if (data.ObjectType == "Script") {
             data.MethodName = $(this).parents(".form-body").find("input[name=Function]").val();
             data.ScriptType = $(this).parents(".form-body").find(".scriptTypeList").select2("data")[0].id,
-            data.Script = $(this).parents(".form-body").find("input[name=Script]").val();
+            data.Script = $(this).parents(".form-body").find("textarea[name=Script]").val();
         }
         else if (data.ObjectType == "WebService") {
             data.ServiceUri = $(this).parents(".form-body").find("input[name=ServiceUri]").val();
@@ -1348,7 +1346,7 @@ jQuery(document).ready(function () {
                     success: function (result) {
                         if (result) {
                             $("#debugObjectPopUp").find("input[name=Error]").val(result.Error);
-                            $("#debugObjectPopUp").find("input[name=MethodName]").val(result.ReturnValue);
+                            $("#debugObjectPopUp").find("input[name=ReturnVariable]").val(result.ReturnValue);
                             if (result.Parameters) {
                                 $.each(result.Parameters, function (paramIndex, paramItem) {
                                     $("#debugObjectPopUp").find("tbody tr").eq(paramIndex).find("input").val(paramItem.Variable);

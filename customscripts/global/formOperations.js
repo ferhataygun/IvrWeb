@@ -1291,7 +1291,7 @@ jQuery(document).ready(function () {
         data.ProjectId = window.IvrProjectId;
         data.ObjectType = $(this).attr('data-type');
         data.Parameters = [];
-        var table = $(".form-body").find("table");
+        var table = $(this).parents(".form-body").find("table");
         if (data.ObjectType == "Dll") {
             data.FileName = $(this).parents(".form-body").find("input[name=DllfileName]").val();
             data.TypeName = $(this).parents(".form-body").find("input[name=TypeName]").val();

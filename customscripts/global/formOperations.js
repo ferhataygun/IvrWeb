@@ -772,7 +772,10 @@ jQuery(document).ready(function () {
             var menuTemplate = Handlebars.compile(template);
               var randomId = "";
               var randomId2 = "";
-              $("#app-main").html(menuTemplate(menuData));
+              //$("#app-main").html(menuTemplate(menuData));
+              $(".page-content > .row").remove();
+              $(".page-content").append(menuTemplate(menuData));
+              
               $(".menuCaption").text(window.IvrProjectName + ' ' + $(".menuCaption").text());
               handleOffClick();
               handleOnClick();
@@ -875,6 +878,7 @@ jQuery(document).ready(function () {
                   }
               });
 
+              $(".page-content").resizable();
           });
         }
       });

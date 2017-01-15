@@ -1,7 +1,10 @@
 <!-- BEGIN CONTENT BODY -->
-<div class="page-content" style="padding-top:0">
-    <div class="row">
-      <div class="col-md-12">
+<!--<div class="page-content" style="padding-top:0">
+    
+</div>-->
+
+<div class="row">
+    <div class="col-md-12">
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
@@ -17,139 +20,138 @@
                 </div>
             </div>
             <div class="portlet-body form">
-              <div class="row">
-                <div class="col-md-8">
-                  <form class="form-horizontal comp2Form" role="form">
-                      <div class="form-body">
-                          <div class="form-group">
-                              <label class="col-md-2 control-label">Name:</label>
-                              <div class="col-md-10">
-                                  <input type="text" class="form-control menuChangeControl" placeholder="Menu Name" value="{{Name}}" name="Name">
-                                  <input type="hidden" value="{{Id}}" id="MenuId">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label class="col-md-2 control-label">Comment:</label>
-                              <div class="col-md-10">
-                                  <input type="text" class="form-control menuChangeControl" placeholder="Comment" value="{{Description}}" name="Description">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-md-12">
-                                  <div class="table-toolbar">
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <div class="btn-group">
-                                                  <button class="btn green newLog">
-                                                      New Log
-                                                      <i class="fa fa-plus"></i>
-                                                  </button>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <table class="table table-bordered table-hover">
-                                      <thead>
-                                          <tr>
-                                              <th> Variable </th>
-                                              <th> Encrypted </th>
-                                              <th> Before </th>
-                                              <th> Change </th>
-                                              <th> After</th>
-                                              <th> Edit </th>
-                                              <th> Delete </th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          {{#each Logs}}
-                                          <tr>
-                                              <td>
-                                                  <input type="text" class="form-control awesomVariable" value="{{Variable}}" disabled>
-                                                  <input type="hidden" class="form-control" value="{{Variable}}">
-                                              </td>
-                                              <td>
-                                                  <label class="mt-checkbox">
-                                                      {{#if Encrypted}}
-                                                      <input type="checkbox" class="form-control isEncrypted" checked disabled>
-                                                      {{else}}
-                                                      <input type="checkbox" class="form-control isEncrypted" disabled>
-                                                      {{/if}}
-                                                      <input type="hidden" class="form-control" value="{{Encrypted}}">
-                                                      <span></span>
-                                                  </label>
-                                              </td>
-                                              <td>
-                                                  <label class="mt-checkbox">
-                                                      {{#if BeforeLog}}
-                                                      <input type="checkbox" class="form-control isBeforeLog" checked disabled>
-                                                      {{else}}
-                                                      <input type="checkbox" class="form-control isBeforeLog" disabled>
-                                                      {{/if}}
-                                                      <input type="hidden" class="form-control" value="{{BeforeLog}}">
-                                                      <span></span>
-                                                  </label>
-                                              </td>
-                                              <td>
-                                                  <label class="mt-checkbox">
-                                                      {{#if ChangeLog}}
-                                                      <input type="checkbox" class="form-control isChangeLog" checked disabled>
-                                                      {{else}}
-                                                      <input type="checkbox" class="form-control isChangeLog" disabled>
-                                                      {{/if}}
-                                                      <input type="hidden" class="form-control" value="{{ChangeLog}}">
-                                                      <span></span>
-                                                  </label>
-                                              </td>
-                                              <td>
-                                                  <label class="mt-checkbox">
-                                                      {{#if AfterLog}}
-                                                      <input type="checkbox" class="form-control isAfterLog" checked disabled>
-                                                      {{else}}
-                                                      <input type="checkbox" class="form-control isAfterLog" disabled>
-                                                      {{/if}}
-                                                      <input type="hidden" class="form-control" value="{{AfterLog}}">
-                                                      <span></span>
-                                                  </label>
-                                              </td>
-                                              <td>
-                                                  <a class="editRow" href="#"> Edit </a>
-                                              </td>
-                                              <td>
-                                                  <a class="deleteRow" href="#"> Delete </a>
-                                              </td>
-                                          </tr>
-                                          {{/each}}
+                <div class="row">
+                    <div class="col-md-8">
+                        <form class="form-horizontal comp2Form" role="form">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name:</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control menuChangeControl" placeholder="Menu Name" value="{{Name}}" name="Name">
+                                        <input type="hidden" value="{{Id}}" id="MenuId">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Comment:</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control menuChangeControl" placeholder="Comment" value="{{Description}}" name="Description">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="table-toolbar">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="btn-group">
+                                                        <button class="btn green newLog">
+                                                            New Log
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th> Variable </th>
+                                                    <th> Encrypted </th>
+                                                    <th> Before </th>
+                                                    <th> Change </th>
+                                                    <th> After</th>
+                                                    <th> Edit </th>
+                                                    <th> Delete </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each Logs}}
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control awesomVariable" value="{{Variable}}" disabled>
+                                                        <input type="hidden" class="form-control" value="{{Variable}}">
+                                                    </td>
+                                                    <td>
+                                                        <label class="mt-checkbox">
+                                                            {{#if Encrypted}}
+                                                            <input type="checkbox" class="form-control isEncrypted" checked disabled>
+                                                            {{else}}
+                                                            <input type="checkbox" class="form-control isEncrypted" disabled>
+                                                            {{/if}}
+                                                            <input type="hidden" class="form-control" value="{{Encrypted}}">
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="mt-checkbox">
+                                                            {{#if BeforeLog}}
+                                                            <input type="checkbox" class="form-control isBeforeLog" checked disabled>
+                                                            {{else}}
+                                                            <input type="checkbox" class="form-control isBeforeLog" disabled>
+                                                            {{/if}}
+                                                            <input type="hidden" class="form-control" value="{{BeforeLog}}">
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="mt-checkbox">
+                                                            {{#if ChangeLog}}
+                                                            <input type="checkbox" class="form-control isChangeLog" checked disabled>
+                                                            {{else}}
+                                                            <input type="checkbox" class="form-control isChangeLog" disabled>
+                                                            {{/if}}
+                                                            <input type="hidden" class="form-control" value="{{ChangeLog}}">
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="mt-checkbox">
+                                                            {{#if AfterLog}}
+                                                            <input type="checkbox" class="form-control isAfterLog" checked disabled>
+                                                            {{else}}
+                                                            <input type="checkbox" class="form-control isAfterLog" disabled>
+                                                            {{/if}}
+                                                            <input type="hidden" class="form-control" value="{{AfterLog}}">
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <a class="editRow" href="#"> Edit </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="deleteRow" href="#"> Delete </a>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
 
-                                      </tbody>
-                                  </table>
-                                  <input type="hidden" name="newRowAdded" value="" />
-                                  <input type="hidden" name="rowEdited" value="" />
-                              </div>
-                          </div>
-                      </div>
-                  </form>
+                                            </tbody>
+                                        </table>
+                                        <input type="hidden" name="newRowAdded" value="" />
+                                        <input type="hidden" name="rowEdited" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="javascript:;" class="btn default btn-block blue openForm" data-form-type="assignmentForm" data-font-class="font-blue"> Assignment Form </a>
+                        <a href="javascript:;" class="btn default btn-block green openForm" data-form-type="playForm" data-font-class="font-green"> Play Form </a>
+                        <a href="javascript:;" class="btn default btn-block red-pink openForm" data-form-type="recordForm" data-font-class="font-red-pink"> Record Form </a>
+                        <a href="javascript:;" class="btn default btn-block blue-dark openForm" data-form-type="routingForm" data-font-class="font-blue-dark"> Routing Form </a>
+                        <a href="javascript:;" class="btn default btn-block yellow-mint openForm" data-form-type="transferForm" data-font-class="font-yellow-mint"> Transfer Form </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="javascript:;" class="btn default btn-block yellow-crusta openForm" data-form-type="dllForm" data-font-class="font-yellow-crusta"> DLL Form </a>
+                        <a href="javascript:;" class="btn default btn-block purple-plum openForm" data-form-type="webServiceForm" data-font-class="font-purple-plum"> Web Service Form </a>
+                        <a href="javascript:;" class="btn default btn-block red openForm" data-form-type="databaseForm" data-font-class="font-red"> Database Form </a>
+                        <a href="javascript:;" class="btn default btn-block grey-mint openForm" data-form-type="scriptForm" data-font-class="font-grey-mint"> Script Form</a>
+                        <a href="javascript:;" class="btn default btn-block dark openForm" data-form-type="ctiForm" data-font-class="font-dark"> CTI Form</a>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <a href="javascript:;" class="btn default btn-block blue openForm" data-form-type="assignmentForm" data-font-class="font-blue"> Assignment Form </a>
-                    <a href="javascript:;" class="btn default btn-block green openForm" data-form-type="playForm" data-font-class="font-green"> Play Form </a>
-                    <a href="javascript:;" class="btn default btn-block red-pink openForm" data-form-type="recordForm" data-font-class="font-red-pink"> Record Form </a>
-                    <a href="javascript:;" class="btn default btn-block blue-dark openForm" data-form-type="routingForm" data-font-class="font-blue-dark"> Routing Form </a>
-                    <a href="javascript:;" class="btn default btn-block yellow-mint openForm" data-form-type="transferForm" data-font-class="font-yellow-mint"> Transfer Form </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="javascript:;" class="btn default btn-block yellow-crusta openForm" data-form-type="dllForm" data-font-class="font-yellow-crusta"> DLL Form </a>
-                    <a href="javascript:;" class="btn default btn-block purple-plum openForm" data-form-type="webServiceForm" data-font-class="font-purple-plum"> Web Service Form </a>
-                    <a href="javascript:;" class="btn default btn-block red openForm" data-form-type="databaseForm" data-font-class="font-red"> Database Form </a>
-                    <a href="javascript:;" class="btn default btn-block grey-mint openForm" data-form-type="scriptForm" data-font-class="font-grey-mint"> Script Form</a>
-                    <a href="javascript:;" class="btn default btn-block dark openForm" data-form-type="ctiForm" data-font-class="font-dark"> CTI Form</a>
-                </div>
-              </div>
             </div>
-      </div>
-      <div id="sortable_portlets">
+        </div>
+        <div id="sortable_portlets">
 
-      </div>
-      </div>
+        </div>
     </div>
 </div>
 <!-- END CONTENT BODY -->

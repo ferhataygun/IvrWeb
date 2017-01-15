@@ -96,6 +96,7 @@
   <ItemGroup>
     <Content Include="autocomplete\awesomplete.css" />
     <Content Include="autocomplete\awesomplete.js" />
+    <Content Include="img\logo.jpg" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

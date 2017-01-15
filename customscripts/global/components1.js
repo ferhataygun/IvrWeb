@@ -507,7 +507,7 @@
                                   },
                                   success: function (data, textStatus, jqXHR) {
                                       if (data > -1) {
-                                          toastr.success('Project is published!');
+                                          toastr.success('Project is published! ' + data + ' server(s) are updated');
                                           $("a[data-id=" + compId + "]a[data-type=Project].menu-comp1").trigger("click");
                                       } else if (data == -111) {
                                           toastr.error("Session Timeout");
@@ -765,6 +765,39 @@
                       $(".uploadFile").on("click", function () {
                           $("#announcementFilesPopUp").hide();
                       });
+                      var idFolder = encodeURIComponent(compId + "-" + $("#announcementFilesPopUp").find("input[name=UploadFolder]").val());
+                      $("#announcementFilesPopUp").find("input[name=UploadFolder]").on("change", function (e) {
+                          idFolder = encodeURIComponent(compId + "-" + $("#announcementFilesPopUp").find("input[name=UploadFolder]").val());
+                          $('.uploadedFiles').fileupload({
+                              dataType: 'json',
+                              method: "POST",
+                              //data: {
+                              //    ProjectId: compId,
+                              //    Language: ""
+                              //},
+                              url: window.appConfig.ip + "Project/UploadAnnouncementFiles/" + idFolder,
+                              done: function (e, data) {
+                                  $.each(data.files, function (index, file) {
+                                      toastr.success("file send " + file.name);
+                                  });
+                              },
+                              progress: function (e, data) {
+                                  //console.log(e);
+                                  //console.log(data);
+                                  var percentge = parseInt(100 * (data._progress.loaded / data._progress.total)) + " %";
+                                  $(".upploadProgress").text(percentge);
+                              },
+                              fail: function (e, data) {
+                                  $.each(data.files, function (index, file) {
+                                      toastr.error("file send failed " + file.name);
+                                  });
+                              },
+                              stop: function (e) {
+                                  console.log(e);
+                                  $(".announcementFileDetail").trigger("click");
+                              }
+                          });
+                      });
                       $('.uploadedFiles').fileupload({
                           dataType: 'json',
                           method: "POST",
@@ -772,13 +805,13 @@
                           //    ProjectId: compId,
                           //    Language: ""
                           //},
-                          url: window.appConfig.ip + "Project/UploadAnnouncementFiles/" + encodeURIComponent( compId + "-" + $("#announcementFilesPopUp").find("input[name=UploadFolder]").val()),
+                          url: window.appConfig.ip + "Project/UploadAnnouncementFiles/" + idFolder,
                           done: function (e, data) {
                               $.each(data.files, function (index, file) {
                                   toastr.success("file send " + file.name);
                               });
                           },
-                          progress: function(e, data) {
+                          progress: function (e, data) {
                               //console.log(e);
                               //console.log(data);
                               var percentge = parseInt(100 * (data._progress.loaded / data._progress.total)) + " %";
@@ -794,7 +827,6 @@
                               $(".announcementFileDetail").trigger("click");
                           }
                       });
-                      
                   });
 
               } else {
@@ -910,6 +942,52 @@
                           success: function (data) {
                               if (data > -1) {
                                   toastr.success('Update ok!');
+                                  $("a[data-id=" + serverId + "]a[data-type=Server].menu-comp1").trigger("click");
+
+                              } else if (data == -111) {
+                                  toastr.error("Session Timeout");
+                                  window.location.href = window.location.href = "../pages/index.html";
+                                  eraseCookie("token");
+                                  eraseCookie("username");
+                                  eraseCookie("isLogin");
+                                  eraseCookie("password");
+                              } else {
+                                  toastr.error("Error " + data);
+                              }
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                              toastr.error("Communication Error");
+                          }
+                      });
+                  } else {
+                      toastr.error("Password is wrong");
+                  }
+              }
+          }
+      });
+  });
+
+  $("body").on("click", ".restartServer", function (e) {
+      e.preventDefault();
+
+      var $this = $(this);
+      var serverId = $this.attr('data-id');
+
+      bootbox.prompt({
+          size: "small",
+          title: "If you want to restart server enter your password?",
+          callback: function (result) {
+              if (result === null) {
+
+              } else {
+                  if (window.appConfig.password == result) {
+
+                      $.ajax({
+                          url: window.appConfig.ip + "Server/RestartServer/" + serverId,
+                          type: "POST",
+                          success: function (data) {
+                              if (data > -1) {
+                                  toastr.success('Restart ok!');
                                   $("a[data-id=" + serverId + "]a[data-type=Server].menu-comp1").trigger("click");
 
                               } else if (data == -111) {

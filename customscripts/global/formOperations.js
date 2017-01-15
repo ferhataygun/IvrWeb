@@ -732,7 +732,6 @@ jQuery(document).ready(function () {
 
     /* On select */
     $('#treeHolder').on("select_node.jstree", function (e, treeData) {
-
         try {
             if (treeData.event.button == 2) {
                 //$("#pupUpTreeContextSelectedId").val(treeData.node.data.menuid);
@@ -763,8 +762,10 @@ jQuery(document).ready(function () {
         'url' : window.appConfig.ip + "ivr/getivrmenu/"+ menuId,
         'type' : 'GET',
         'datatype' : "application/json",
-        success: function(menuData){
-          $.get('../customtemplates/newComp3.hbs', function (template) {
+        success: function (menuData) {
+            debugger;
+            $.get('../customtemplates/newComp3.hbs', function (template) {
+                debugger;
             window.MenuDataChanged = false;
             $("body").find("input").on("change", function(){
               window.MenuDataChanged = true;

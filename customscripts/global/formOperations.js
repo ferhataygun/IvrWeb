@@ -753,7 +753,8 @@ jQuery(document).ready(function () {
         }
         $("#lastTreeMenuId").val(treeData.node.id);
       if($('#treeHolder').jstree(true).get_json(treeData.node.id).icon === "fa fa-volume-up"){
-          $("#app-main").html("");
+          //$("#app-main").html("");
+          $(".page-content > .row").remove();
           $("#lastTreeMenuId").val('');
         return false;
       }
